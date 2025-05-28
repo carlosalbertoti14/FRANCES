@@ -1,0 +1,214 @@
+/* Variáveis CSS para cores e espaçamentos */
+:root {
+    --LGFran_primary-color: #007bff;
+    --LGFran_secondary-color: #6c757d;
+    --LGFran_accent-color: #28a745;
+    --LGFran_background-color: #f8f9fa;
+    --LGFran_text-color: #343a40;
+    --LGFran_border-color: #dee2e6;
+    --LGFran_padding-md: 1.5%;
+    --LGFran_padding-sm: 1%;
+    --LGFran_margin-md: 1.5%;
+    --LGFran_margin-sm: 1%;
+    --LGFran_border-radius: 8px;
+    --LGFran_box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--LGFran_background-color);
+    color: var(--LGFran_text-color);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.LGFran_container {
+    width: 95%; /* Adaptação para mobile first */
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: var(--LGFran_border-radius);
+    box-shadow: var(--LGFran_box-shadow);
+    margin: var(--LGFran_margin-md) auto;
+    padding: var(--LGFran_padding-md);
+    box-sizing: border-box;
+}
+
+.LGFran_header {
+    text-align: center;
+    padding-bottom: var(--LGFran_padding-sm);
+    border-bottom: 1px solid var(--LGFran_border-color);
+    margin-bottom: var(--LGFran_margin-md);
+}
+
+.LGFran_header h1 {
+    color: var(--LGFran_primary-color);
+    font-size: 5vw; /* Tamanho da fonte responsivo */
+    margin: 0;
+}
+
+.LGFran_audio-player-section {
+    margin-bottom: var(--LGFran_margin-md);
+    text-align: center;
+}
+
+.LGFran_audio-player {
+    width: 100%;
+    margin-bottom: var(--LGFran_margin-sm);
+}
+
+.LGFran_controls {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+    justify-content: center;
+    gap: 1.5vw; /* Espaçamento responsivo entre os botões */
+}
+
+.LGFran_button {
+    background-color: var(--LGFran_primary-color);
+    color: white;
+    border: none;
+    padding: 2.5vw 4vw; /* Preenchimento responsivo */
+    border-radius: var(--LGFran_border-radius);
+    cursor: pointer;
+    font-size: 3vw; /* Tamanho da fonte responsivo */
+    transition: background-color 0.3s ease;
+    flex-grow: 1; /* Permite que os botões cresçam para ocupar espaço */
+    min-width: 45%; /* Garante que dois botões caibam por linha em telas menores */
+    box-sizing: border-box; /* Inclui padding e border no width */
+}
+
+.LGFran_button:hover {
+    background-color: #0056b3;
+}
+
+.LGFran_icon-button {
+    font-size: 4vw; /* Ícones um pouco maiores */
+    padding: 2vw;
+    min-width: unset; /* Remove min-width para botões de ícone */
+}
+
+.LGFran_input-time {
+    width: 30%; /* Largura responsiva */
+    padding: 2.5vw; /* Preenchimento responsivo */
+    border: 1px solid var(--LGFran_border-color);
+    border-radius: var(--LGFran_border-radius);
+    box-sizing: border-box;
+    font-size: 3vw;
+}
+
+.LGFran_dialog-section {
+    border-top: 1px solid var(--LGFran_border-color);
+    padding-top: var(--LGFran_padding-md);
+}
+
+.LGFran_dialog-section h2 {
+    color: var(--LGFran_primary-color);
+    text-align: center;
+    margin-bottom: var(--LGFran_margin-sm);
+    font-size: 4.5vw; /* Tamanho da fonte responsivo */
+}
+
+.LGFran_dialog-content p {
+    margin-bottom: var(--LGFran_margin-sm);
+    font-size: 3.5vw; /* Tamanho da fonte responsivo */
+    cursor: pointer;
+    padding: 1vw 2vw;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.LGFran_dialog-content p:hover {
+    background-color: #e9ecef;
+}
+
+.LGFran_dialog-content p.LGFran_highlight {
+    background-color: var(--LGFran_accent-color);
+    color: white;
+    font-weight: bold;
+}
+
+.LGFran_footer {
+    text-align: center;
+    margin-top: var(--LGFran_margin-md);
+    padding-top: var(--LGFran_padding-sm);
+    border-top: 1px solid var(--LGFran_border-color);
+    color: var(--LGFran_secondary-color);
+    font-size: 2.5vw; /* Tamanho da fonte responsivo */
+}
+
+/* Media Queries para Tablets e Desktops */
+@media (min-width: 600px) {
+    .LGFran_header h1 {
+        font-size: 2.5em;
+    }
+
+    .LGFran_button {
+        padding: 1.2vw 2vw;
+        font-size: 1.2em;
+        min-width: unset;
+        flex-grow: 0;
+    }
+
+    .LGFran_icon-button {
+        font-size: 1.8em;
+        padding: 0.8vw;
+    }
+
+    .LGFran_input-time {
+        width: 150px;
+        padding: 1.2vw;
+        font-size: 1.2em;
+    }
+
+    .LGFran_controls {
+        gap: 1vw;
+    }
+
+    .LGFran_dialog-section h2 {
+        font-size: 2em;
+    }
+
+    .LGFran_dialog-content p {
+        font-size: 1.1em;
+        padding: 0.5vw 1vw;
+    }
+
+    .LGFran_footer {
+        font-size: 0.8em;
+    }
+}
+
+.LGFran_hidden {
+    display: none !important; /* Esconde os blocos de diálogo não ativos */
+}
+
+/* Estilos para o texto original (Francês) */
+.LGFran_original-text {
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    font-weight: bold; /* Negrito */
+    color: #00008B;    /* Azul Escuro (DarkBlue) */
+    display: block;    /* Para garantir que o texto ocupe sua própria linha */
+    margin-bottom: 2px; /* Espaçamento pequeno entre o original e a tradução */
+}
+
+/* Estilos para o texto de tradução (Português) */
+.LGFran_translation-text {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: normal; /* Normal */
+    color: #006400;    /* Verde (DarkGreen) */
+    display: block;    /* Para garantir que a tradução ocupe sua própria linha */
+    margin-top: 2px; /* Espaçamento pequeno */
+}
+
+/* Estilo para o destaque (mantido ou ajustado se precisar) */
+.LGFran_highlight {
+    background-color: #ffff99; /* Amarelo claro para destaque */
+    border-left: 3px solid #FFD700; /* Linha dourada à esquerda para destaque visual */
+    padding-left: 5px;
+}

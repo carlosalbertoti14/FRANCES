@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARLOS ALBERTO</title>
+
+    <link
+    rel="shortcut icon"
+    href="midia/favicon.ico"
+    type="image/x-icon"
+    />
+    <link rel="stylesheet" href="estilos/styleX2.css" />
+
+    <style>
+        body {
+
+    background-image: url('fotos/bg.jpg');
+    /* background-size: cover;  ajusta a imagem para cobrir todo o fundo */
+    background-repeat: no-repeat; /* impede que a imagem se repita */
+    background-position: TOP center; /* centraliza a imagem */
+}
+    </style>
+</head>
+
+<body>
+    <div class="LGFran_container">
+        <header class="LGFran_header">
+            <h1>LGFran - Estudo de Francês com Áudio</h1>
+        </header>
+
+        <main class="LGFran_main-content">
+    <div class="LGFran_audio-player-section">
+        <div class="LGFran_controls">
+            <button id="LGFran_repWord" class="LGFran_button LGFran_icon-button" title="Repetir Palavra">🔠</button>
+            <button id="LGFran_repFras" class="LGFran_button LGFran_icon-button" title="Repetir Frase">💬</button>
+            <button id="LGFran_toggleLoop" class="LGFran_button LGFran_icon-button" title="Ativar/Desativar Loop">🔁</button>
+            <button id="LGFran_time4" class="LGFran_button" title="Adicionar 4s de pausa no Loop">4s</button>
+            <button id="LGFran_changeAudio" class="LGFran_button LGFran_icon-button" title="Mudar Diálogo">🔄</button>
+            <button id="LGFran_play" class="LGFran_button LGFran_icon-button" title="Play">▶️</button>
+            <button id="LGFran_pause" class="LGFran_button LGFran_icon-button" title="Pause">⏸️</button>
+            <button id="LGFran_prevSegment" class="LGFran_button LGFran_icon-button" title="Voltar Trecho">⏪</button>
+            <button id="LGFran_nextSegment" class="LGFran_button LGFran_icon-button" title="Avançar Trecho">⏩</button>
+            <button id="LGFran_toggleABMode" class="LGFran_button LGFran_icon-button" title="Ativar/Desativar Modo Repetição AB">🅰️🅱️</button>
+            <button id="LGFran_toggleMute" class="LGFran_button LGFran_icon-button" title="Habilitar/Desabilitar Áudio">🔇</button>
+        </div>
+    </div>
+
+    <div class="LGFran_dialog-section">
+        <h2 id="LGFran_dialogTitle">Diálogo do Café</h2>
+        <div id="LGFran_dialogContent" class="LGFran_dialog-content">
+            <div id="LGFran_dialog_Dialogo_do_Cafe" class="LGFran_dialog-block">
+                <p><span class="LGFran_original-text">Léa: Salut Marc ! Tu as l'air fatigué ce matin.</span><br><span class="LGFran_translation-text">Léa: Oi Marc! Você parece cansado esta manhã.</span></p>
+                <p><span class="LGFran_original-text">Marc: Salut Léa. Oui, un peu. La nuit a été courte. Et toi, ça va ?</span><br><span class="LGFran_translation-text">Marc: Oi Léa. Sim, um pouco. A noite foi curta. E você, tudo bem?</span></p>
+                <p><span class="LGFran_original-text">Léa: Ça va, merci. J'ai bien dormi. Tu veux un café ? Je viens d'en faire.</span><br><span class="LGFran_translation-text">Léa: Tudo bem, obrigada. Dormi bem. Você quer um café? Acabei de fazer.</span></p>
+                <p><span class="LGFran_original-text">Marc: Oh oui, avec plaisir ! Noir et sans sucre pour moi, s'il te plaît.</span><br><span class="LGFran_translation-text">Marc: Ah sim, com prazer! Preto e sem açúcar para mim, por favor.</span></p>
+                <p><span class="LGFran_original-text">Léa: D'accord. Tu as beaucoup de travail aujourd'hui ?</span><br><span class="LGFran_translation-text">Léa: De acordo. Você tem muito trabalho hoje?</span></p>
+                <p><span class="LGFran_original-text">Marc: Un peu. J'ai une réunion importante à 10h. Et toi, quoi de neuf ?</span><br><span class="LGFran_translation-text">Marc: Um pouco. Tenho uma reunião importante às 10h. E você, o que há de novo?</span></p>
+                <p><span class="LGFran_original-text">Léa: Rien de spécial. Je dois finir ce rapport pour cet après-midi.</span><br><span class="LGFran_translation-text">Léa: Nada de especial. Tenho que terminar este relatório para esta tarde.</span></p>
+                <p><span class="LGFran_original-text">Marc: Courage ! Tiens, ton café est prêt.</span><br><span class="LGFran_translation-text">Marc: Coragem! Toma, seu café está pronto.</span></p>
+                <p><span class="LGFran_original-text">Léa: Merci beaucoup ! Il sent bon.</span><br><span class="LGFran_translation-text">Léa: Muito obrigada! Cheira bem.</span></p>
+                <p><span class="LGFran_original-text">Marc: De rien. Alors, tu as des projets pour le week-end ?</span><br><span class="LGFran_translation-text">Marc: De nada. Então, você tem planos para o fim de semana?</span></p>
+                <p><span class="LGFran_original-text">Léa: Pas encore. Peut-être aller voir mes parents. Et toi ?</span><br><span class="LGFran_translation-text">Léa: Ainda não. Talvez ir ver meus pais. E você?</span></p>
+                <p><span class="LGFran_original-text">Marc: Je pense aller faire de la randonnée si le temps est beau.</span><br><span class="LGFran_translation-text">Marc: Eu penso em ir fazer trilha se o tempo estiver bom.</span></p>
+                <p><span class="LGFran_original-text">Léa: C'est une bonne idée ! J'aimerais bien faire ça un jour.</span><br><span class="LGFran_translation-text">Léa: É uma boa ideia! Eu gostaria de fazer isso um dia.</span></p>
+                <p><span class="LGFran_original-text">Marc: On pourrait y aller ensemble la prochaine fois ?</span><br><span class="LGFran_translation-text">Marc: Poderíamos ir juntos da próxima vez?</span></p>
+                <p><span class="LGFran_original-text">Léa: Pourquoi pas ! J'adorerais.</span><br><span class="LGFran_translation-text">Léa: Por que não! Eu adoraria.</span></p>
+                <p><span class="LGFran_original-text">Marc: Super ! On en reparle plus tard.</span><br><span class="LGFran_translation-text">Marc: Ótimo! A gente se fala mais tarde.</span></p>
+                <p><span class="LGFran_original-text">Léa: D'accord. Bon courage pour ta réunion !</span><br><span class="LGFran_translation-text">Léa: De acordo. Boa sorte com sua reunião!</span></p>
+                <p><span class="LGFran_original-text">Marc: Merci, toi aussi pour ton rapport.</span><br><span class="LGFran_translation-text">Marc: Obrigada, você também com seu relatório.</span></p>
+                <p><span class="LGFran_original-text">Léa: À plus tard !</span><br><span class="LGFran_translation-text">Léa: Até mais tarde!</span></p>
+                <p><span class="LGFran_original-text">Marc: À plus !</span><br><span class="LGFran_translation-text">Marc: Até mais!</span></p>
+            </div>
+
+            <div id="LGFran_dialog_Caio_et_Ayheon_Vieux_Amis" class="LGFran_dialog-block LGFran_hidden">
+                <p><span class="LGFran_original-text">Caio: Salut ! Ça fait si longtemps que je ne t'ai pas vu(e) !</span><br><span class="LGFran_translation-text">Caio: Oi! Há quanto tempo não te vejo!</span></p>
+                <p><span class="LGFran_original-text">Ayheon: C'est vrai, ça fait vraiment très longtemps.</span><br><span class="LGFran_translation-text">Ayheon: É mesmo, faz muito tempo mesmo.</span></p>
+                <p><span class="LGFran_original-text">Caio: Alors ? Comment ça va ? Qu'est-ce que tu deviens ?</span><br><span class="LGFran_translation-text">Caio: E aí? Como tem passado, por onde tem andando?</span></p>
+                <p><span class="LGFran_original-text">Ayheon: J'étudie énormément, je travaille beaucoup.</span><br><span class="LGFran_translation-text">Ayheon: Estou estudando demais, trabalhando muito.</span></p>
+                <p><span class="LGFran_original-text">Caio: Ah oui ? C'est épuisant !</span><br><span class="LGFran_translation-text">Caio: É mesmo? Nossa! Que cansativo.</span></p>
+                <p><span class="LGFran_original-text">Ayheon: Et toi, qu'est-ce que tu fais ? Tu travailles dans quoi ? Ou tu étudies seulement ?</span><br><span class="LGFran_translation-text">Ayheon: E você o que tem feito? Está trabalhando em quê? Ou só está estudando?</span></p>
+                <p><span class="LGFran_original-text">Caio: J'ai travaillé comme technicien comptable dans un bureau à Niterói, mais aujourd'hui, je suis seulement chauffeur d'applications.</span><br><span class="LGFran_translation-text">Caio: Já trabalhei como técnico de contabilidade em um escritório de Niterói, mas hoje, sou apenas motorista de aplicativos.</span></p>
+                <p><span class="LGFran_original-text">Ayheon: C'est super ça, c'est bien que tu puisses organiser ton temps. Tu as des enfants ?</span><br><span class="LGFran_translation-text">Ayheon: Que legal, é bom que você pode organizar seu tempo. Você tem filhos?</span></p>
+                <p><span class="LGFran_original-text">Caio: Oui, mon travail me permet de flexibiliser mon temps. J'ai un fils de 10 ans. Et toi, tu as eu des enfants, tu t'es marié(e) ?</span><br><span class="LGFran_translation-text">Caio: Sim, meu trabalho me possibilita flexibilizar meu tempo. Eu tenho um filho de 10 anos. E você, teve filhos, se casou com alguém?</span></p>
+                <p><span class="LGFran_original-text">Ayheon: Non, pour le moment, je suis célibataire, concentrée sur mes études et ma carrière. Je n'ai pas de temps pour les relations.</span><br><span class="LGFran_translation-text">Ayheon: Não, no momento eu estou solteira, focada nos meus estudos e carreira. Não tenho tempo para relacionamentos.</span></p>
+                <p><span class="LGFran_original-text">Caio: Et tu fais très bien. Ça a été un plaisir de te revoir.</span><br><span class="LGFran_translation-text">Caio: E faz muito bem. Foi um prazer te reencontrar.</span></p>
+                <p><span class="LGFran_original-text">Ayheon: Le plaisir était pour moi, à bientôt.</span><br><span class="LGFran_translation-text">O prazer foi meu, até breve.</span></p>
+            </div>
+
+            <div id="LGFran_dialog_Caio_et_la_Francaise" class="LGFran_dialog-block LGFran_hidden">
+                <p><span class="LGFran_original-text">La Française: Excusez-moi, bonjour, ça va ? Vous parlez français ?</span><br><span class="LGFran_translation-text">A Francesa: Com licença, Olá tudo bem? Você fala francês?</span></p>
+                <p><span class="LGFran_original-text">Caio: Oui, je sais parler un peu français, juste les bases. Mais j'apprends encore.</span><br><span class="LGFran_translation-text">Caio: Sim, eu sei falar um pouco francês, só o básico. Mas ainda estou aprendendo.</span></p>
+                <p><span class="LGFran_original-text">La Française: Vous suivez un cours quelque part ? À l'école, sur internet, ou vous apprenez seul ?</span><br><span class="LGFran_translation-text">A Francesa: Está fazendo curso em algum lugar? Na escola, na internet, ou está aprendendo sozinho?</span></p>
+                <p><span class="LGFran_original-text">Caio: J'apprends seul, je n'ai pas beaucoup de temps pour suivre des cours réguliers.</span><br><span class="LGFran_translation-text">Caio: Estou aprendendo sozinho, não tenho muito tempo para frequentar cursos periódicos.</span></p>
+                <p><span class="LGFran_original-text">La Française: Vous parlez très bien français, vous vous entraînez depuis combien de temps ?</span><br><span class="LGFran_translation-text">A Francesa: Você está falando muito bem francês, você está treinando há quanto tempo?</span></p>
+                <p><span class="LGFran_original-text">Caio: Ça fait environ deux ans et demi, j'essaie de regarder des vidéos sur YouTube et des films en français.</span><br><span class="LGFran_translation-text">Caio: Já faz uns dois anos e meio, tento assistir vídeos no YouTube e assistir filmes em francês.</span></p>
+                <p><span class="LGFran_original-text">La Française: C'est une bonne pratique, essayez de les imiter, car les films montrent how la langue est vraiment parlée.</span><br><span class="LGFran_translation-text">A Francesa: Isso é uma boa prática, tente imitá-los, pois os filmes retratam como o idioma é falado realmente.</span></p>
+                <p><span class="LGFran_original-text">Caio: Oui, c'est exactement ce que j'essaie de faire. Vous êtes professeure ?</span><br><span class="LGFran_translation-text">Caio: Sim, é exatamente o que eu tento fazer. Você é professora?</span></p>
+                <p><span class="LGFran_original-text">La Française: Non, je suis juste venue visiter le pays, en tant que touriste. C'est une belle ville, très accueillante.</span><br><span class="LGFran_translation-text">A Francesa: Não, eu vim apenas visitar o país, como turista, é uma bela cidade, muito acolhedora.</span></p>
+                <p><span class="LGFran_original-text">Caio: Oui, les gens ici sont très accueillants avec les touristes. Qu'est-ce que vous aimez le plus ?</span><br><span class="LGFran_translation-text">Caio: Sim, o povo daqui é bem acolhedor com turistas. Do que está mais gostando?</span></p>
+                <p><span class="LGFran_original-text">La Française: J'aime les musiques, la nourriture, les gens, les plages magnifiques et les beaux paysages qu'il y a ici.</span><br><span class="LGFran_translation-text">A Francesa: Estou gostando das músicas, da comida, das pessoas, das praias maravilhosas e das belas paisagens que tem por aí.</span></p>
+                <p><span class="LGFran_original-text">Caio: Tant mieux que vous aimiez et que vous vous amusiez. Profitez bien de votre séjour. Où aimeriez-vous que je m'arrête pour que vous descendiez ?</span><br><span class="LGFran_translation-text">Caio: Que bom que está gostando e se divertindo. Aproveite sua estadia. Onde você gostaria que eu parasse o carro para você descer?</span></p>
+                <p><span class="LGFran_original-text">La Française: Ah, vous pouvez vous arrêter un petit peu plus loin, près de cette voiture argentée.</span><br><span class="LGFran_translation-text">A Francesa: Ah, pode parar um pouquinho mais à frente, perto daquele carro cor prata.</span></p>
+                <p><span class="LGFran_original-text">Caio: C'est bon ici ?</span><br><span class="LGFran_translation-text">Caio: Aqui está bom?</span></p>
+                <p><span class="LGFran_original-text">La Française: Ici, c'est parfait, merci beaucoup.</span><br><span class="LGFran_translation-text">A Francesa: Aqui está ótimo, muito obrigada.</span></p>
+                <p><span class="LGFran_original-text">Caio: De rien, passez une bonne après-midi.</span><br><span class="LGFran_translation-text">Caio: De nada, tenha uma boa tarde.</span></p>
+                <p><span class="LGFran_original-text">Caio: Merci, toi aussi pour ton rapport.</span><br><span class="LGFran_translation-text">Caio: Obrigada, você também com seu relatório.</span></p>
+                <p><span class="LGFran_original-text">Léa: À plus tard !</span><br><span class="LGFran_translation-text">Léa: Até mais tarde!</span></p>
+                <p><span class="LGFran_original-text">Marc: À plus !</span><br><span class="LGFran_translation-text">Marc: Até mais!</span></p>
+            </div>
+        </div>
+    </div>
+</main>
+
+        <footer class="LGFran_footer">
+            <p>&copy; 2024 LGFran - Seu Auxiliar de Estudo de Francês</p>
+        </footer>
+    </div>
+
+    <script src="script/js_nav_fran.js"></script>
+</body>
+</html>
