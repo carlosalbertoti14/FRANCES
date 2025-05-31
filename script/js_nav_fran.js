@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dialogContent = document.getElementById('LGFran_dialogContent');
     const dialogBlocks = document.querySelectorAll('.LGFran_dialog-block');
     const dialogTitle = document.getElementById('LGFran_dialogTitle');
+    const stopButton = document.getElementById('LGFran_stop');
 
     const repWordButton = document.getElementById('LGFran_repWord');
     const repFrasButton = document.getElementById('LGFran_repFras');
@@ -109,6 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearHighlight(); // Remove destaque após a fala isolada
             }
         };
+
+        stopButton.addEventListener('click', () => {
+            stopSpeaking();
+        });
 
         currentUtterance.onerror = (event) => {
             console.error('Erro na síntese de fala:', event.error);
