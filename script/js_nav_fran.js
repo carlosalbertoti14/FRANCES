@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'LGFran_dialog_Dialogo_do_Cafe', title: 'Diálogo do Café' },
         { id: 'LGFran_dialog_Caio_et_Ayheon_Vieux_Amis', title: 'Caio e Ayheon - Velhos Amigos' },
         { id: 'LGFran_dialog_Caio_et_la_Francaise', title: 'Caio e a Francesa' },
-        { id: 'LGFran_dialog_Parler_de_Relations_Amoureuses', title: 'Parler de Relations Amoureuses' }
+        { id: 'LGFran_dialog_Parler_de_Relations_Amoureuses', title: 'Parler de Relations Amoureuses' },
+        { id: 'LGFran_dialog_Confronto_Inesperado', title: 'Confronto Inesperado' }
     ];
     let currentDialogueIndex = 0;
 
