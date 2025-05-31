@@ -13,8 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const repWordButton = document.getElementById('LGFran_repWord');
     const repFrasButton = document.getElementById('LGFran_repFras');
-    const time4Button = document.getElementById('LGFran_time4');
-    const slowDownAudioButton = document.getElementById('LGFran_slowDownAudio'); // Novo botão para desacelerar
+    const time4Button = document.getElementById('LGFran_time4'); // Novo botão
 
     let currentUtterance = null;
     let speaking = false;
@@ -29,9 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let delayMode = false; // Novo estado para o botão de 4s
     let loopTimeout = null; // Para controlar o tempo de espera no loop
     let clickDelayTimeout = null; // Novo timeout para o atraso ao clicar
-
-    let currentAudioRate = 1.0; // Velocidade inicial do áudio
-    let isSlowed = false; // Para controlar se o áudio está desacelerado
 
     // Variáveis para armazenar a última palavra/frase clicada para repetição em loop
     let lastClickedWord = '';
@@ -67,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     populateVoiceList();
 
     // Função para ler um texto específico
-    function speakText(text, rate = currentAudioRate, isRepetition = false) { // Usando currentAudioRate como padrão
+    function speakText(text, rate = 1.0, isRepetition = false) {
         if (isMuted) {
-            speaking = false;
+            speaking = false; // Garante que speaking seja false se mudo
             return;
         }
 
@@ -79,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentUtterance = new SpeechSynthesisUtterance(text);
         currentUtterance.lang = 'fr-FR';
-        currentUtterance.rate = rate; // Agora usa o rate passado (ou currentAudioRate por padrão)
+        currentUtterance.rate = rate;
 
         if (preferredVoice) {
             currentUtterance.voice = preferredVoice;
@@ -137,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopSpeaking() {
         speechSynthesis.cancel();
         clearTimeout(loopTimeout); // Limpa qualquer timeout de loop
-        clearTimeout(clickDelayTimeout); // Limpa o timeout de clique também
+        clearTimeout(clickDelayTimeout); // **Limpa o timeout de clique também**
         speaking = false;
         paused = false;
         clearHighlight();
@@ -220,10 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (delayMode && (loopMode || forceDelay)) { // `forceDelay` é a chave aqui para cliques
                     clearTimeout(clickDelayTimeout); // Limpa qualquer atraso de clique anterior
                     clickDelayTimeout = setTimeout(() => {
-                        speakText(textToSpeak, currentAudioRate, isRepetition);
+                        speakText(textToSpeak, 1.0, isRepetition);
                     }, 4000); // Atraso de 4 segundos antes de falar
                 } else {
-                    speakText(textToSpeak, currentAudioRate, isRepetition);
+                    speakText(textToSpeak, 1.0, isRepetition);
                 }
             }
         }
@@ -281,9 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loopMode = false;
         time4Button.classList.remove('LGFran_active'); // Desativa o botão 4s
         delayMode = false;
-        slowDownAudioButton.classList.remove('LGFran_active'); // Desativa o botão de desacelerar
-        isSlowed = false;
-        currentAudioRate = 1.0; // Reinicia a velocidade do áudio
         toggleMuteButton.classList.remove('LGFran_active');
         isMuted = false;
         toggleMuteButton.innerHTML = '🔊'; // Resetar ícone
@@ -300,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (repetitionMode === 'word' && lastClickedWord) {
             // Atraso já é tratado dentro de speakText se delayMode for true
-            speakText(lastClickedWord, currentAudioRate, true); // Usa currentAudioRate
+            speakText(lastClickedWord, 0.9, true);
         } else if (repetitionMode === 'phrase' && lastClickedPhraseParagraph) {
             // Atraso já é tratado dentro de speakParagraph se delayMode for true
             speakParagraph(lastClickedPhraseParagraph, true);
@@ -332,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             playABSegment();
                         } else {
                              if (currentParagraphIndex === -1) {
-                                 currentParagraphIndex = 0;
+                                currentParagraphIndex = 0;
                             }
                             speakParagraph(paragraphs[currentParagraphIndex]);
                         }
@@ -380,11 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 4000);
                 }
                 else if (loopMode && (repetitionMode === 'word' || repetitionMode === 'phrase')) {
-                         handleLoopRepetition(); // Reinicia a repetição em loop
+                       handleLoopRepetition(); // Reinicia a repetição em loop
                 } else if (abMode) {
-                         playABSegment(); // Reinicia o modo AB
+                       playABSegment(); // Reinicia o modo AB
                 } else {
-                         speakParagraph(paragraphs[currentParagraphIndex]);
+                       speakParagraph(paragraphs[currentParagraphIndex]);
                 }
             }
         }
@@ -476,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         abEndParagraphIndex = -1;
     });
 
-    // Event Listener para o botão de 4 segundos
+    // Novo Event Listener para o botão de 4 segundos
     time4Button.addEventListener('click', () => {
         delayMode = !delayMode;
         time4Button.classList.toggle('LGFran_active', delayMode);
@@ -493,40 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // NOVO Event Listener para o botão de desacelerar o áudio
-    slowDownAudioButton.addEventListener('click', () => {
-        isSlowed = !isSlowed; // Alterna o estado de desaceleração
-        currentAudioRate = isSlowed ? 0.70 : 1.0; // Define a taxa de acordo com o estado
-        slowDownAudioButton.classList.toggle('LGFran_active', isSlowed); // Ativa/desativa a classe visual
-
-        console.log('Velocidade do áudio definida para:', currentAudioRate);
-
-        // Se algo estiver falando, para e reinicia para aplicar a nova velocidade imediatamente
-        if (speechSynthesis.speaking) {
-            stopSpeaking();
-            if (loopMode) {
-                handleLoopRepetition();
-            } else if (abMode) {
-                playABSegment();
-            } else if (currentParagraphIndex !== -1) {
-                const paragraphs = getActiveParagraphs();
-                if (paragraphs[currentParagraphIndex]) {
-                    speakParagraph(paragraphs[currentParagraphIndex], false, delayMode); // Re-fala o parágrafo atual com a nova taxa
-                }
-            }
-        } else if (paused && currentParagraphIndex !== -1) {
-            // Se pausado, apenas atualiza a taxa para quando for resumido
-            // Nenhuma ação extra é necessária aqui, pois o resumeSpeaking usará a nova taxa
-        } else if (!speechSynthesis.speaking && currentParagraphIndex !== -1 && (loopMode || abMode)) {
-            // Se não estava falando, mas estava em modo loop ou AB (ex: após carregamento inicial ou pausa)
-            // Reinicia o fluxo de fala para aplicar a nova velocidade.
-            if (loopMode) {
-                handleLoopRepetition();
-            } else if (abMode) {
-                playABSegment();
-            }
-        }
-    });
 
     toggleABModeButton.addEventListener('click', () => {
         abMode = !abMode;
@@ -544,9 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loopMode = false;
         time4Button.classList.remove('LGFran_active'); // Desativa o botão 4s
         delayMode = false;
-        slowDownAudioButton.classList.remove('LGFran_active'); // Desativa o botão de desacelerar
-        isSlowed = false;
-        currentAudioRate = 1.0; // Reinicia a velocidade do áudio
 
         if (abMode) {
             alert('Modo AB ativado. Clique no início e no fim do trecho que deseja repetir.');
@@ -644,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // speakText agora lida com o delayMode internamente,
                         // mas precisamos garantir que o delay seja aplicado no primeiro clique.
                         // A função speakText já possui a lógica de delayMode
-                        speakText(word, currentAudioRate, true); // Usa currentAudioRate
+                        speakText(word, 0.9, true);
                     }
                 } else {
                     // Fallback para frase se palavra não for encontrada, mas ainda dentro do modo word
@@ -698,74 +654,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Funções de Modo AB ---
     function playABSegment() {
         const paragraphs = getActiveParagraphs();
-        if (abStartParagraphIndex === -1 || abEndParagraphIndex === -1 || paragraphs.length === 0) {
-            console.warn('Modo AB não configurado corretamente.');
-            return;
-        }
-
-        let currentABIndex = abStartParagraphIndex;
-        // Função interna para tocar o próximo parágrafo no segmento AB
-        function playNextABParagraph() {
-            if (currentABIndex <= abEndParagraphIndex) {
-                const paragraph = paragraphs[currentABIndex];
-                if (paragraph) {
-                    highlightParagraph(paragraph);
-                    const originalTextSpan = paragraph.querySelector('.LGFran_original-text');
-                    const textToSpeak = originalTextSpan ? originalTextSpan.textContent : '';
-
-                    speakText(textToSpeak, currentAudioRate, false); // Usa currentAudioRate
-
-                    // Avança para o próximo parágrafo no segmento AB quando a fala termina
-                    currentUtterance.onend = () => {
-                        speaking = false;
-                        paused = false;
-                        currentABIndex++;
-                        if (currentABIndex <= abEndParagraphIndex) {
-                            if (delayMode) {
-                                clearTimeout(loopTimeout);
-                                loopTimeout = setTimeout(playNextABParagraph, 4000); // Adiciona delay
-                            } else {
-                                playNextABParagraph(); // Continua para o próximo sem delay
-                            }
-                        } else {
-                            // Se o modo AB estiver em loop, reinicia o segmento
-                            if (loopMode) {
-                                if (delayMode) {
-                                    clearTimeout(loopTimeout);
-                                    loopTimeout = setTimeout(() => {
-                                        currentABIndex = abStartParagraphIndex;
-                                        playNextABParagraph();
-                                    }, 4000); // Delay antes de recomeçar o loop AB
-                                } else {
-                                    currentABIndex = abStartParagraphIndex;
-                                    playNextABParagraph();
-                                }
-                            } else {
-                                stopSpeaking(); // Para a fala se não for para repetir
-                                toggleABModeButton.classList.remove('LGFran_active'); // Desativa o modo AB visualmente
-                                abMode = false;
-                                abStartParagraphIndex = -1;
-                                abEndParagraphIndex = -1;
-                                currentParagraphIndex = -1; // Resetar para garantir o comportamento normal
-                            }
-                        }
-                    };
-                }
+        if (abStartParagraphIndex !== -1 && abEndParagraphIndex !== -1 && paragraphs.length > 0) {
+            let currentIndexToSpeak = currentParagraphIndex;
+            if (currentIndexToSpeak < abStartParagraphIndex || currentIndexToSpeak > abEndParagraphIndex) {
+                currentIndexToSpeak = abStartParagraphIndex; // Começa do início do segmento AB se fora
             }
-        }
 
-        // Inicia o playback do segmento AB
-        stopSpeaking(); // Garante que qualquer fala anterior seja parada
-        // O atraso inicial para o modo AB quando delayMode está ativo
-        if (delayMode) {
-            clearTimeout(clickDelayTimeout);
-            clickDelayTimeout = setTimeout(playNextABParagraph, 4000);
+            if (currentIndexToSpeak <= abEndParagraphIndex) {
+                currentParagraphIndex = currentIndexToSpeak; // Atualiza o índice global
+                // Usa speakParagraph que já lida com o delayMode
+                speakParagraph(paragraphs[currentIndexToSpeak], false, delayMode); // Força delay na primeira execução do AB se delayMode ativo
+            } else {
+                currentParagraphIndex = abStartParagraphIndex; // Volta ao início para o próximo loop AB
+                // Usa speakParagraph que já lida com o delayMode
+                speakParagraph(paragraphs[currentParagraphIndex], false, delayMode); // Força delay se delayMode ativo
+            }
         } else {
-            playNextABParagraph();
+            stopSpeaking();
+            alert('Por favor, defina os pontos de início (A) e fim (B) para o modo AB.');
+            toggleABModeButton.classList.remove('LGFran_active');
+            abMode = false;
         }
     }
 
+    // Altera a lógica de onend para o modo AB
+    // Esta parte do código deve estar dentro do `DOMContentLoaded` ou ser uma função separada
+    // e chamada para configurar `currentUtterance.onend` quando `currentUtterance` é criado.
+    // **AVISO**: Não é ideal ter `if (currentUtterance)` fora de onde `currentUtterance` é definido/atualizado.
+    // A lógica de `onend` já está na função `speakText`, que é onde `currentUtterance` é criado.
+    // Mantenha a lógica de `onend` dentro de `speakText` como está.
 
-    // --- Inicialização ---
+    // Inicialização ao carregar a página
     initializeDialog();
 });
