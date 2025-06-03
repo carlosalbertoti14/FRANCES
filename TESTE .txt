@@ -1,1 +1,17 @@
-LARGA FORA puta
+dialogContent.addEventListener('click', (event)
+
+
+function paradalternar() {
+    // Primeiro clique: alterna o estado
+stopSpeaking();
+    toggleMuteButton.click();
+
+    // Aguarda 2 segundos antes de agir novamente
+    setTimeout(() => {
+        // Se ainda estiver desativado (mutado), ativa novamente
+        if (isMuted) {
+            toggleMuteButton.click();
+		stopSpeaking();
+        }
+    }, 2000); // 2000 milissegundos = 2 segundos
+}

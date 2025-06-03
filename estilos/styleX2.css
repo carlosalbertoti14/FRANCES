@@ -301,3 +301,101 @@ body {
             }
         }
     
+
+        /* --- Estilos para a Modal de Ajuda (LGFran_helpModal) --- */
+.LGFran_help-modal {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fixado na tela */
+    z-index: 1000; /* Garante que fique por cima de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Adiciona scroll se o conteúdo for muito grande */
+    background-color: rgba(0,0,0,0.7); /* Fundo semi-transparente escuro */
+    justify-content: center; /* Centraliza horizontalmente o conteúdo */
+    align-items: center; /* Centraliza verticalmente o conteúdo */
+    padding: 20px; /* Padding para evitar que o conteúdo toque as bordas da tela */
+    box-sizing: border-box; /* Garante que padding não adicione largura/altura */
+}
+
+.LGFran_help-modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Centraliza na tela */
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 90%; /* Largura ajustável */
+    max-width: 800px; /* Largura máxima para a modal */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    position: relative; /* Para posicionar o botão de fechar */
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    color: #333; /* Cor do texto dentro da modal */
+    font-family: Arial, sans-serif; /* Fonte para a modal */
+}
+
+/* Animação para a modal aparecer suavemente */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+.LGFran_close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute; /* Posição absoluta para o botão de fechar */
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.LGFran_close-button:hover,
+.LGFran_close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.LGFran_help-modal-content h2 {
+    text-align: center;
+    color: #0056b3; /* Cor do título */
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.LGFran_help-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Uma coluna por padrão */
+    gap: 20px; /* Espaço entre as colunas/linhas */
+}
+
+@media (min-width: 768px) { /* Em telas maiores, mostra duas colunas */
+    .LGFran_help-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.LGFran_help-grid p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+    font-size: 0.95em;
+}
+
+/* Estilo para os botões de ícone dentro da legenda */
+.LGFran_icon-button-legend {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 1em;
+    cursor: default; /* Não é clicável, apenas para exibir o ícone */
+    display: inline-block; /* Para alinhar com o texto */
+    vertical-align: middle; /* Alinhamento vertical */
+    margin-right: 8px; /* Espaço entre o botão e o texto */
+    color: #333;
+}
+
+/* --- FIM DO Estilos para a Modal de Ajuda (LGFran_helpModal) --- */

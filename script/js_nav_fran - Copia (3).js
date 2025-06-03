@@ -73,76 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let currentDialogueIndex = 0;
 
-
-
- // --- SEÇÃO DO BOTÃO DE AJUDA ---
-    const helpButton = document.getElementById('LGFran_AJUDA');
-    let helpModal = null; // Variável para armazenar a referência à modal de ajuda
-
-    function createHelpModal() {
-        if (helpModal) return; // Se a modal já existe, não crie novamente
-
-        helpModal = document.createElement('div');
-        helpModal.id = 'LGFran_helpModal';
-        helpModal.classList.add('LGFran_help-modal');
-
-        helpModal.innerHTML = `
-            <div class="LGFran_help-modal-content">
-                <span class="LGFran_close-button" id="LGFran_closeHelpModal">&times;</span>
-                <h2>Ajuda do Leitor de Diálogos</h2>
-                <div class="LGFran_help-grid">
-                    <div>
-                        <p><strong><button class="LGFran_icon-button-legend">🔠</button> MODO PALAVRA:</strong> Mantenha ativada para falar e clique em alguma palavra do diálogo, para repetir somente ela.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">💬</button> MODO FRASE:</strong> Ative ela Clique no parágrafo que deseja ouvir, sem dar continuidade ao restante dos parágrafos.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🔁</button> MODO REPETIÇÃO:</strong> Repete continuamente sem a necessidade de varios cliques, seja na MODO PALAVRA, NO MODO PARAGRAFO ou MODO AB.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">4s</button> ESPERA 4s:</strong> Adiciona uma pausa de 4 segundos entre as repetições no modo de loop, para que não fique repetindo rápido de mais.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🐢</button> RETARDA O AUDIO:</strong> Alterna a velocidade da fala, deixando-a um pouco mais lenta, para facilitar a compreensão.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🔄</button> MUDA O DIÁLO:</strong> Carrega o próximo diálogo disponível na lista.</p>
-                    </div>
-                    <div>
-                        <p><strong><button class="LGFran_icon-button-legend">▶️</button> PLAY:</strong> Inicia a leitura do áudio do segmento atual ou retoma de onde parou.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">⏸️</button> PAUSE:</strong> Pausa a leitura do áudio.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">⏹️</button> STOP:</strong> Para completamente a leitura do áudio e reinicia o segmento.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">⏪</button> VOLTAR PARAGRAFO:</strong> Volta para o parágrafo (segmento) anterior.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">⏩</button> PRÓXIMO PARAGRAFO:</strong> Avança para o próximo parágrafo (segmento).</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🅰️🅱️</button> MODO AB:</strong> Permite selecionar um início (A) de um parágrafo e um fim (B) do parágrafo, para repetir um trecho específico do diálogo.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🔇</button> DESATIVA AUDIO:</strong> Muta ou desmuta o áudio da síntese de fala, também server para corrigir erros, caso ocorrra.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">AJUDA</button> AJUDA:</strong> Exibe esta janela de ajuda com a explicação de todos os botões.</p>
-                        <p><strong><button class="LGFran_icon-button-legend"> - </button> Obs.:</strong> Você pode precionar a palavra ou selecionar um trecho especifico, e escolher a opção para o seu proprio navegador traduzir aquiele trecho, ele também pronuncia.</p>
-                    
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(helpModal);
-
-        // Adiciona event listener para fechar a modal
-        document.getElementById('LGFran_closeHelpModal').addEventListener('click', closeHelpModal);
-        helpModal.addEventListener('click', (e) => {
-            if (e.target === helpModal) { // Fecha se clicar fora do conteúdo da modal
-                closeHelpModal();
-            }
-        });
-    }
-
-    function openHelpModal() {
-        createHelpModal(); // Garante que a modal seja criada
-        helpModal.style.display = 'flex'; // Torna a modal visível
-    }
-
-    function closeHelpModal() {
-        if (helpModal) {
-            helpModal.style.display = 'none'; // Esconde a modal
-        }
-    }
-
-    // Adiciona o event listener ao botão de ajuda
-    helpButton.addEventListener('click', openHelpModal);
-    // --- FIM SEÇÃO DO BOTÃO DE AJUDA ---
-
-/* FIM DO BOTÃO AJUDA ... */
-
-
     // --- Nova Função paradalternar ---
     function paradalternar() {
         // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
@@ -279,9 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearHighlight();
             }
         };
-
-
-        
 
         stopButton.addEventListener('click', () => {
             stopSpeaking();
