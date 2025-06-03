@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         helpModal.innerHTML = `
             <div class="LGFran_help-modal-content">
                 <span class="LGFran_close-button" id="LGFran_closeHelpModal">&times;</span>
-                <h2>Ajuda do Leitor de Diálogos</h2>
+                <h2>LEGENDA DOS ICONES DO MENU</h2>
                 <div class="LGFran_help-grid">
                     <div>
                         <p><strong><button class="LGFran_icon-button-legend">🔠</button> MODO PALAVRA:</strong> Mantenha ativada para falar e clique em alguma palavra do diálogo, para repetir somente ela.</p>
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p><strong><button class="LGFran_icon-button-legend">⏩</button> PRÓXIMO PARAGRAFO:</strong> Avança para o próximo parágrafo (segmento).</p>
                         <p><strong><button class="LGFran_icon-button-legend">🅰️🅱️</button> MODO AB:</strong> Permite selecionar um início (A) de um parágrafo e um fim (B) do parágrafo, para repetir um trecho específico do diálogo.</p>
                         <p><strong><button class="LGFran_icon-button-legend">🔇</button> DESATIVA AUDIO:</strong> Muta ou desmuta o áudio da síntese de fala, também server para corrigir erros, caso ocorrra.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">AJUDA</button> AJUDA:</strong> Exibe esta janela de ajuda com a explicação de todos os botões.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">❓</button> AJUDA:</strong> Exibe esta janela de ajuda com a explicação de todos os botões.</p>
                         <p><strong><button class="LGFran_icon-button-legend"> - </button> Obs.:</strong> Você pode precionar a palavra ou selecionar um trecho especifico, e escolher a opção para o seu proprio navegador traduzir aquiele trecho, ele também pronuncia.</p>
                     
                     </div>
@@ -686,8 +686,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Desativa visualmente e logicamente todos os modos relevantes.
         // Isso é importante porque paradalternar não lida com o estado dos botões.
-        loopMode = false;
-        toggleLoopButton.classList.remove('LGFran_active');
+/*         loopMode = false;
+        toggleLoopButton.classList.remove('LGFran_active'); */
 
         // AB Mode handling
         // ONLY reset AB points if AB mode was NOT active and is now being activated by this click

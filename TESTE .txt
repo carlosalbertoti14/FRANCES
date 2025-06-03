@@ -1,5 +1,11 @@
-dialogContent.addEventListener('click', (event)
+toggleLoopButton.addEventListener('click', () => {
+dialogContent.addEventListener('click', (event) => {
+toggleABModeButton.addEventListener('click', () => {
+repWordButton.addEventListener('click', () => {
 
+
+
+mutepalternar()
 
 function paradalternar() {
     // Primeiro clique: alterna o estado
@@ -15,3 +21,16 @@ stopSpeaking();
         }
     }, 2000); // 2000 milissegundos = 2 segundos
 }
+
+
+JÁ TERMINEI DE MANDAR
+
+1 - quanto ao botão de repetição, quero que quando apertar ele, ele desative automaticamente o modo repWordButton e o  repFrasButton, para evitar comflito.
+2 - agora eu quero personalizar a repetição o botão de repetir do ponto ab, quero que quando eu apertar o botão LGFran_toggleABMode, quero que o icone mude para: ❌❌, depois, quando eu clicar no primeiro paragrafo (A) quero que o icone mude para 🅰️❌, e depois quando eu escolher o ultimo paragrafo, quero que o icone mude para 🅰️🅱️, e quando estiver desativado continue como 🅰️🅱️.
+
+me mande o código completo;
+
+Clique em Play para iniciar
+playButton.click();
+
+toggleLoopButton.classList.remove
