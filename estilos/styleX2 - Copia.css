@@ -264,3 +264,36 @@ body {
         font-size: 16px;
     }
 }
+
+   
+        /* Adicione ou ajuste este estilo no seu arquivo styleX2.css */
+        .LGFran_language-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+            font-size: 1rem;
+            color: #333;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            margin: 0 5px; /* Ajuste o espaçamento conforme necessário */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .LGFran_language-select:hover {
+            border-color: #007bff; /* Cor ao passar o mouse */
+        }
+
+        .LGFran_language-select:focus {
+            border-color: #0056b3; /* Cor ao focar */
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        /* Media Query para telas menores, se necessário */
+        @media (max-width: 768px) {
+            .LGFran_language-select {
+                width: 100%; /* Ocupa a largura total em telas menores */
+                margin-bottom: 10px; /* Adiciona um espaço abaixo */
+            }
+        }
+    

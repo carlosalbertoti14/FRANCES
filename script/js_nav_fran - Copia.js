@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const time4Button = document.getElementById('LGFran_time4');
     const slowDownAudioButton = document.getElementById('LGFran_slowDownAudio'); // Novo botão para desacelerar
 
+    // NOVO: Seleção de idioma
+    const languageSelect = document.getElementById('LGFran_languageSelect');
+
     let currentUtterance = null;
     let speaking = false;
     let paused = false;
@@ -34,9 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentAudioRate = 1.0; // Velocidade inicial do áudio
     let isSlowed = false; // Para controlar se o áudio está desacelerado
 
+    // NOVO: Variável para controlar o idioma de fala e exibição
+    let currentDisplayLanguage = 'fr'; // Idioma de exibição dos textos originais (fr, en, ru, zh)
+    let currentSpeechLanguage = 'fr-FR'; // Idioma para a síntese de fala (ex: fr-FR, en-US)
+
+    // NOVO: Mapeamento de idiomas para vozes da API SpeechSynthesis
+    const langToVoiceMap = {
+        'fr': 'fr-FR', // Francês
+        'en': 'en-US', // Inglês (EUA)
+        'ru': 'ru-RU', // Russo
+        'zh': 'zh-CN'  // Mandarim (China continental)
+    };
+
+    // NOVO: Atraso mínimo para loops e repetições para evitar travamentos
+    const MIN_LOOP_DELAY = 500; // 500 milissegundos = 0.5 segundos. Ajuste conforme necessário.
+
     // Variáveis para armazenar a última palavra/frase clicada para repetição em loop
     let lastClickedWord = '';
     let lastClickedPhraseParagraph = null; // Armazena o elemento <p> da frase clicada
+    let currentABIndex = -1; // Adicionado para controlar o índice atual no modo AB
 
     const dialogues = [
         { id: 'LGFran_dialog_Dialogo_do_Cafe', title: 'Diálogo do Café' },
@@ -50,26 +69,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Funções de Leitura (Speech Synthesis) ---
 
     let voices = [];
-    let preferredVoice = null;
+    let preferredVoices = {}; // Armazena uma voz preferencial para cada idioma
 
     function populateVoiceList() {
         voices = window.speechSynthesis.getVoices();
-        const frenchVoices = voices.filter(voice => voice.lang.startsWith('fr-') || voice.lang === 'fr-FR');
-        if (frenchVoices.length > 0) {
-            preferredVoice = frenchVoices.find(voice => voice.name.includes('Google Français')) || frenchVoices[0];
-            console.log('Voz francesa preferida:', preferredVoice ? preferredVoice.name : 'Nenhuma voz específica encontrada.');
-        } else {
-            console.warn('Nenhuma voz francesa encontrada. A síntese de fala pode não funcionar como esperado.');
-        }
+        // Tenta encontrar uma voz "Google" para cada idioma suportado
+        Object.keys(langToVoiceMap).forEach(shortLang => {
+            const fullLangCode = langToVoiceMap[shortLang];
+            const foundVoice = voices.find(voice => 
+                voice.lang === fullLangCode && voice.name.includes('Google')
+            ) || voices.find(voice => voice.lang.startsWith(shortLang)); // Fallback para qualquer voz do idioma
+            
+            if (foundVoice) {
+                preferredVoices[shortLang] = foundVoice;
+            } else {
+                console.warn(`Nenhuma voz 'Google' ou voz genérica encontrada para ${fullLangCode}. A síntese de fala pode não funcionar como esperado para este idioma.`);
+            }
+        });
+        console.log('Vozes preferidas carregadas:', preferredVoices);
     }
 
     if (speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = populateVoiceList;
     }
-    populateVoiceList();
+    populateVoiceList(); // Chama para carregar as vozes inicialmente
 
     // Função para ler um texto específico
-    function speakText(text, rate = currentAudioRate, isRepetition = false) { // Usando currentAudioRate como padrão
+    // NOVO: Adicionado 'langToSpeak' como parâmetro para garantir a voz e pronúncia corretas
+    function speakText(text, rate = currentAudioRate, isRepetition = false, langToSpeak = currentSpeechLanguage) {
         if (isMuted) {
             speaking = false;
             return;
@@ -80,53 +107,95 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(clickDelayTimeout); // Limpa o timeout de clique, se houver
 
         currentUtterance = new SpeechSynthesisUtterance(text);
-        currentUtterance.lang = 'fr-FR';
-        currentUtterance.rate = rate; // Agora usa o rate passado (ou currentAudioRate por padrão)
+        currentUtterance.rate = rate;
 
-        if (preferredVoice) {
-            currentUtterance.voice = preferredVoice;
+        // Tenta usar o código de idioma completo do mapeamento, senão usa o shortLang como base
+        const synthesisLang = langToVoiceMap[langToSpeak] || `${langToSpeak}-${langToSpeak.toUpperCase()}`;
+        currentUtterance.lang = synthesisLang;
+
+        // Seleciona a voz com base no idioma de fala
+        const voiceForLang = preferredVoices[langToSpeak.split('-')[0]] || // Tenta buscar pela parte curta (ex: 'fr')
+                             voices.find(voice => voice.lang === synthesisLang); // Fallback para qualquer voz com o código completo
+
+        if (voiceForLang) {
+            currentUtterance.voice = voiceForLang;
+        } else {
+            console.warn(`Nenhuma voz adequada encontrada para o idioma "${langToSpeak}". Usando a voz padrão do navegador.`);
         }
 
         currentUtterance.onend = () => {
             speaking = false;
             paused = false;
 
-            // Lógica de loop com ou sem delay
-            if (loopMode) {
-                if (delayMode) {
-                    loopTimeout = setTimeout(() => {
-                        handleLoopRepetition();
-                    }, 4000); // 4 segundos de espera entre as repetições do loop
-                } else {
-                    handleLoopRepetition();
-                }
+            // LÓGICA DE CONTINUAÇÃO APÓS A FALA
+            if (loopMode || (abMode && (currentABIndex <= abEndParagraphIndex || (currentABIndex === abEndParagraphIndex + 1 && loopMode)))) {
+                const delay = delayMode ? 4000 : MIN_LOOP_DELAY; // Usa 4s se delayMode, senão MIN_LOOP_DELAY
+
+                loopTimeout = setTimeout(() => {
+                    if (abMode) {
+                        currentABIndex++; // Avança para o próximo parágrafo no segmento AB
+                        if (currentABIndex <= abEndParagraphIndex) { // Ainda dentro do segmento AB
+                            playNextABParagraph(); // Continua para o próximo parágrafo do segmento AB
+                        } else if (loopMode) { // Terminou o segmento AB, e está em loop
+                            currentABIndex = abStartParagraphIndex; // Reinicia o índice AB
+                            playNextABParagraph(); // Começa o segmento AB novamente
+                        } else { // Terminou o segmento AB e não está em loop
+                            stopSpeaking();
+                            toggleABModeButton.classList.remove('LGFran_active');
+                            abMode = false;
+                            abStartParagraphIndex = -1;
+                            abEndParagraphIndex = -1;
+                            currentParagraphIndex = -1;
+                        }
+                    } else if (repetitionMode === 'word' || repetitionMode === 'phrase') {
+                        handleLoopRepetition(); // Continua a repetição de palavra/frase
+                    } else {
+                        highlightNextParagraph(true); // Continua o loop de parágrafo
+                    }
+                }, delay);
             } else if (!isRepetition && !abMode && !paused) {
-                // Se não está em loop, nem repetição isolada, nem AB, avança normalmente
+                // Comportamento normal: avança para o próximo parágrafo se não for repetição isolada e não estiver em modo AB
                 highlightNextParagraph();
-            } else if (!isRepetition && abMode) {
-                // Lógica de modo AB (já tratada na função playABSegment)
             } else if (isRepetition && repetitionMode !== '') {
                 // Para repetições isoladas (word/phrase) sem loop, não faz nada depois de falar
-                clearHighlight(); // Remove destaque após a fala isolada
+                clearHighlight();
             }
         };
 
         stopButton.addEventListener('click', () => {
             stopSpeaking();
+            console.log("stop apertado");
         });
 
         currentUtterance.onerror = (event) => {
             console.error('Erro na síntese de fala:', event.error);
             speaking = false;
-            // Em caso de erro, ainda tenta continuar o loop se ativado
-            if (loopMode) {
-                if (delayMode) {
-                    loopTimeout = setTimeout(() => {
+            paused = false; // Em caso de erro, também considera que a fala foi pausada/interrompida
+
+            // Se houver um erro, ainda tenta continuar o loop/próxima fala
+            // para evitar que o player pare completamente.
+            if (loopMode || abMode) {
+                const delay = delayMode ? 4000 : MIN_LOOP_DELAY;
+                loopTimeout = setTimeout(() => {
+                    if (abMode) {
+                        currentABIndex++; // Tenta avançar mesmo com erro para não travar
+                        if (currentABIndex <= abEndParagraphIndex || loopMode) {
+                            if (loopMode && currentABIndex > abEndParagraphIndex) currentABIndex = abStartParagraphIndex; // Reinicia se for o fim e loop
+                            playNextABParagraph();
+                        } else {
+                            stopSpeaking(); // Se não for para loop, para.
+                            toggleABModeButton.classList.remove('LGFran_active');
+                            abMode = false;
+                            abStartParagraphIndex = -1;
+                            abEndParagraphIndex = -1;
+                            currentParagraphIndex = -1;
+                        }
+                    } else if (repetitionMode === 'word' || repetitionMode === 'phrase') {
                         handleLoopRepetition();
-                    }, 4000);
-                } else {
-                    handleLoopRepetition();
-                }
+                    } else {
+                        highlightNextParagraph(true);
+                    }
+                }, delay);
             }
         };
 
@@ -134,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         speaking = true;
         paused = false;
 
-        // Atualiza o estado do botão de Play/Pause
         playButton.classList.add('LGFran_active');
         pauseButton.classList.remove('LGFran_active');
     }
@@ -171,24 +239,25 @@ document.addEventListener('DOMContentLoaded', () => {
             playButton.classList.add('LGFran_active');
             pauseButton.classList.remove('LGFran_active');
         } else if (!speaking && currentParagraphIndex !== -1) {
-            // Se não estava falando mas tinha um parágrafo selecionado (e o loop está ativo)
-            if (loopMode) {
-                handleLoopRepetition(); // Retoma o loop
-            } else {
-                // Senão, retoma a fala do parágrafo atual (comportamento padrão)
-                const paragraph = getActiveParagraphs()[currentParagraphIndex];
-                if (paragraph) {
-                    // Ao retomar, respeita o delayMode se ele estiver ativo
-                    if (delayMode) {
-                        clearTimeout(clickDelayTimeout); // Garante que não haja outros pendentes
-                        clickDelayTimeout = setTimeout(() => {
-                            speakParagraph(paragraph, false, true); // O terceiro param força o delay
-                        }, 4000);
-                    } else {
+            const paragraphs = getActiveParagraphs();
+            if (paragraphs.length === 0) return;
+
+            const initialDelay = delayMode ? 4000 : 0; // Atraso inicial para resume se delayMode ativo
+
+            clearTimeout(clickDelayTimeout); // Limpa o timeout de clique
+            clickDelayTimeout = setTimeout(() => {
+                if (loopMode) {
+                    handleLoopRepetition(); // Retoma o loop
+                } else if (abMode) {
+                    playABSegment(); // Retoma o modo AB
+                } else {
+                    // Senão, retoma a fala do parágrafo atual
+                    const paragraph = paragraphs[currentParagraphIndex];
+                    if (paragraph) {
                         speakParagraph(paragraph);
                     }
                 }
-            }
+            }, initialDelay);
         }
     }
 
@@ -214,23 +283,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Função para iniciar a fala de um parágrafo
-    // Adicionado `forceDelay` para forçar o atraso de 4s independentemente do loopMode
-    function speakParagraph(paragraph, isRepetition = false, forceDelay = false) {
+    function speakParagraph(paragraph, isRepetition = false) {
         if (paragraph) {
-            const originalTextSpan = paragraph.querySelector('.LGFran_original-text');
-            if (originalTextSpan) {
-                const textToSpeak = originalTextSpan.textContent;
-                highlightParagraph(paragraph);
+            const originalTextSpanWrapper = paragraph.querySelector('.LGFran_original-text');
+            if (originalTextSpanWrapper) {
+                // Pega o texto do span visível dentro do wrapper, que corresponde ao idioma atual
+                const visibleLangSpan = originalTextSpanWrapper.querySelector(`span[data-lang="${currentDisplayLanguage}"]:not(.LGFran_hidden)`);
+                const textToSpeak = visibleLangSpan ? visibleLangSpan.textContent : '';
 
-                // Se delayMode está ativo OU forceDelay é true (para cliques), agende a fala
-                if (delayMode && (loopMode || forceDelay)) { // `forceDelay` é a chave aqui para cliques
-                    clearTimeout(clickDelayTimeout); // Limpa qualquer atraso de clique anterior
-                    clickDelayTimeout = setTimeout(() => {
-                        speakText(textToSpeak, currentAudioRate, isRepetition);
-                    }, 4000); // Atraso de 4 segundos antes de falar
-                } else {
-                    speakText(textToSpeak, currentAudioRate, isRepetition);
-                }
+                highlightParagraph(paragraph);
+                // Passamos o idioma de exibição atual para speakText, que usará o mapeamento
+                speakText(textToSpeak, currentAudioRate, isRepetition, currentDisplayLanguage);
             }
         }
     }
@@ -249,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
         }
-        speakParagraph(paragraphs[currentParagraphIndex], false, false); // Nao força delay aqui, o loopMode já trata
+        speakParagraph(paragraphs[currentParagraphIndex]);
     }
 
     // Função para voltar para o parágrafo anterior
@@ -261,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentParagraphIndex < 0) {
             currentParagraphIndex = paragraphs.length - 1;
         }
-        speakParagraph(paragraphs[currentParagraphIndex], false, false); // Nao força delay aqui
+        speakParagraph(paragraphs[currentParagraphIndex]);
     }
 
     // Inicializa o diálogo atual, esconde os outros e atualiza o título
@@ -276,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentParagraphIndex = -1;
             abStartParagraphIndex = -1;
             abEndParagraphIndex = -1;
+            currentABIndex = -1; // Resetar o índice AB também
             // Garante que os modos são desativados visualmente e logicamente
             toggleABModeButton.classList.remove('LGFran_active');
             abMode = false;
@@ -295,9 +359,60 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleMuteButton.innerHTML = '🔊'; // Resetar ícone
         lastClickedWord = '';
         lastClickedPhraseParagraph = null;
+
+        // NOVO: Atualiza a exibição do diálogo para o idioma atual
+        updateDialogLanguage(currentDisplayLanguage);
     }
 
+    // NOVO: Função para atualizar a exibição do idioma no diálogo
+    function updateDialogLanguage(selectedLang) {
+        currentDisplayLanguage = selectedLang; // Atualiza o idioma de exibição
+
+        dialogBlocks.forEach(block => {
+            const originalTextSpans = block.querySelectorAll('.LGFran_original-text');
+            originalTextSpans.forEach(originalSpanWrapper => {
+                // Oculta todos os spans de idioma dentro deste LGFran_original-text
+                originalSpanWrapper.querySelectorAll('span[data-lang]').forEach(langSpan => {
+                    langSpan.classList.add('LGFran_hidden');
+                });
+
+                // Exibe apenas o span do idioma selecionado
+                const targetLangSpan = originalSpanWrapper.querySelector(`span[data-lang="${selectedLang}"]`);
+                if (targetLangSpan) {
+                    targetLangSpan.classList.remove('LGFran_hidden');
+                } else {
+                    // Fallback para francês se o idioma selecionado não for encontrado
+                    const fallbackLangSpan = originalSpanWrapper.querySelector('span[data-lang="fr"]');
+                    if (fallbackLangSpan) {
+                        fallbackLangSpan.classList.remove('LGFran_hidden');
+                        console.warn(`Idioma "${selectedLang}" não encontrado para um parágrafo. Revertendo para Francês.`);
+                    }
+                }
+            });
+        });
+
+        // Se estiver em modo de fala, parar e reiniciar (ou pausar) para usar o novo idioma
+        if (speaking || paused) {
+            stopSpeaking(); // Parar completamente
+        }
+        // Ajusta o idioma de fala para a síntese
+        currentSpeechLanguage = selectedLang;
+        // Se o idioma for pt-br na seleção, defina a voz como fr-FR para a síntese
+        // Caso contrário, use o mapeamento para o idioma selecionado
+        if (selectedLang === 'pt-br') { // Opção "Francês" na combobox
+             currentSpeechLanguage = 'fr'; // Usamos 'fr' para buscar a voz francesa
+        } else {
+            currentSpeechLanguage = selectedLang;
+        }
+
+        // Se o idioma atual for o padrão 'fr' na combobox, os outros estariam ocultos por padrão
+        // mas a voz ainda precisa ser ajustada.
+        // Já populamos as vozes ao carregar, então a lógica em speakText já deve funcionar.
+    }
+
+
     // --- Lógica de Repetição em Loop (centralizada) ---
+    // Esta função agora apenas INICIA a repetição, a continuação é no onend de speakText
     function handleLoopRepetition() {
         if (!loopMode) {
             stopSpeaking();
@@ -305,67 +420,194 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (repetitionMode === 'word' && lastClickedWord) {
-            // Atraso já é tratado dentro de speakText se delayMode for true
-            speakText(lastClickedWord, currentAudioRate, true); // Usa currentAudioRate
+            speakText(lastClickedWord, currentAudioRate, true, currentSpeechLanguage); // Usa o idioma de fala
         } else if (repetitionMode === 'phrase' && lastClickedPhraseParagraph) {
-            // Atraso já é tratado dentro de speakParagraph se delayMode for true
-            speakParagraph(lastClickedPhraseParagraph, true);
+            speakParagraph(lastClickedPhraseParagraph, true); // speakParagraph já usa o idioma de fala
         } else if (abMode) {
-            // Se AB está ativo e Loop também, o AB tem prioridade sobre o loop de parágrafo
-            playABSegment(); // Chama a função de loop AB, que já lida com o delayMode
-        }
-        else {
-            // Comportamento padrão de loop de parágrafo se nenhum modo de repetição de palavra/frase estiver ativo
-            highlightNextParagraph(true); // True para isLooping, e delay é tratado em speakParagraph
+            playABSegment(); // Inicia o loop AB (que internamente chamará speakText)
+        } else {
+            // Comportamento padrão de loop de parágrafo
+            const paragraphs = getActiveParagraphs();
+            if (paragraphs.length > 0) {
+                if (currentParagraphIndex === -1) {
+                    currentParagraphIndex = 0; // Começa do primeiro se nenhum selecionado
+                }
+                speakParagraph(paragraphs[currentParagraphIndex], false);
+            }
         }
     }
 
+    // --- Lógica de Modo AB ---
+    function playABSegment() {
+        const paragraphs = getActiveParagraphs();
+        if (paragraphs.length === 0 || abStartParagraphIndex === -1 || abEndParagraphIndex === -1 || abStartParagraphIndex > abEndParagraphIndex) {
+            console.warn("Segmento A-B inválido ou não definido.");
+            stopSpeaking();
+            toggleABModeButton.classList.remove('LGFran_active');
+            abMode = false;
+            return;
+        }
 
-    // --- Event Listeners ---
+        if (currentABIndex === -1 || currentABIndex > abEndParagraphIndex) {
+            currentABIndex = abStartParagraphIndex; // Reinicia o AB loop
+        }
+
+        if (currentABIndex < paragraphs.length) {
+            currentParagraphIndex = currentABIndex; // Sincroniza o índice de parágrafo atual
+            speakParagraph(paragraphs[currentABIndex]);
+        } else {
+            // Isso só deve acontecer se abEndParagraphIndex for inválido, mas por segurança
+            stopSpeaking();
+            toggleABModeButton.classList.remove('LGFran_active');
+            abMode = false;
+        }
+    }
+
+    function playNextABParagraph() {
+        const paragraphs = getActiveParagraphs();
+        if (currentABIndex < paragraphs.length) {
+            currentParagraphIndex = currentABIndex; // Sincroniza o índice de parágrafo atual
+            speakParagraph(paragraphs[currentABIndex]);
+        } else {
+            // Se chegou ao fim do segmento AB e não está em loop, para
+            if (!loopMode) {
+                stopSpeaking();
+                toggleABModeButton.classList.remove('LGFran_active');
+                abMode = false;
+                abStartParagraphIndex = -1;
+                abEndParagraphIndex = -1;
+                currentParagraphIndex = -1;
+            } else {
+                // Se está em loop, reinicia o segmento AB
+                currentABIndex = abStartParagraphIndex;
+                currentParagraphIndex = currentABIndex;
+                speakParagraph(paragraphs[currentABIndex]);
+            }
+        }
+    }
+
+    // --- Lógica de Clique em Palavra/Frase (para modo repetição) ---
+    // NOVO: Função auxiliar para capturar a palavra clicada
+    function getWordAtPoint(element, clientX, clientY) {
+        // Se o clique foi no wrapper LGFran_original-text, tentamos encontrar o span visível dentro
+        if (element.classList.contains('LGFran_original-text')) {
+            element = element.querySelector(`span[data-lang="${currentDisplayLanguage}"]:not(.LGFran_hidden)`);
+            if (!element) return null; // Se não encontrar o span visível, não há palavra para pegar
+        }
+        
+        // Verifica se o elemento clicado é um span com texto de idioma
+        if (element.nodeType === Node.ELEMENT_NODE && element.hasAttribute('data-lang')) {
+            const range = document.caretRangeFromPoint(clientX, clientY);
+            if (range && range.startContainer.nodeType === Node.TEXT_NODE) {
+                const textNode = range.startContainer;
+                const text = textNode.textContent;
+                const offset = range.startOffset;
+
+                // Encontra o início da palavra
+                let start = offset;
+                while (start > 0 && /\p{L}|\p{N}/u.test(text[start - 1])) { // Usa regex para caracteres unicode
+                    start--;
+                }
+
+                // Encontra o fim da palavra
+                let end = offset;
+                while (end < text.length && /\p{L}|\p{N}/u.test(text[end])) { // Usa regex para caracteres unicode
+                    end++;
+                }
+                const word = text.substring(start, end);
+                return word.trim() !== '' ? word.trim() : null; // Retorna null se for apenas espaço ou vazio
+            }
+        }
+        return null;
+    }
+
+
+    dialogContent.addEventListener('click', (event) => {
+        // Intercepta cliques dentro de LGFran_dialogContent
+        const clickedParagraph = event.target.closest('.LGFran_dialog-block > p');
+        if (!clickedParagraph) return; // Garante que clicamos em um parágrafo de diálogo
+
+        stopSpeaking(); // Para qualquer fala em andamento
+
+        if (repetitionMode === 'word') {
+            const clickedWord = getWordAtPoint(event.target, event.clientX, event.clientY);
+            if (clickedWord) {
+                lastClickedWord = clickedWord; // Salva a palavra para repetição em loop
+                speakText(clickedWord, currentAudioRate, true, currentSpeechLanguage); // Fala a palavra
+            }
+        } else if (repetitionMode === 'phrase') {
+            lastClickedPhraseParagraph = clickedParagraph; // Salva o parágrafo para repetição em loop
+            speakParagraph(clickedParagraph, true); // Fala o parágrafo (como uma frase)
+        } else if (abMode) {
+            const paragraphs = getActiveParagraphs();
+            const clickedIndex = paragraphs.indexOf(clickedParagraph);
+
+            if (clickedIndex === -1) return;
+
+            if (abStartParagraphIndex === -1) {
+                abStartParagraphIndex = clickedIndex;
+                highlightParagraph(clickedParagraph);
+                alert('Ponto A definido. Agora clique no parágrafo final para o Ponto B.');
+            } else if (abEndParagraphIndex === -1) {
+                abEndParagraphIndex = clickedIndex;
+                if (abEndParagraphIndex < abStartParagraphIndex) {
+                    // Troca se B for menor que A
+                    [abStartParagraphIndex, abEndParagraphIndex] = [abEndParagraphIndex, abStartParagraphIndex];
+                }
+                alert(`Segmento A-B definido do parágrafo ${abStartParagraphIndex + 1} ao ${abEndParagraphIndex + 1}. Clique em Play para iniciar.`);
+                // Opcional: highlight all paragraphs in the AB segment
+                for (let i = abStartParagraphIndex; i <= abEndParagraphIndex; i++) {
+                    if (paragraphs[i]) {
+                        paragraphs[i].classList.add('LGFran_highlight-ab'); // Adicione uma classe CSS para AB highlight
+                    }
+                }
+                clearHighlight(); // Limpa o highlight temporário do A
+            } else {
+                // Se já estiver em modo A-B e clicar de novo, reseta
+                abStartParagraphIndex = -1;
+                abEndParagraphIndex = -1;
+                currentABIndex = -1;
+                document.querySelectorAll('.LGFran_highlight-ab').forEach(p => p.classList.remove('LGFran_highlight-ab'));
+                alert('Modo A-B resetado. Clique novamente para definir um novo segmento A-B.');
+            }
+        } else {
+            // Comportamento padrão: clique para ler o parágrafo
+            currentParagraphIndex = getActiveParagraphs().indexOf(clickedParagraph);
+            speakParagraph(clickedParagraph);
+        }
+    });
+
+    // --- Event Listeners dos Botões ---
 
     playButton.addEventListener('click', () => {
         if (!speaking && !paused) {
             const paragraphs = getActiveParagraphs();
-            if (paragraphs.length > 0) {
-                // Se o delayMode está ativo E não é modo AB, adiciona o atraso inicial
-                if (delayMode && !abMode && !(repetitionMode === 'word' && !lastClickedWord) && !(repetitionMode === 'phrase' && !lastClickedPhraseParagraph)) {
-                    stopSpeaking(); // Limpa qualquer coisa anterior
-                    clearTimeout(clickDelayTimeout); // Limpa o timeout de clique
-                    clickDelayTimeout = setTimeout(() => {
-                        if (loopMode && (repetitionMode === 'word' || repetitionMode === 'phrase')) {
-                            handleLoopRepetition();
-                        } else if (abMode) {
-                            playABSegment();
-                        } else {
-                             if (currentParagraphIndex === -1) {
-                                 currentParagraphIndex = 0;
-                            }
-                            speakParagraph(paragraphs[currentParagraphIndex]);
-                        }
-                    }, 4000); // Espera 4s antes de iniciar a primeira fala
-                } else {
-                    if (loopMode && (repetitionMode === 'word' || repetitionMode === 'phrase')) {
-                        // Se loop e repetição de palavra/frase estão ativos, mas nada foi clicado ainda
-                        if (repetitionMode === 'word' && !lastClickedWord) {
-                            alert('Por favor, clique em uma palavra no texto para iniciar a repetição em loop.');
-                            return;
-                        } else if (repetitionMode === 'phrase' && !lastClickedPhraseParagraph) {
-                            alert('Por favor, clique em uma frase no texto para iniciar a repetição em loop.');
-                            return;
-                        }
-                        handleLoopRepetition(); // Inicia a repetição em loop
-                    } else if (abMode) {
-                        playABSegment(); // Inicia o modo AB
-                    }
-                    else {
-                        // Comportamento normal de play
-                        if (currentParagraphIndex === -1) {
-                            currentParagraphIndex = 0;
-                        }
-                        speakParagraph(paragraphs[currentParagraphIndex]);
-                    }
-                }
+            if (paragraphs.length === 0) return;
+
+            // Se loop e repetição de palavra/frase estão ativos, mas nada foi clicado ainda
+            if (loopMode && (repetitionMode === 'word' && !lastClickedWord || repetitionMode === 'phrase' && !lastClickedPhraseParagraph)) {
+                alert('Por favor, clique em uma palavra/frase no texto para iniciar a repetição em loop.');
+                return;
             }
+
+            stopSpeaking(); // Limpa qualquer coisa anterior
+            clearTimeout(clickDelayTimeout); // Limpa o timeout de clique
+
+            const initialDelay = delayMode ? 4000 : 0; // Atraso inicial para a primeira fala, se delayMode ativo
+
+            clickDelayTimeout = setTimeout(() => {
+                if (abMode) {
+                    playABSegment();
+                } else if (loopMode) {
+                    handleLoopRepetition(); // handleLoopRepetition agora se encarrega de iniciar o loop corretamente
+                } else {
+                    if (currentParagraphIndex === -1) {
+                        currentParagraphIndex = 0;
+                    }
+                    speakParagraph(paragraphs[currentParagraphIndex]);
+                }
+            }, initialDelay);
+
         } else if (paused) {
             resumeSpeaking();
         } else if (speaking) {
@@ -373,163 +615,66 @@ document.addEventListener('DOMContentLoaded', () => {
             stopSpeaking();
             const paragraphs = getActiveParagraphs();
             if (paragraphs.length > 0 && currentParagraphIndex !== -1) {
-                // Ao reiniciar, se delayMode ativo, adicione o delay inicial
-                if (delayMode && !abMode && (loopMode && (repetitionMode === 'word' || repetitionMode === 'phrase'))) {
-                     clearTimeout(clickDelayTimeout);
-                     clickDelayTimeout = setTimeout(() => {
-                        handleLoopRepetition();
-                     }, 4000);
-                } else if (delayMode && !abMode) { // Reiniciar um parágrafo normal com delay
-                    clearTimeout(clickDelayTimeout);
+                    const initialDelay = delayMode ? 4000 : 0;
                     clickDelayTimeout = setTimeout(() => {
-                        speakParagraph(paragraphs[currentParagraphIndex]);
-                    }, 4000);
-                }
-                else if (loopMode && (repetitionMode === 'word' || repetitionMode === 'phrase')) {
-                         handleLoopRepetition(); // Reinicia a repetição em loop
-                } else if (abMode) {
-                         playABSegment(); // Reinicia o modo AB
-                } else {
-                         speakParagraph(paragraphs[currentParagraphIndex]);
-                }
+                        if (abMode) {
+                            playABSegment();
+                        } else if (loopMode) {
+                            handleLoopRepetition();
+                        } else {
+                            speakParagraph(paragraphs[currentParagraphIndex]);
+                        }
+                    }, initialDelay);
             }
         }
         playButton.classList.add('LGFran_active');
         pauseButton.classList.remove('LGFran_active');
     });
 
-
     pauseButton.addEventListener('click', () => {
         pauseSpeaking();
     });
 
-    nextSegmentButton.addEventListener('click', () => {
-        stopSpeaking(); // Garante que a fala anterior e o timeout sejam cancelados
-        highlightNextParagraph();
-        // Limpa o estado da última palavra/frase clicada ao avançar
-        lastClickedWord = '';
-        lastClickedPhraseParagraph = null;
-    });
-
     prevSegmentButton.addEventListener('click', () => {
-        stopSpeaking(); // Garante que a fala anterior e o timeout sejam cancelados
+        stopSpeaking();
         highlightPrevParagraph();
-        // Limpa o estado da última palavra/frase clicada ao retroceder
-        lastClickedWord = '';
-        lastClickedPhraseParagraph = null;
     });
 
-    repWordButton.addEventListener('click', () => {
-        repetitionMode = (repetitionMode === 'word') ? '' : 'word';
-        repWordButton.classList.toggle('LGFran_active', repetitionMode === 'word');
-        repFrasButton.classList.remove('LGFran_active');
-        console.log('Modo de repetição de palavra:', repetitionMode === 'word' ? 'ativado' : 'desativado');
-        stopSpeaking(); // Garante que a fala anterior e o timeout sejam cancelados
-        toggleABModeButton.classList.remove('LGFran_active');
-        abMode = false;
-        abStartParagraphIndex = -1;
-        abEndParagraphIndex = -1;
-        // Limpa a última palavra clicada se o modo for desativado
-        if (repetitionMode !== 'word') {
-            lastClickedWord = '';
-        }
-        lastClickedPhraseParagraph = null; // Garante que o outro modo de repetição esteja limpo
+    nextSegmentButton.addEventListener('click', () => {
+        stopSpeaking();
+        highlightNextParagraph();
     });
 
-    repFrasButton.addEventListener('click', () => {
-        repetitionMode = (repetitionMode === 'phrase') ? '' : 'phrase';
-        repFrasButton.classList.toggle('LGFran_active', repetitionMode === 'phrase');
-        repWordButton.classList.remove('LGFran_active');
-        console.log('Modo de repetição de frase:', repetitionMode === 'phrase' ? 'ativado' : 'desativado');
-        stopSpeaking(); // Garante que a fala anterior e o timeout sejam cancelados
-        toggleABModeButton.classList.remove('LGFran_active');
-        abMode = false;
-        abStartParagraphIndex = -1;
-        abEndParagraphIndex = -1;
-        // Limpa a última frase clicada se o modo for desativado
-        if (repetitionMode !== 'phrase') {
-            lastClickedPhraseParagraph = null;
-        }
-        lastClickedWord = ''; // Garante que o outro modo de repetição esteja limpo
+    changeAudioButton.addEventListener('click', () => {
+        currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
+        initializeDialog();
     });
 
     toggleLoopButton.addEventListener('click', () => {
         loopMode = !loopMode;
         toggleLoopButton.classList.toggle('LGFran_active', loopMode);
-        console.log('Modo Loop:', loopMode ? 'ativado' : 'desativado');
-        stopSpeaking(); // Sempre para a fala atual ao alternar o loop
-
-        // Ao ativar/desativar o loop, se os modos de repetição de palavra/frase já estiverem ativos,
-        // ele tentará iniciar/parar a repetição em loop imediatamente
-        if (loopMode && (repetitionMode === 'word' && lastClickedWord || repetitionMode === 'phrase' && lastClickedPhraseParagraph)) {
-            handleLoopRepetition();
-        } else if (loopMode && !abMode) {
-            // Se loop ativado e não está em modo AB e não tem repetição de palavra/frase definida
-            // Começa a repetir o parágrafo atual
-            const paragraphs = getActiveParagraphs();
-            if (paragraphs.length > 0) {
-                if (currentParagraphIndex === -1) {
-                    currentParagraphIndex = 0; // Começa do primeiro se nenhum selecionado
+        if (!loopMode) {
+            clearTimeout(loopTimeout); // Garante que o loop seja interrompido
+        } else {
+            // Se ativou o loop e já está falando, ou está pausado, reiniciar o loop
+            if (speaking || paused) {
+                stopSpeaking(); // Parar antes de iniciar o loop para aplicar a lógica
+                // Se já estava em um modo de repetição específico, continuar nesse modo
+                // Caso contrário, iniciar loop de parágrafo
+                if (repetitionMode === 'word' && lastClickedWord) {
+                    speakText(lastClickedWord, currentAudioRate, true, currentSpeechLanguage);
+                } else if (repetitionMode === 'phrase' && lastClickedPhraseParagraph) {
+                    speakParagraph(lastClickedPhraseParagraph, true);
+                } else if (abMode) {
+                    playABSegment();
+                } else {
+                    // Inicia do parágrafo atual se houver, senão do primeiro
+                    const paragraphs = getActiveParagraphs();
+                    if (paragraphs.length > 0) {
+                        currentParagraphIndex = (currentParagraphIndex === -1) ? 0 : currentParagraphIndex;
+                        speakParagraph(paragraphs[currentParagraphIndex]);
+                    }
                 }
-                // Chama speakParagraph, que vai lidar com o delayMode
-                speakParagraph(paragraphs[currentParagraphIndex], false, true); // Força delay na primeira execução se delayMode ativo
-            }
-        }
-        // Ao ativar/desativar o loop, desativa o modo AB
-        toggleABModeButton.classList.remove('LGFran_active');
-        abMode = false;
-        abStartParagraphIndex = -1;
-        abEndParagraphIndex = -1;
-    });
-
-    // Event Listener para o botão de 4 segundos
-    time4Button.addEventListener('click', () => {
-        delayMode = !delayMode;
-        time4Button.classList.toggle('LGFran_active', delayMode);
-        console.log('Modo de espera de 4s:', delayMode ? 'ativado' : 'desativado');
-
-        // Se o loop já estiver ativo e houver uma repetição em andamento, reinicia para aplicar o delay
-        if (loopMode && speaking) {
-            stopSpeaking(); // Para a fala atual e limpa o timeout
-            // A proxima fala do loop vai pegar o delayMode automaticamente
-            handleLoopRepetition();
-        } else if (loopMode && paused) {
-            // Se estava pausado no loop, não inicia a fala, mas prepara o próximo resume com delay
-            // A lógica de resume já lida com o delayMode
-        }
-    });
-
-    // NOVO Event Listener para o botão de desacelerar o áudio
-    slowDownAudioButton.addEventListener('click', () => {
-        isSlowed = !isSlowed; // Alterna o estado de desaceleração
-        currentAudioRate = isSlowed ? 0.70 : 1.0; // Define a taxa de acordo com o estado
-        slowDownAudioButton.classList.toggle('LGFran_active', isSlowed); // Ativa/desativa a classe visual
-
-        console.log('Velocidade do áudio definida para:', currentAudioRate);
-
-        // Se algo estiver falando, para e reinicia para aplicar a nova velocidade imediatamente
-        if (speechSynthesis.speaking) {
-            stopSpeaking();
-            if (loopMode) {
-                handleLoopRepetition();
-            } else if (abMode) {
-                playABSegment();
-            } else if (currentParagraphIndex !== -1) {
-                const paragraphs = getActiveParagraphs();
-                if (paragraphs[currentParagraphIndex]) {
-                    speakParagraph(paragraphs[currentParagraphIndex], false, delayMode); // Re-fala o parágrafo atual com a nova taxa
-                }
-            }
-        } else if (paused && currentParagraphIndex !== -1) {
-            // Se pausado, apenas atualiza a taxa para quando for resumido
-            // Nenhuma ação extra é necessária aqui, pois o resumeSpeaking usará a nova taxa
-        } else if (!speechSynthesis.speaking && currentParagraphIndex !== -1 && (loopMode || abMode)) {
-            // Se não estava falando, mas estava em modo loop ou AB (ex: após carregamento inicial ou pausa)
-            // Reinicia o fluxo de fala para aplicar a nova velocidade.
-            if (loopMode) {
-                handleLoopRepetition();
-            } else if (abMode) {
-                playABSegment();
             }
         }
     });
@@ -537,241 +682,100 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleABModeButton.addEventListener('click', () => {
         abMode = !abMode;
         toggleABModeButton.classList.toggle('LGFran_active', abMode);
-        stopSpeaking(); // Garante que a fala anterior e o timeout sejam cancelados
-        abStartParagraphIndex = -1;
+        stopSpeaking(); // Sempre para a fala ao mudar o modo A-B
+        document.querySelectorAll('.LGFran_highlight-ab').forEach(p => p.classList.remove('LGFran_highlight-ab')); // Limpa destaque AB
+        abStartParagraphIndex = -1; // Reseta pontos A e B
         abEndParagraphIndex = -1;
-        clearHighlight();
-
-        // Ao ativar este modo, desativa repetição de palavra/frase e loop visualmente e logicamente
-        repWordButton.classList.remove('LGFran_active');
-        repFrasButton.classList.remove('LGFran_active');
-        repetitionMode = '';
-        toggleLoopButton.classList.remove('LGFran_active');
-        loopMode = false;
-        time4Button.classList.remove('LGFran_active'); // Desativa o botão 4s
-        delayMode = false;
-        slowDownAudioButton.classList.remove('LGFran_active'); // Desativa o botão de desacelerar
-        isSlowed = false;
-        currentAudioRate = 1.0; // Reinicia a velocidade do áudio
-
+        currentABIndex = -1;
+        
         if (abMode) {
-            alert('Modo AB ativado. Clique no início e no fim do trecho que deseja repetir.');
+            // Desativa outros modos de repetição se AB for ativado
+            repetitionMode = '';
+            repWordButton.classList.remove('LGFran_active');
+            repFrasButton.classList.remove('LGFran_active');
+            alert('Modo A-B ativado. Clique no parágrafo inicial (Ponto A), e depois no parágrafo final (Ponto B).');
+        }
+    });
+
+    repWordButton.addEventListener('click', () => {
+        repetitionMode = (repetitionMode === 'word') ? '' : 'word';
+        repWordButton.classList.toggle('LGFran_active', repetitionMode === 'word');
+        repFrasButton.classList.remove('LGFran_active'); // Desativa o outro modo
+        stopSpeaking();
+        if (repetitionMode === 'word') {
+            alert('Modo "Repetir Palavra" ativado. Clique em qualquer palavra no texto para ouvi-la.');
         } else {
-            alert('Modo AB desativado.');
+            lastClickedWord = ''; // Limpa a última palavra
+        }
+    });
+
+    repFrasButton.addEventListener('click', () => {
+        repetitionMode = (repetitionMode === 'phrase') ? '' : 'phrase';
+        repFrasButton.classList.toggle('LGFran_active', repetitionMode === 'phrase');
+        repWordButton.classList.remove('LGFran_active'); // Desativa o outro modo
+        stopSpeaking();
+        if (repetitionMode === 'phrase') {
+            alert('Modo "Repetir Frase" ativado. Clique em qualquer parágrafo para ouvi-lo como frase.');
+        } else {
+            lastClickedPhraseParagraph = null; // Limpa a última frase
+        }
+    });
+
+    time4Button.addEventListener('click', () => {
+        delayMode = !delayMode;
+        time4Button.classList.toggle('LGFran_active', delayMode);
+        if (delayMode) {
+            alert('Atraso de 4 segundos ativado para loops e repetições.');
+        } else {
+            alert('Atraso de 4 segundos desativado.');
+        }
+    });
+
+    slowDownAudioButton.addEventListener('click', () => {
+        isSlowed = !isSlowed;
+        currentAudioRate = isSlowed ? 0.70 : 1.0; // Define a velocidade
+        slowDownAudioButton.classList.toggle('LGFran_active', isSlowed);
+
+        if (speaking || paused) {
+            // Se estiver falando ou pausado, para e reinicia com a nova velocidade
+            stopSpeaking();
+            const paragraphs = getActiveParagraphs();
+            if (paragraphs.length > 0 && currentParagraphIndex !== -1) {
+                speakParagraph(paragraphs[currentParagraphIndex]);
+            }
         }
     });
 
     toggleMuteButton.addEventListener('click', () => {
         isMuted = !isMuted;
-        toggleMuteButton.innerHTML = isMuted ? '🔇' : '🔊'; // Altera o ícone
-        toggleMuteButton.classList.toggle('LGFran_active', isMuted); // Ativa/desativa a classe
+        toggleMuteButton.classList.toggle('LGFran_active', isMuted);
         if (isMuted) {
-            stopSpeaking();
+            stopSpeaking(); // Para a fala se mutar
+            toggleMuteButton.innerHTML = '🔇';
         } else {
-            // Se desmutar, pode retomar a fala se estava pausada e era para estar falando
-            if (currentUtterance && !speechSynthesis.speaking && paused) {
-                resumeSpeaking();
-            }
+            toggleMuteButton.innerHTML = '🔊';
+            // Opcional: Se quiser que a fala continue de onde parou ao desmutar
+            // resumeSpeaking(); // Pode causar comportamento inesperado se não gerenciar bem o estado
         }
     });
 
-    changeAudioButton.addEventListener('click', () => {
-        currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
-        initializeDialog(); // Garante que a fala anterior e o timeout sejam cancelados
+    // NOVO: Event Listener para a caixa de seleção de idioma
+    languageSelect.addEventListener('change', (event) => {
+        const selectedLang = event.target.value;
+        updateDialogLanguage(selectedLang);
+        // Opcional: Se quiser que a fala recomece no parágrafo atual após a mudança de idioma, descomente:
+        // if (currentParagraphIndex !== -1) {
+        //     const paragraphs = getActiveParagraphs();
+        //     if (paragraphs[currentParagraphIndex]) {
+        //         speakParagraph(paragraphs[currentParagraphIndex]);
+        //     }
+        // }
     });
 
-    // Clique em um parágrafo para iniciar a leitura ou definir o modo AB
-    dialogContent.addEventListener('click', (event) => {
-        const clickedParagraph = event.target.closest('p');
-        if (!clickedParagraph) return;
 
-        const paragraphs = getActiveParagraphs();
-        const index = paragraphs.indexOf(clickedParagraph);
-
-        if (index === -1) return;
-
-        // Limpa tudo antes de processar o novo clique
-        stopSpeaking();
-
-        currentParagraphIndex = index;
-
-        // Limpa lastClickedWord/PhraseParagraph para evitar repetição indesejada
-        lastClickedWord = '';
-        lastClickedPhraseParagraph = null;
-
-        // Desativa modos de repetição e loop se um parágrafo é clicado para reprodução normal
-        // Apenas se não estiver em modo AB ou de repetição (word/phrase)
-        if (!abMode && repetitionMode === '' && !loopMode) {
-            toggleLoopButton.classList.remove('LGFran_active');
-            loopMode = false;
-            time4Button.classList.remove('LGFran_active'); // Desativa o botão 4s visualmente
-            delayMode = false; // Desativa o modo 4s logicamente
-            repWordButton.classList.remove('LGFran_active');
-            repFrasButton.classList.remove('LGFran_active');
-            repetitionMode = '';
-        }
-
-        if (abMode) {
-            if (abStartParagraphIndex === -1) {
-                abStartParagraphIndex = index;
-                highlightParagraph(clickedParagraph);
-                alert('Início do trecho AB definido.');
-            } else if (abEndParagraphIndex === -1) {
-                abEndParagraphIndex = index;
-                if (abStartParagraphIndex > abEndParagraphIndex) {
-                    [abStartParagraphIndex, abEndParagraphIndex] = [abEndParagraphIndex, abStartParagraphIndex];
-                }
-                highlightParagraph(paragraphs[abEndParagraphIndex]);
-                alert('Fim do trecho AB definido. Reproduzindo...');
-                playABSegment();
-            } else {
-                abStartParagraphIndex = index;
-                abEndParagraphIndex = -1;
-                highlightParagraph(clickedParagraph);
-                alert('Início do trecho AB redefinido. Clique no novo fim.');
-            }
-        } else if (repetitionMode === 'phrase') {
-            lastClickedPhraseParagraph = clickedParagraph; // Salva o parágrafo para loop futuro
-            // Se loopMode está ativo, handleLoopRepetition vai cuidar do delay.
-            // Se não, speakParagraph vai aplicar o delay se delayMode estiver true.
-            if (loopMode) {
-                handleLoopRepetition();
-            } else {
-                speakParagraph(clickedParagraph, true, delayMode); // Passa delayMode como forceDelay
-            }
-        } else if (repetitionMode === 'word') {
-            if (event.target.classList.contains('LGFran_original-text')) {
-                const word = getWordAtPoint(event.target, event.clientX, event.clientY);
-                if (word) {
-                    lastClickedWord = word; // Salva a palavra para loop futuro
-                    if (loopMode) {
-                        handleLoopRepetition();
-                    } else {
-                        // speakText agora lida com o delayMode internamente,
-                        // mas precisamos garantir que o delay seja aplicado no primeiro clique.
-                        // A função speakText já possui a lógica de delayMode
-                        speakText(word, currentAudioRate, true); // Usa currentAudioRate
-                    }
-                } else {
-                    // Fallback para frase se palavra não for encontrada, mas ainda dentro do modo word
-                    lastClickedPhraseParagraph = clickedParagraph;
-                    if (loopMode) {
-                        speakParagraph(clickedParagraph, true); // Inicia o loop de frase como fallback
-                    } else {
-                        speakParagraph(clickedParagraph, true, delayMode); // Fala a frase como fallback
-                    }
-                }
-            } else {
-                // Fallback para frase se clique não for em span, mas ainda dentro do modo word
-                lastClickedPhraseParagraph = clickedParagraph;
-                if (loopMode) {
-                    speakParagraph(clickedParagraph, true); // Inicia o loop de frase como fallback
-                } else {
-                    speakParagraph(clickedParagraph, true, delayMode); // Fala a frase como fallback
-                }
-            }
-        } else {
-            // Comportamento padrão: apenas clica e começa a ler dali para a frente
-            // Aqui é onde você queria o delay inicial se delayMode estiver ativo
-            speakParagraph(clickedParagraph, false, delayMode); // Passa delayMode como forceDelay
-        }
-    });
-
-    // Função auxiliar para capturar a palavra clicada
-    function getWordAtPoint(element, clientX, clientY) {
-        const range = document.caretRangeFromPoint(clientX, clientY);
-        if (range && range.startContainer.nodeType === Node.TEXT_NODE) {
-            const textNode = range.startContainer;
-            const text = textNode.textContent;
-            const offset = range.startOffset;
-
-            // Encontra o início da palavra
-            let start = offset;
-            while (start > 0 && /\S/.test(text[start - 1])) {
-                start--;
-            }
-
-            // Encontra o fim da palavra
-            let end = offset;
-            while (end < text.length && /\S/.test(text[end])) {
-                end++;
-            }
-            return text.substring(start, end);
-        }
-        return null;
-    }
-
-    // --- Funções de Modo AB ---
-    function playABSegment() {
-        const paragraphs = getActiveParagraphs();
-        if (abStartParagraphIndex === -1 || abEndParagraphIndex === -1 || paragraphs.length === 0) {
-            console.warn('Modo AB não configurado corretamente.');
-            return;
-        }
-
-        let currentABIndex = abStartParagraphIndex;
-        // Função interna para tocar o próximo parágrafo no segmento AB
-        function playNextABParagraph() {
-            if (currentABIndex <= abEndParagraphIndex) {
-                const paragraph = paragraphs[currentABIndex];
-                if (paragraph) {
-                    highlightParagraph(paragraph);
-                    const originalTextSpan = paragraph.querySelector('.LGFran_original-text');
-                    const textToSpeak = originalTextSpan ? originalTextSpan.textContent : '';
-
-                    speakText(textToSpeak, currentAudioRate, false); // Usa currentAudioRate
-
-                    // Avança para o próximo parágrafo no segmento AB quando a fala termina
-                    currentUtterance.onend = () => {
-                        speaking = false;
-                        paused = false;
-                        currentABIndex++;
-                        if (currentABIndex <= abEndParagraphIndex) {
-                            if (delayMode) {
-                                clearTimeout(loopTimeout);
-                                loopTimeout = setTimeout(playNextABParagraph, 4000); // Adiciona delay
-                            } else {
-                                playNextABParagraph(); // Continua para o próximo sem delay
-                            }
-                        } else {
-                            // Se o modo AB estiver em loop, reinicia o segmento
-                            if (loopMode) {
-                                if (delayMode) {
-                                    clearTimeout(loopTimeout);
-                                    loopTimeout = setTimeout(() => {
-                                        currentABIndex = abStartParagraphIndex;
-                                        playNextABParagraph();
-                                    }, 4000); // Delay antes de recomeçar o loop AB
-                                } else {
-                                    currentABIndex = abStartParagraphIndex;
-                                    playNextABParagraph();
-                                }
-                            } else {
-                                stopSpeaking(); // Para a fala se não for para repetir
-                                toggleABModeButton.classList.remove('LGFran_active'); // Desativa o modo AB visualmente
-                                abMode = false;
-                                abStartParagraphIndex = -1;
-                                abEndParagraphIndex = -1;
-                                currentParagraphIndex = -1; // Resetar para garantir o comportamento normal
-                            }
-                        }
-                    };
-                }
-            }
-        }
-
-        // Inicia o playback do segmento AB
-        stopSpeaking(); // Garante que qualquer fala anterior seja parada
-        // O atraso inicial para o modo AB quando delayMode está ativo
-        if (delayMode) {
-            clearTimeout(clickDelayTimeout);
-            clickDelayTimeout = setTimeout(playNextABParagraph, 4000);
-        } else {
-            playNextABParagraph();
-        }
-    }
-
-
-    // --- Inicialização ---
+    // Inicialização
     initializeDialog();
+    // NOVO: Define o idioma inicial na caixa de seleção para "Francês" (fr)
+    languageSelect.value = 'fr'; // Garante que a caixa de seleção inicie com a opção correta
+    updateDialogLanguage('fr'); // Chama para exibir o francês no carregamento
 });

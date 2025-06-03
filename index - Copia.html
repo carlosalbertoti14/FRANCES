@@ -13,129 +13,892 @@
     <link rel="stylesheet" href="estilos/styleX2.css" />
 
     <style>
-
+        .LGFran_hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="LGFran_container">
         <header class="LGFran_header">
-            <h1>LGFran - Estudo de Francês com Áudio</h1>
+            <h1>Estudo de Francês com Áudio</h1>
         </header>
 
         <main class="LGFran_main-content">
-    <div class="LGFran_audio-player-section">
-        <div class="LGFran_controls">
-            <button id="LGFran_repWord" class="LGFran_button LGFran_icon-button" title="Repetir Palavra">🔠</button>
-            <button id="LGFran_repFras" class="LGFran_button LGFran_icon-button" title="Repetir Frase">💬</button>
-            <button id="LGFran_toggleLoop" class="LGFran_button LGFran_icon-button" title="Ativar/Desativar Loop">🔁</button>
-            <button id="LGFran_time4" class="LGFran_button" title="Adicionar 4s de pausa no Loop">4s</button>
-            <button id="LGFran_changeAudio" class="LGFran_button LGFran_icon-button" title="Mudar Diálogo">🔄</button>
-            <button id="LGFran_play" class="LGFran_button LGFran_icon-button" title="Play">▶️</button>
-            <button id="LGFran_pause" class="LGFran_button LGFran_icon-button" title="Pause">⏸️</button>
-            <button id="LGFran_prevSegment" class="LGFran_button LGFran_icon-button" title="Voltar Trecho">⏪</button>
-            <button id="LGFran_nextSegment" class="LGFran_button LGFran_icon-button" title="Avançar Trecho">⏩</button>
-            <button id="LGFran_toggleABMode" class="LGFran_button LGFran_icon-button" title="Ativar/Desativar Modo Repetição AB">🅰️🅱️</button>
-            <button id="LGFran_toggleMute" class="LGFran_button LGFran_icon-button" title="Habilitar/Desabilitar Áudio">🔇</button>
-        </div>
-    </div>
+            <div class="LGFran_audio-player-section">
+                <div class="LGFran_controls">
+                    <select id="LGFran_languageSelect" class="LGFran_language-select" title="Selecionar Idioma da Tradução">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                        <option value="zh">中文</option>
+                    </select>
 
-    <div class="LGFran_dialog-section">
-        <h2 id="LGFran_dialogTitle">Diálogo do Café</h2>
-        <div id="LGFran_dialogContent" class="LGFran_dialog-content">
-            <div id="LGFran_dialog_Dialogo_do_Cafe" class="LGFran_dialog-block">
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Salut Marc ! Tu as l'air fatigué ce matin.</span><br><span class="LGFran_translation-text">Léa: Oi Marc! Você parece cansado esta manhã.</span></p>
-                <p><span class="LGFran_original-text">Marc: Salut Léa. Oui, un peu. La nuit a été courte. Et toi, ça va ?</span><br><span class="LGFran_translation-text">Marc: Oi Léa. Sim, um pouco. A noite foi curta. E você, tudo bem?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Ça va, merci. J'ai bien dormi. Tu veux un café ? Je viens d'en faire.</span><br><span class="LGFran_translation-text">Léa: Tudo bem, obrigada. Dormi bem. Você quer um café? Acabei de fazer.</span></p>
-                <p><span class="LGFran_original-text">Marc: Oh oui, avec plaisir ! Noir et sans sucre pour moi, s'il te plaît.</span><br><span class="LGFran_translation-text">Marc: Ah sim, com prazer! Preto e sem açúcar para mim, por favor.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: D'accord. Tu as beaucoup de travail aujourd'hui ?</span><br><span class="LGFran_translation-text">Léa: De acordo. Você tem muito trabalho hoje?</span></p>
-                <p><span class="LGFran_original-text">Marc: Un peu. J'ai une réunion importante à 10h. Et toi, quoi de neuf ?</span><br><span class="LGFran_translation-text">Marc: Um pouco. Tenho uma reunião importante às 10h. E você, o que há de novo?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Rien de spécial. Je dois finir ce rapport pour cet après-midi.</span><br><span class="LGFran_translation-text">Léa: Nada de especial. Tenho que terminar este relatório para esta tarde.</span></p>
-                <p><span class="LGFran_original-text">Marc: Courage ! Tiens, ton café est prêt.</span><br><span class="LGFran_translation-text">Marc: Coragem! Toma, seu café está pronto.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Merci beaucoup ! Il sent bon.</span><br><span class="LGFran_translation-text">Léa: Muito obrigada! Cheira bem.</span></p>
-                <p><span class="LGFran_original-text">Marc: De rien. Alors, tu as des projets pour le week-end ?</span><br><span class="LGFran_translation-text">Marc: De nada. Então, você tem planos para o fim de semana?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Pas encore. Peut-être aller voir mes parents. Et toi ?</span><br><span class="LGFran_translation-text">Léa: Ainda não. Talvez ir ver meus pais. E você?</span></p>
-                <p><span class="LGFran_original-text">Marc: Je pense aller faire de la randonnée si le temps est beau.</span><br><span class="LGFran_translation-text">Marc: Eu penso em ir fazer trilha se o tempo estiver bom.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: C'est une bonne idée ! J'aimerais bien faire ça un jour.</span><br><span class="LGFran_translation-text">Léa: É uma boa ideia! Eu gostaria de fazer isso um dia.</span></p>
-                <p><span class="LGFran_original-text">Marc: On pourrait y aller ensemble la prochaine fois ?</span><br><span class="LGFran_translation-text">Marc: Poderíamos ir juntos da próxima vez?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: Pourquoi pas ! J'adorerais.</span><br><span class="LGFran_translation-text">Léa: Por que não! Eu adoraria.</span></p>
-                <p><span class="LGFran_original-text">Marc: Super ! On en reparle plus tard.</span><br><span class="LGFran_translation-text">Marc: Ótimo! A gente se fala mais tarde.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: D'accord. Bon courage pour ta réunion !</span><br><span class="LGFran_translation-text">Léa: De acordo. Boa sorte com sua reunião!</span></p>
-                <p><span class="LGFran_original-text">Marc: Merci, toi aussi pour ton rapport.</span><br><span class="LGFran_translation-text">Marc: Obrigada, você também com seu relatório.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: À plus tard !</span><br><span class="LGFran_translation-text">Léa: Até mais tarde!</span></p>
-                <p><span class="LGFran_original-text">Marc: À plus !</span><br><span class="LGFran_translation-text">Marc: Até mais!</span></p>
+                    <button id="LGFran_repWord" class="LGFran_button LGFran_icon-button" title="Répéter Mot">🔠</button>
+                    <button id="LGFran_repFras" class="LGFran_button LGFran_icon-button" title="Répéter Phrase">💬</button>
+                    <button id="LGFran_toggleLoop" class="LGFran_button LGFran_icon-button" title="Activer/Désactiver la Boucle">🔁</button>
+                    <button id="LGFran_time4" class="LGFran_button" title="Ajouter 4s de pause dans la Boucle">4s</button>
+                    <button id="LGFran_slowDownAudio" class="LGFran_button LGFran_icon-button" title="Ralentir l'audio (0.7x)">🐢</button>
+                    <button id="LGFran_changeAudio" class="LGFran_button LGFran_icon-button" title="Changer de Dialogue">🔄</button>
+                    <button id="LGFran_play" class="LGFran_button LGFran_icon-button" title="Lire">▶️</button>
+                    <button id="LGFran_pause" class="LGFran_button LGFran_icon-button" title="Pause">⏸️</button>
+                    <button id="LGFran_stop" class="LGFran_button LGFran_icon-button" title="Stop">⏹️</button>
+                    <button id="LGFran_prevSegment" class="LGFran_button LGFran_icon-button" title="Segment Précédent">⏪</button>
+                    <button id="LGFran_nextSegment" class="LGFran_button LGFran_icon-button" title="Segment Suivant">⏩</button>
+                    <button id="LGFran_toggleABMode" class="LGFran_button LGFran_icon-button" title="Activer/Désactiver le Mode Répétition AB">🅰️🅱️</button>
+                    <button id="LGFran_toggleMute" class="LGFran_button LGFran_icon-button" title="Activer/Désactiver l'Audio">🔇</button>
+                </div>
             </div>
 
-            <div id="LGFran_dialog_Caio_et_Ayheon_Vieux_Amis" class="LGFran_dialog-block LGFran_hidden">
-                <p><span class="LGFran_original-text">Caio: Salut ! Ça fait si longtemps que je ne t'ai pas vu(e) !</span><br><span class="LGFran_translation-text">Caio: Oi! Há quanto tempo não te vejo!</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: C'est vrai, ça fait vraiment très longtemps.</span><br><span class="LGFran_translation-text">Ayheon: É mesmo, faz muito tempo mesmo.</span></p>
-                <p><span class="LGFran_original-text">Caio: Alors ? Comment ça va ? Qu'est-ce que tu deviens ?</span><br><span class="LGFran_translation-text">Caio: E aí? Como tem passado, por onde tem andando?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: J'étudie énormément, je travaille beaucoup.</span><br><span class="LGFran_translation-text">Ayheon: Estou estudando demais, trabalhando muito.</span></p>
-                <p><span class="LGFran_original-text">Caio: Ah oui ? C'est épuisant !</span><br><span class="LGFran_translation-text">Caio: É mesmo? Nossa! Que cansativo.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: Et toi, qu'est-ce que tu fais ? Tu travailles dans quoi ? Ou tu étudies seulement ?</span><br><span class="LGFran_translation-text">Ayheon: E você o que tem feito? Está trabalhando em quê? Ou só está estudando?</span></p>
-                <p><span class="LGFran_original-text">Caio: J'ai travaillé comme technicien comptable dans un bureau à Niterói, mais aujourd'hui, je suis seulement chauffeur d'applications.</span><br><span class="LGFran_translation-text">Caio: Já trabalhei como técnico de contabilidade em um escritório de Niterói, mas hoje, sou apenas motorista de aplicativos.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: C'est super ça, c'est bien que tu puisses organiser ton temps. Tu as des enfants ?</span><br><span class="LGFran_translation-text">Ayheon: Que legal, é bom que você pode organizar seu tempo. Você tem filhos?</span></p>
-                <p><span class="LGFran_original-text">Caio: Oui, mon travail me permet de flexibiliser mon temps. J'ai un fils de 10 ans. Et toi, tu as eu des enfants, tu t'es marié(e) ?</span><br><span class="LGFran_translation-text">Caio: Sim, meu trabalho me possibilita flexibilizar meu tempo. Eu tenho um filho de 10 anos. E você, teve filhos, se casou com alguém?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: Non, pour le moment, je suis célibataire, concentrée sur mes études et ma carrière. Je n'ai pas de temps pour les relations.</span><br><span class="LGFran_translation-text">Ayheon: Não, no momento eu estou solteira, focada nos meus estudos e carreira. Não tenho tempo para relacionamentos.</span></p>
-                <p><span class="LGFran_original-text">Caio: Et tu fais très bien. Ça a été un plaisir de te revoir.</span><br><span class="LGFran_translation-text">Caio: E faz muito bem. Foi um prazer te reencontrar.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Ayheon: Le plaisir était pour moi, à bientôt.</span><br><span class="LGFran_translation-text">O prazer foi meu, até breve.</span></p>
-            </div>
+            <div class="LGFran_dialog-section">
+                <h2 id="LGFran_dialogTitle">Diálogo do Café</h2>
+                <div id="LGFran_dialogContent" class="LGFran_dialog-content">
+                    <div id="LGFran_dialog_Dialogo_do_Cafe" class="LGFran_dialog-block">
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Salut Marc ! Tu as l'air fatigué ce matin.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Hi Marc! You look tired this morning.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Привет, Марк! Ты выглядишь уставшим сегодня утром.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：嗨，马克！你今早看起来很累。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Oi Marc! Você parece cansado esta manhã.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Salut Léa. Oui, un peu. La nuit a été courte. Et toi, ça va ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: Hi Léa. Yes, a little. The night was short. And you, how are you?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Привет, Леа. Да, немного. Ночь была короткой. А ты как?</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：嗨，莉亚。是的，有点。昨晚睡得很少。你呢，还好吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Oi Léa. Sim, um pouco. A noite foi curta. E você, tudo bem?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Ça va, merci. J'ai bien dormi. Tu veux un café ? Je viens d'en faire.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: I'm fine, thanks. I slept well. Do you want a coffee? I just made some.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Все хорошо, спасибо. Я хорошо спала. Хочешь кофе? Я только что сварила.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：我很好，谢谢。我睡得很好。你要咖啡吗？我刚做了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Tudo bem, obrigada. Dormi bem. Você quer um café? Acabei de fazer.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Oh oui, avec plaisir ! Noir et sans sucre pour moi, s'il te plaît.</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: Oh yes, with pleasure! Black and without sugar for me, please.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: О да, с удовольствием! Черный и без сахара для меня, пожалуйста.</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：哦，是的，很乐意！给我来杯黑咖啡，不要糖，谢谢。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Ah sim, com prazer! Preto e sem açúcar para mim, por favor.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: D'accord. Tu as beaucoup de travail aujourd'hui ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Okay. Do you have a lot of work today?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Хорошо. У тебя сегодня много работы?</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：好的。你今天有很多工作吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: De acordo. Você tem muito trabalho hoje?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Un peu. J'ai une réunion importante à 10h. Et toi, quoi de neuf ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: A little. I have an important meeting at 10 AM. And you, what's new?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Немного. У меня важная встреча в 10 утра. А ты, что нового?</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：有点。我早上10点有个重要的会议。你呢，有什么新鲜事吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Um pouco. Tenho uma reunião importante às 10h. E você, o que há de novo?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Rien de spécial. Je dois finir ce rapport pour cet après-midi.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Nothing special. I need to finish this report for this afternoon.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Ничего особенного. Мне нужно закончить этот отчет к сегодняшнему дню.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：没什么特别的。我今天下午必须完成这份报告。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Nada de especial. Tenho que terminar este relatório para esta tarde.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Courage ! Tiens, ton café est prêt.</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: Courage! Here, your coffee is ready.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Держись! Вот, твой кофе готов.</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：加油！喏，你的咖啡好了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Coragem! Toma, seu café está pronto.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Merci beaucoup ! Il sent bon.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Thank you very much! It smells good.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Большое спасибо! Он хорошо пахнет.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：非常感谢！闻起来很香。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Muito obrigada! Cheira bem.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: De rien. Alors, tu as des projets pour le week-end ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: You're welcome. So, do you have plans for the weekend?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Не за что. Ну что, у тебя есть планы на выходные?</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：不客气。那么，你周末有什么计划吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: De nada. Então, você tem planos para o fim de semana?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Pas encore. Peut-être aller voir mes parents. Et toi ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Not yet. Maybe visit my parents. And you?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Ещё нет. Возможно, навещу родителей. А ты?</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：还没有。也许去看看我的父母。你呢？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Ainda não. Talvez ir ver meus pais. E você?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Je pense aller faire de la randonnée si le temps est beau.</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: I'm thinking of going hiking if the weather is good.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Я думаю пойти в поход, если погода будет хорошей.</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：如果天气好的话，我想去徒步旅行。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Eu penso em ir fazer trilha se o tempo estiver bom.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: C'est une bonne idée ! J'aimerais bien faire ça un jour.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: That's a good idea! I'd like to do that someday.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Отличная идея! Я бы хотела как-нибудь это сделать.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：这是个好主意！我总有一天想这样做。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: É uma boa ideia! Eu gostaria de fazer isso um dia.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: On pourrait y aller ensemble la prochaine fois ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: We could go together next time?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Мы могли бы пойти вместе в следующий раз?</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：下次我们可以一起去吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Poderíamos ir juntos da próxima vez?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: Pourquoi pas ! J'adorerais.</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Why not! I'd love to.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Почему бы нет! Я бы очень хотела.</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：为什么不呢！我很乐意。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Por que não! Eu adoraria.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Super ! On en reparle plus tard.</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: Great! We'll talk about it later.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Отлично! Поговорим об этом позже.</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：太棒了！我们稍后再谈。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Ótimo! A gente se fala mais tarde.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: D'accord. Bon courage pour ta réunion !</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: Okay. Good luck with your meeting!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: Хорошо. Удачи на твоей встрече!</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：好的。祝你的会议顺利！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: De acordo. Boa sorte com sua reunião!</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: Merci, toi aussi pour ton rapport.</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: Thanks, you too with your report.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Спасибо, и тебе удачи с отчетом.</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：谢谢，你的报告也一样。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Obrigada, você também com seu relatório.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: À plus tard !</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: See you later!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: До скорого!</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：待会儿见！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Até mais tarde!</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: À plus !</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: See ya!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Пока!</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：再见！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Até mais!</span>
+                        </p>
+                    </div>
 
-            <div id="LGFran_dialog_Caio_et_la_Francaise" class="LGFran_dialog-block LGFran_hidden">
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Excusez-moi, bonjour, ça va ? Vous parlez français ?</span><br><span class="LGFran_translation-text">A Francesa: Com licença, Olá tudo bem? Você fala francês?</span></p>
-                <p><span class="LGFran_original-text">Caio: Oui, je sais parler un peu français, juste les bases. Mais j'apprends encore.</span><br><span class="LGFran_translation-text">Caio: Sim, eu sei falar um pouco francês, só o básico. Mas ainda estou aprendendo.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Vous suivez un cours quelque part ? À l'école, sur internet, ou vous apprenez seul ?</span><br><span class="LGFran_translation-text">A Francesa: Está fazendo curso em algum lugar? Na escola, na internet, ou está aprendendo sozinho?</span></p>
-                <p><span class="LGFran_original-text">Caio: J'apprends seul, je n'ai pas beaucoup de temps pour suivre des cours réguliers.</span><br><span class="LGFran_translation-text">Caio: Estou aprendendo sozinho, não tenho muito tempo para frequentar cursos periódicos.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Vous parlez très bien français, vous vous entraînez depuis combien de temps ?</span><br><span class="LGFran_translation-text">A Francesa: Você está falando muito bem francês, você está treinando há quanto tempo?</span></p>
-                <p><span class="LGFran_original-text">Caio: Ça fait environ deux ans et demi, j'essaie de regarder des vidéos sur YouTube et des films en français.</span><br><span class="LGFran_translation-text">Caio: Já faz uns dois anos e meio, tento assistir vídeos no YouTube e assistir filmes em francês.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: C'est une bonne pratique, essayez de les imiter, car les films montrent how la langue est vraiment parlée.</span><br><span class="LGFran_translation-text">A Francesa: Isso é uma boa prática, tente imitá-los, pois os filmes retratam como o idioma é falado realmente.</span></p>
-                <p><span class="LGFran_original-text">Caio: Oui, c'est exactement ce que j'essaie de faire. Vous êtes professeure ?</span><br><span class="LGFran_translation-text">Caio: Sim, é exatamente o que eu tento fazer. Você é professora?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Non, je suis juste venue visiter le pays, en tant que touriste. C'est une belle ville, très accueillante.</span><br><span class="LGFran_translation-text">A Francesa: Não, eu vim apenas visitar o país, como turista, é uma bela cidade, muito acolhedora.</span></p>
-                <p><span class="LGFran_original-text">Caio: Oui, les gens ici sont très accueillants avec les touristes. Qu'est-ce que vous aimez le plus ?</span><br><span class="LGFran_translation-text">Caio: Sim, o povo daqui é bem acolhedor com turistas. Do que está mais gostando?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: J'aime les musiques, la nourriture, les gens, les plages magnifiques et les beaux paysages qu'il y a ici.</span><br><span class="LGFran_translation-text">A Francesa: Estou gostando das músicas, da comida, das pessoas, das praias maravilhosas e das belas paisagens que tem por aí.</span></p>
-                <p><span class="LGFran_original-text">Caio: Tant mieux que vous aimiez et que vous vous amusiez. Profitez bien de votre séjour. Où aimeriez-vous que je m'arrête pour que vous descendiez ?</span><br><span class="LGFran_translation-text">Caio: Que bom que está gostando e se divertindo. Aproveite sua estadia. Onde você gostaria que eu parasse o carro para você descer?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Ah, vous pouvez vous arrêter un petit peu plus loin, près de cette voiture argentée.</span><br><span class="LGFran_translation-text">A Francesa: Ah, pode parar um pouquinho mais à frente, perto daquele carro cor prata.</span></p>
-                <p><span class="LGFran_original-text">Caio: C'est bon ici ?</span><br><span class="LGFran_translation-text">Caio: Aqui está bom?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">La Française: Ici, c'est parfait, merci beaucoup.</span><br><span class="LGFran_translation-text">A Francesa: Aqui está ótimo, muito obrigada.</span></p>
-                <p><span class="LGFran_original-text">Caio: De rien, passez une bonne après-midi.</span><br><span class="LGFran_translation-text">Caio: De nada, tenha uma boa tarde.</span></p>
-                <p><span class="LGFran_original-text">Caio: Merci, toi aussi pour ton rapport.</span><br><span class="LGFran_translation-text">Caio: Obrigada, você também com seu relatório.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Léa: À plus tard !</span><br><span class="LGFran_translation-text">Léa: Até mais tarde!</span></p>
-                <p><span class="LGFran_original-text">Marc: À plus !</span><br><span class="LGFran_translation-text">Marc: Até mais!</span></p>
-            </div>
+                    <div id="LGFran_dialog_Caio_et_Ayheon_Vieux_Amis" class="LGFran_dialog-block LGFran_hidden">
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Salut ! Ça fait si longtemps que je ne t'ai pas vu !</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Hi! It's been so long since I last saw you!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Привет! Давно я тебя не видел!</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：嗨！好久不见了！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Oi! Há quanto tempo não te vejo!</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: C'est vrai, ça fait vraiment très longtemps.</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: It's true, it's been a very long time.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: Это правда, очень давно.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：是真的，好久好久了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Ayheon: É mesmo, faz muito tempo mesmo.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Alors ? Comment ça va ? Qu'est-ce que tu deviens ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: So? How are you? What have you been up to?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Ну что? Как дела? Чем занимаешься?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：那么？你怎么样？你最近在忙些什么？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: E aí? Como tem passado, por onde tem andando?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: J'étudie énormément, je travaille beaucoup.</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: I study a lot, I work a lot.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: Я очень много учусь, очень много работаю.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：我学了很多，工作也很多。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Ayheon: Estou estudando demais, trabalhando muito.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Ah oui ? C'est épuisant !</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Oh really? That's exhausting!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: О да? Это утомительно!</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：哦，真的吗？那太累了！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: É mesmo? Nossa! Que cansativo.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: Et toi, qu'est-ce que tu fais ? Tu travailles dans quoi ? Ou tu étudies seulement ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: And you, what do you do? What do you work in? Or do you just study?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: А ты, чем занимаешься? Кем работаешь? Или только учишься?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：你呢，你做什么？你从事什么工作？还是只学习？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Ayheon: E você o que tem feito? Está trabalhando em quê? Ou só está estudando?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: J'ai travaillé comme technicien comptable dans un bureau à Niterói, mais aujourd'hui, je suis seulement chauffeur d'applications.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: I worked as an accounting technician in an office in Niterói, but today, I'm just an app driver.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Я работал бухгалтером-техником в офисе в Нитерой, но сегодня я просто водитель приложений.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：我以前在尼泰罗伊的一家办公室做会计技术员，但现在我只是一个应用程序司机。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Já trabalhei como técnico de contabilidade em um escritório de Niterói, mas hoje, sou apenas motorista de aplicativos.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: C'est super ça, c'est bien que tu puisses organiser ton temps. Tu as des enfants ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: That's great, it's good that you can organize your time. Do you have children?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: Это здорово, хорошо, что ты можешь организовать свое время. У тебя есть дети?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：那太好了，你能安排好自己的时间真是太棒了。你有孩子吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Ayheon: Que legal, é bom que você pode organizar seu tempo. Você tem filhos?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Oui, mon travail me permet de flexibiliser mon temps. J'ai un fils de 10 ans. Et toi, tu as eu des enfants, tu t'es marié ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Yes, my job allows me to be flexible with my time. I have a 10-year-old son. And you, did you have children, did you get married?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Да, моя работа позволяет мне гибко распоряжаться своим временем. У меня 10-летний сын. А ты, у тебя были дети, ты вышла замуж?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：是的，我的工作让我可以灵活安排时间。我有一个10岁的儿子。你呢，你生孩子了吗，结婚了吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Sim, meu trabalho me possibilita flexibilizar meu tempo. Eu tenho um filho de 10 anos. E você, teve filhos, se casou com alguém?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: Non, pour le moment, je suis célibataire, concentrée sur mes études et ma carrière. Je n'ai pas de temps pour les relations.</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: No, for the moment, I'm single, focused on my studies and my career. I don't have time for relationships.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: Нет, на данный момент я одинока, сосредоточена на учебе и карьере. У меня нет времени на отношения.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：不，目前我单身，专注于学业和事业。我没有时间谈恋爱。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Ayheon: Não, no momento eu estou solteira, focada nos meus estudos e carreira. Não tenho tempo para relacionamentos.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Et tu fais très bien. Ça a été un plaisir de te revoir.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: And you do very well. It was a pleasure to see you again.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: И ты очень хорошо делаешь. Было приятно снова тебя увидеть.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：你做得很好。很高兴再次见到你。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: E faz muito bem. Foi um prazer te reencontrar.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Ayheon: Le plaisir était pour moi, à bientôt.</span>
+                                <span data-lang="en" class="LGFran_hidden">Ayheon: The pleasure was mine, see you soon.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айхён: Мне было приятно, до скорого.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱宏：我很荣幸，再见。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">O prazer foi meu, até breve.</span>
+                        </p>
+                    </div>
 
-            <div id="LGFran_dialog_Parler_de_Relations_Amoureuses" class="LGFran_dialog-block LGFran_hidden">
-                <p><span class="LGFran_original-text">Arthur: Hé! Alice, où vas-tu ?</span><br><span class="LGFran_translation-text">Arthur: Ei! Alice, onde você está indo?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Ah, Salut Arthur, je voulais justement te parler.</span><br><span class="LGFran_translation-text">Alice: Há, Olá Arthur, eu queria mesmo falar com você.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Ah oui ? Alors tu peux parler, j'écoute.</span><br><span class="LGFran_translation-text">Arthur: É? Então pode falar, estou ouvindo.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Tu connais cette amie à moi, Louise ?</span><br><span class="LGFran_translation-text">Alice: Sabe aquela minha amiga, Louise?</span></p>
-                <p><span class="LGFran_original-text">Arthur: Je ne m'en souviens pas, quelle amie ? La petite, grosse et qui porte des lunettes ?</span><br><span class="LGFran_translation-text">Arthur: Não estou lembrado, qual amiga? A gordinha, baixinha de óculos?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Non, ça c'est Jade. Louise est grande, mince, a de longs cheveux blonds et des yeux bleus.</span><br><span class="LGFran_translation-text">Alice: Não, essa é a Jade. A Louise é alta, magra, cabelos longos e loiros e tem olhos azuis.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Ah d'accord, maintenant je me souviens. Mais dis-moi, qu'est-ce qu'elle a ? Elle a demandé après moi ?</span><br><span class="LGFran_translation-text">Arthur: Ata agora estou lembrei. Mas conta aí, o que tem ela? Ela perguntou por mim?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Ah, tu ne vas pas croire, c'est plus que ça, elle va me gronder si je te dis ça.</span><br><span class="LGFran_translation-text">Alice: Há, você não vai acreditar, é mais do que isso, ela vai me xingar se eu te contar isso.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Haaa non, maintenant que tu as commencé, dis-le. Je suis curieux.</span><br><span class="LGFran_translation-text">Arthur: Haaa não, agora que começou, fala. Fiquei curioso.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: D'accord, mais ne lui dis pas que c'est moi qui te l'ai dit, d'accord ?</span><br><span class="LGFran_translation-text">Alice: Tá bom, mas não diga para ela que foi eu quem te contou, tá bem?</span></p>
-                <p><span class="LGFran_original-text">Arthur: Tu peux compter sur moi, ma bouche est une tombe, je ne dirai rien. Mais maintenant dis-le vite, je suis impatient.</span><br><span class="LGFran_translation-text">Arthur: Pode deixar comigo, minha boca é um túmulo, não direi nada. Mas agora fala logo, estou ansioso.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Elle a dit que tu es mignon, gentil, que tu as un beau sourire et elle te trouve très astucieux et intelligent.</span><br><span class="LGFran_translation-text">Alice: Ela disse que você é um gato, bonitinho, simpático, que tem um belo sorriso e ela te acha muito esperto e inteligente.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Wow, c'est sérieux ? Ou tu te moques de moi ? Ne plaisante pas avec moi, je la trouve aussi très charmante et élégante.</span><br><span class="LGFran_translation-text">Arthur: Nossa, é sério mesmo? Ou você está me zoando? Não brinca comigo, também acho ela bem charmosa e elegante.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Je ne plaisante pas, je suis sérieuse, elle me l'a dit la semaine dernière.</span><br><span class="LGFran_translation-text">Alice: Não é brincando não, estou falando sério, ela me disse isso, semana passada.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Mince ! Je suis très content de savoir ça, je crois que je vais l'appeler.</span><br><span class="LGFran_translation-text">Arthur: Puxa! Estou muito feliz em saber disso, acho que vou ligar para ela.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Ne sois pas pressé et impatient, chaque chose en son temps.</span><br><span class="LGFran_translation-text">Alice: Não seja afobado e impaciente, tudo a seu tempo.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Mais si je tarde, un autre homme pourrait passer devant moi et l'appeler en premier.</span><br><span class="LGFran_translation-text">Arthur: Mas se eu demorar, outro homem pode passar na minha frente e ligar para ela primeiro.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Eh bien, en y pensant de cette façon, tu as raison. Mais vas-y doucement. Pourquoi tu ne l'invites pas à sortir ?</span><br><span class="LGFran_translation-text">Alice: Bem, pensando por esse lado, você está certo. Mas vai com calma. Porque você não a chama para sair?</span></p>
-                <p><span class="LGFran_original-text">Arthur: Bonne idée, tu as une idée d'où elle aime aller ?</span><br><span class="LGFran_translation-text">Arthur: Boa ideia, tem algum palpite de onde ela gosta de ir?</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Elle aime beaucoup dîner dans un bon restaurant et regarder un bon film au cinéma.</span><br><span class="LGFran_translation-text">Alice: Ela gosta muito de jantar em um bom restaurante e de assistir um bom filme no cinema.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Hmm bonne idée. L'emmener au cinéma me semble le meilleur choix.</span><br><span class="LGFran_translation-text">Arthur: Hmm boa ideia. Levá-la ao cinema, me parece a melhor escolha.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Hmmm, est-ce qu'il y aura un baiser ?</span><br><span class="LGFran_translation-text">Alice: Hmmm, será que irá rolar um beijo?</span></p>
-                <p><span class="LGFran_original-text">Arthur: Mince ! Si seulement ! L'idéal serait qu'il y ait une relation amoureuse.</span><br><span class="LGFran_translation-text">Arthur: Puxa! Quem dera! O ideal seria que rolasse um namoro.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Je ne sais pas si elle veut une relation amoureuse maintenant, mais ça vaut le coup d'essayer.</span><br><span class="LGFran_translation-text">Alice: Não sei se ela quer namorar agora, mas vale tentar.</span></p>
-                <p><span class="LGFran_original-text">Arthur: Eh bien, dans ce cas, je me contenterai juste de quelques baisers.</span><br><span class="LGFran_translation-text">Arthur: Bem, nesse caso, eu me contento só com uns beijinhos.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: Haha ok alors, bonne chance avec Louise.</span><br><span class="LGFran_translation-text">Alice: haha ok então, boa sorte com a Louise.</span></p>
-                <p><span class="LGFran_original-text">Arthur: D'accord, merci pour les conseils et l'astuce. Salut.</span><br><span class="LGFran_translation-text">Arthur: Tá bom, obrigado pelos conselhos e pela dica. Tchau.</span></p>
-                <p><span class="LGFran_original-text LGFran_Mulher">Alice: À bientôt.</span><br><span class="LGFran_translation-text">Alice: Até logo.</span></p>
+                    <div id="LGFran_dialog_Caio_et_la_Francaise" class="LGFran_dialog-block LGFran_hidden">
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Excusez-moi, bonjour, ça va ? Vous parlez français ?</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: Excuse me, hello, how are you? Do you speak French?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Извините, здравствуйте, как дела? Вы говорите по-французски?</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：打扰一下，你好，你还好吗？你会说法语吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Com licença, Olá tudo bem? Você fala francês?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Oui, je sais parler un peu français, juste les bases. Mais j'apprends encore.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Yes, I can speak a little French, just the basics. But I'm still learning.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Да, я немного говорю по-французски, только основы. Но я еще учусь.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：是的，我会说一点法语，只是基础知识。但我还在学习。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Sim, eu sei falar um pouco francês, só o básico. Mas ainda estou aprendendo.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Vous suivez un cours quelque part ? À l'école, sur internet, ou vous apprenez seul ?</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: Are you taking a course somewhere? At school, online, or are you learning by yourself?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Вы где-нибудь учитесь? В школе, в интернете или учитесь сами?</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：你是在哪里上课吗？在学校、网上，还是自学？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Está fazendo curso em algum lugar? Na escola, na internet, ou está aprendendo sozinho?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: J'apprends seul, je n'ai pas beaucoup de temps pour suivre des cours réguliers.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: I learn alone, I don't have much time to take regular classes.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Я учусь сам, у меня не так много времени для регулярных занятий.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：我自学，没有太多时间参加 नियमित 课程。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Estou aprendendo sozinho, não tenho muito tempo para frequentar cursos periódicos.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Vous parlez très bien français, vous vous entraînez depuis combien de temps ?</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: You speak French very well, how long have you been practicing?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Вы очень хорошо говорите по-французски, как давно вы практикуетесь?</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：你的法语说得很好，你练习多久了？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Você está falando muito bem francês, porquê você decidiu aprender a falar francês?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: J'ai toujours voulu apprendre à parler français parce que je pense que le français est une très belle langue. Je pratique seul depuis quelques mois maintenant.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: I've always wanted to learn to speak French because I think French is a very beautiful language. I've been practicing alone for a few months now.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Я всегда хотел научиться говорить по-французски, потому что считаю французский очень красивым языком. Я практикуюсь сам уже несколько месяцев.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：我一直想学法语，因为我觉得法语是一种非常优美的语言。我已经自学几个月了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Eu sempre quis aprender a falar francês porque acho que o francês é uma língua muito bonita. Já faz alguns mêses que venho praticando sozinho.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: C'est une bonne pratique, essayez de les imiter, car les films montrent how la langue est vraiment parlée.</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: That's good practice, try to imitate them, because movies show how the language is really spoken.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Это хорошая практика, старайтесь подражать им, потому что фильмы показывают, как язык действительно говорят.</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：这是个好练习，试着模仿他们，因为电影展现了这种语言的真实发音。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Isso é uma boa prática, tente imitá-los, pois os filmes retratam como o idioma é falado realmente.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Oui, c'est exactement ce que j'essaie de faire. Vous êtes professeure ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Yes, that's exactly what I'm trying to do. Are you a teacher?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Да, именно это я и пытаюсь делать. Вы учитель?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：是的，我正是这么做的。你是老师吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Sim, é exatamente o que eu tento fazer. Você é professora?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Non, je suis juste venue visiter le pays, en tant que touriste. C'est une belle ville, très accueillante.</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: No, I just came to visit the country, as a tourist. It's a beautiful, very welcoming city.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Нет, я просто приехала посетить страну, как туристка. Это красивый, очень гостеприимный город.</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：不，我只是来这个国家旅游的。这是一个美丽的城市，非常热情好客。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Não, eu vim apenas visitar o país, como turista, é uma bela cidade, muito acolhedora.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Oui, les gens ici sont très accueillants avec les touristes. Qu'est-ce que vous aimez le plus ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Yes, people here are very welcoming to tourists. What do you like the most?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Да, люди здесь очень гостеприимны к туристам. Что вам больше всего нравится?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：是的，这里的人对游客非常热情。你最喜欢什么？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Sim, o povo daqui é bem acolhedor com turistas. Do que está mais gostando?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: J'aime les musiques, la nourriture, les gens, les plages magnifiques et les beaux paysages qu'il y a ici.</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: I like the music, the food, the people, the magnificent beaches, and the beautiful landscapes here.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Мне нравится музыка, еда, люди, великолепные пляжи и красивые пейзажи, которые здесь есть.</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：我喜欢这里的音乐、美食、人民、壮丽的海滩和美丽的风景。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Estou gostando das músicas, da comida, das pessoas, das praias maravilhosas e das belas paisagens que tem por aí.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Tant mieux que vous aimiez et que vous vous amusiez. Profitez bien de votre séjour. Où aimeriez-vous que je m'arrête pour que vous descendiez ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Good that you like it and are having fun. Enjoy your stay. Where would you like me to stop for you to get off?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Тем лучше, что вам нравится и вы развлекаетесь. Наслаждайтесь своим пребыванием. Где бы вы хотели, чтобы я остановился, чтобы вы вышли?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：你喜欢并玩得开心就好。祝你旅途愉快。你想让我在哪里停车下车？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Que bom que está gostando e se divertindo. Aproveite sua estadia. Onde você gostaria que eu parasse o carro para você descer?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Ah, vous pouvez vous arrêter un petit peu plus loin, près de cette voiture argentée.</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: Oh, you can stop a little further down, near that silver car.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: О, вы можете остановиться немного дальше, рядом с этой серебристой машиной.</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：哦，你可以再往前一点，在那辆银色车旁边停下。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Ah, pode parar um pouquinho mais à frente, perto daquele carro cor prata.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: C'est bon ici ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Is it good here?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Здесь хорошо?</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：这里可以吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Aqui está bom?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">La Française: Ici, c'est parfait, merci beaucoup.</span>
+                                <span data-lang="en" class="LGFran_hidden">The Frenchwoman: Here, it's perfect, thank you very much.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Француженка: Здесь идеально, большое спасибо.</span>
+                                <span data-lang="zh" class="LGFran_hidden">法国女人：这里完美，非常感谢。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">A Francesa: Aqui está ótimo, muito obrigada.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: De rien, passez une bonne après-midi.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: You're welcome, have a good afternoon.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Не за что, хорошего дня.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：不客气，祝你下午愉快。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: De nada, tenha uma boa tarde.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Caio: Merci, toi aussi pour ton rapport.</span>
+                                <span data-lang="en" class="LGFran_hidden">Caio: Thanks, you too with your report.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Кайо: Спасибо, тебе тоже за твой отчет.</span>
+                                <span data-lang="zh" class="LGFran_hidden">卡约：谢谢，你的报告也一样。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Caio: Obrigada, você também com seu relatório.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Léa: À plus tard !</span>
+                                <span data-lang="en" class="LGFran_hidden">Léa: See you later!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Леа: До скорого!</span>
+                                <span data-lang="zh" class="LGFran_hidden">莉亚：待会儿见！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Léa: Até mais tarde!</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Marc: À plus !</span>
+                                <span data-lang="en" class="LGFran_hidden">Marc: See ya!</span>
+                                <span data-lang="ru" class="LGFran_hidden">Марк: Пока!</span>
+                                <span data-lang="zh" class="LGFran_hidden">马克：再见！</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Marc: Até mais!</span>
+                        </p>
+                    </div>
+
+                    <div id="LGFran_dialog_Parler_de_Relations_Amoureuses" class="LGFran_dialog-block LGFran_hidden">
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Hé! Alice, où vas-tu ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Hey! Alice, where are you going?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Эй! Алиса, куда ты идешь?</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：嘿！爱丽丝，你要去哪儿？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Ei! Alice, onde você está indo?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Ah, Salut Arthur, je voulais justement te parler.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Oh, Hi Arthur, I just wanted to talk to you.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: О, привет, Артур, я как раз хотела с тобой поговорить.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：哦，嗨，亚瑟，我正想找你说话呢。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Há, Olá Arthur, eu queria mesmo falar com você.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Ah oui ? Alors tu peux parler, j'écoute.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Oh really? Then you can talk, I'm listening.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: О да? Тогда можешь говорить, я слушаю.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：哦，真的吗？那你可以说了，我在听。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: É? Então pode falar, estou ouvindo.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Tu connais cette amie à moi, Louise ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Do you know that friend of mine, Louise?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Ты знаешь мою подругу, Луизу?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：你认识我那个朋友，路易丝吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Sabe aquela minha amiga, Louise?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Je ne m'en souviens pas, quelle amie ? La petite, grosse et qui porte des lunettes ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: I don't remember, which friend? The short, chubby one who wears glasses?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Я не помню, какая подруга? Маленькая, толстая и в очках?</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：我不记得了，哪个朋友？那个矮矮胖胖戴眼镜的？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Não estou lembrado, qual amiga? A gordinha, baixinha de óculos?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Non, ça c'est Jade. Louise est grande, mince, a de longs cheveux blonds et des yeux bleus.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: No, that's Jade. Louise is tall, thin, has long blonde hair and blue eyes.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Нет, это Джейд. Луиза высокая, стройная, с длинными светлыми волосами и голубыми глазами.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：不，那是杰德。路易丝个子高，身材苗条，有一头长长的金发和蓝眼睛。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Não, essa é a Jade. A Louise é alta, magra, cabelos longos e loiros e tem olhos azuis.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Ah d'accord, maintenant je me souviens. Mais dis-moi, qu'est-ce qu'elle a ? Elle a demandé après moi ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Oh okay, now I remember. But tell me, what's wrong with her? Did she ask about me?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: А, понятно, теперь я вспомнил. Но скажи, что с ней? Она спрашивала обо мне?</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：哦，好的，现在我记起来了。但是告诉我，她怎么了？她打听我了吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Ata agora estou lembrei. Mas conta aí, o que tem ela? Ela perguntou por mim?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Ah, tu ne vas pas croire, c'est plus que ça, elle va me gronder si je te dis ça.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Oh, you won't believe it, it's more than that, she's going to scold me if I tell you that.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: О, ты не поверишь, это больше, чем это, она будет ругать меня, если я тебе это скажу.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：哦，你不会相信的，不止如此，如果我告诉你，她会骂我的。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Há, você não vai acreditar, é mais do que isso, ela vai me xingar se eu te contar isso.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Haaa non, maintenant que tu as commencé, dis-le. Je suis curieux.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Oh no, now that you've started, tell me. I'm curious.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Ааа нет, раз уж ты начал, скажи. Мне любопытно.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：啊，不，既然你已经开始了，就告诉我吧。我很好奇。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Haaa não, agora que começou, fala. Fiquei curioso.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: D'accord, mais ne lui dis pas que c'est moi qui te l'ai dit, d'accord ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Okay, but don't tell her I told you, okay?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Хорошо, но не говори ей, что это я тебе сказала, хорошо?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：好吧，但别告诉她是我告诉你的，好吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Tá bom, mas não diga para ela que foi eu quem te contou, tá bem?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Tu peux compter sur moi, ma bouche est une tombe, je ne dirai rien. Mais maintenant dis-le vite, je suis impatient.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: You can count on me, my lips are sealed, I won't say anything. But now tell me quickly, I'm impatient.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Можешь на меня рассчитывать, мой рот на замке, я ничего не скажу. Но теперь говори скорее, я нетерпелив.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：你放心吧，我守口如瓶，什么都不会说。但现在快告诉我吧，我等不及了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Pode deixar comigo, minha boca é um túmulo, não direi nada. Mas agora fala logo, estou ansioso.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Elle a dit que tu es mignon, gentil, que tu as un beau sourire et elle te trouve très astucieux et intelligent.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: She said you're cute, kind, that you have a beautiful smile and she finds you very clever and intelligent.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Она сказала, что ты милый, добрый, что у тебя красивая улыбка, и она считает тебя очень остроумным и умным.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：她说你很可爱，很善良，笑容很好看，她觉得你非常机智聪明。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Ela disse que você é um gato, bonitinho, simpático, que tem um belo sorriso e ela te acha muito esperto e inteligente.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Wow, c'est sérieux ? Ou tu te moques de moi ? Ne plaisante pas avec moi, je la trouve aussi très charmante et élégante.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Wow, are you serious? Or are you making fun of me? Don't joke with me, I also find her very charming and elegant.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Вау, это серьезно? Или ты издеваешься надо мной? Не шути со мной, я тоже нахожу ее очень обаятельной и элегантной.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：哇，这是真的吗？还是你在开玩笑？别拿我开玩笑，我也觉得她非常迷人优雅。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Nossa, é sério mesmo? Ou você está me zoando? Não brinca comigo, também acho ela bem charmosa e elegante.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Je ne plaisante pas, je suis sérieuse, elle me l'a dit la semaine dernière.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: I'm not joking, I'm serious, she told me last week.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Я не шучу, я серьезно, она мне это сказала на прошлой неделе.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：我不是开玩笑，我是认真的，她上周告诉我的。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Não é brincando não, estou falando sério, ela me disse isso, semana passada.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Mince ! Je suis très content de savoir ça, je crois que je vais l'appeler.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Damn! I'm very happy to know that, I think I'm going to call her.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Черт! Я очень рад это знать, думаю, я ей позвоню.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：糟了！我很高兴知道这件事，我想我要给她打电话。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Puxa! Estou muito feliz em saber disso, acho que vou ligar para ela.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Ne sois pas pressé et impatient, chaque chose en son temps.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Don't be rushed and impatient, everything in its own time.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Не торопись и не будь нетерпеливым, всему свое время.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：别着急，别不耐烦，一切顺其自然。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Não seja afobado e impaciente, tudo a seu tempo.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Mais si je tarde, un autre homme pourrait passer devant moi et l'appeler en premier.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: But if I delay, another man might get ahead of me and call her first.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Но если я промедлю, другой мужчина может опередить меня и позвонить ей первым.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：但如果我耽搁了，另一个男人可能会抢在我前面先给她打电话。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Mas se eu demorar, outro homem pode passar na minha frente e ligar para ela primeiro.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Eh bien, en y pensant de cette façon, tu as raison. Mais vas-y doucement. Pourquoi tu ne l'invites pas à sortir ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Well, thinking about it that way, you're right. But take it easy. Why don't you ask her out?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Что ж, если так подумать, ты прав. Но будь осторожен. Почему бы тебе не пригласить ее на свидание?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：嗯，这样一想，你说得对。但你得慢慢来。你为什么不约她出去呢？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Bem, pensando por esse lado, você está certo. Mas vai com calma. Porque você não a chama para sair?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Bonne idée, tu as une idée d'où elle aime aller ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Good idea, do you have any idea where she likes to go?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Хорошая идея, у тебя есть идеи, куда она любит ходить?</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：好主意，你知道她喜欢去哪里吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Boa ideia, tem algum palpite de onde ela gosta de ir?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Elle aime beaucoup dîner dans un bon restaurant et regarder un bon film au cinéma.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: She really likes to dine in a good restaurant and watch a good movie at the cinema.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Ей очень нравится ужинать в хорошем ресторане и смотреть хороший фильм в кинотеатре.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：她很喜欢在一家不错的餐厅用餐，然后去看一部好电影。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Ela gosta muito de jantar em um bom restaurante e de assistir um bom filme no cinema.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Hmm bonne idée. L'emmener au cinéma me semble le meilleur choix.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Hmm good idea. Taking her to the cinema seems like the best choice to me.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Хм, хорошая идея. Отвести ее в кино кажется мне лучшим выбором.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：嗯，好主意。带她去看电影对我来说似乎是最好的选择。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Hmm boa ideia. Levá-la ao cinema, me parece a melhor escolha.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Hmmm, est-ce qu'il y aura un baiser ?</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Hmmm, will there be a kiss?</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Хм, будет ли поцелуй?</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：嗯，会有吻戏吗？</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Hmmm, será que irá rolar um beijo?</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Mince ! Si seulement ! L'idéal serait qu'il y ait une relation amoureuse.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Darn! If only! Ideally, there would be a romantic relationship.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Черт! Если бы только! Идеально было бы, если бы были романтические отношения.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：该死！要是能那样就好了！最好能发展一段恋爱关系。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Puxa! Quem dera! O ideal seria que rolasse um namoro.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Je ne sais pas si elle veut une relation amoureuse maintenant, mais ça vaut le coup d'essayer.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: I don't know if she wants a relationship right now, but it's worth a try.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Я не знаю, хочет ли она сейчас отношений, но стоит попробовать.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：我不知道她现在是否想要一段恋情，但值得一试。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Não sei se ela quer namorar agora, mas vale tentar.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: Eh bien, dans ce cas, je me contenterai juste de quelques baisers.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Well, in that case, I'll just settle for a few kisses.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Ну что ж, в таком случае, я довольствуюсь несколькими поцелуями.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：好吧，那样的话，我只满足于一些亲吻。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Bem, nesse caso, eu me contento só com uns beijinhos.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: Haha ok alors, bonne chance avec Louise.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: Haha okay then, good luck with Louise.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: Ха-ха, ну тогда, удачи с Луизой.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：哈哈，那好吧，祝你和路易丝好运。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Haha ok então, boa sorte com a Louise.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Arthur: D'accord, merci pour les conseils et l'astuce. Salut.</span>
+                                <span data-lang="en" class="LGFran_hidden">Arthur: Okay, thanks for the advice and the tip. Bye.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Артур: Хорошо, спасибо за советы и подсказку. Пока.</span>
+                                <span data-lang="zh" class="LGFran_hidden">亚瑟：好的，谢谢你的建议和提示。再见。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Arthur: Tá bom, obrigado pelos conselhos e pela dica. Tchau.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Alice: À bientôt.</span>
+                                <span data-lang="en" class="LGFran_hidden">Alice: See you soon.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Алиса: До скорого.</span>
+                                <span data-lang="zh" class="LGFran_hidden">爱丽丝：再见。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Alice: Até logo.</span>
+                        </p>
+                    </div>
+
+                    <div id="LGFran_dialog_Confronto_Inesperado" class="LGFran_dialog-block LGFran_hidden">
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Aylla, attends ! Il faut qu'on parle.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Aylla, wait! We need to talk.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: Айлла, подожди! Нам нужно поговорить.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：艾拉，等等！我们需要谈谈。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Aylla, espera! A gente precisa conversar.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: Larissa ? Tiens, quelle surprise de te voir ici.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: Larissa? Well, what a surprise to see you here.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: Лариса? Ну, какая неожиданность видеть тебя здесь.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：拉里萨？哦，真没想到在这里见到你。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: Larissa? Puxa, que surpresa te ver aqui.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Surprise ? Vraiment ? Je l'ai dit, tu n'as pas voulu me croire.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Surprise? Really? I told you, you didn't want to believe me.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: Сюрприз? Правда? Я сказала тебе, ты не захотела мне верить.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：惊讶？真的吗？我说了，你却不相信我。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Surpresa? Sério? Eu disse, você não quis acreditar em mim.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: De quoi tu parles ? Je ne comprends rien.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: What are you talking about? I don't understand anything.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: О чем ты говоришь? Я ничего не понимаю.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：你在说什么？我什么都听不懂。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: Do que você está falando? Não estou entendendo nada.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Tu sais très bien de quoi je parle. Après tout ce que tu as fait... Tu récoltes ce que tu sèmes, misérable.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: You know very well what I'm talking about. After all you've done... You reap what you sow, wretched.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: Ты прекрасно знаешь, о чем я говорю. После всего, что ты сделала... Что посеешь, то и пожнешь, несчастная.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：你很清楚我在说什么。在你做完所有事之后……你自食恶果，可怜虫。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Você sabe muito bem do que estou falando. Depois de tudo que você fez... Você recebe o que merece, miserável.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: C'est ça, tu as fini ton sermon ? Je n'ai pas envie de parler, ne me dérange pas et va t'occuper.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: That's it, are you done with your sermon? I don't feel like talking, don't bother me and go mind your own business.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: Все, ты закончила свою проповедь? Я не хочу говорить, не мешай мне и иди займись делом.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：就这样吧，你讲完了吗？我不想说话，别打扰我了，去忙你自己的事吧。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: É isso, você terminou seu sermão? Não estou a fim de falar, vê se não me perturba e vai arranjar o que fazer.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Oh, alors maintenant tu me snobes ? Incroyable ! Quelle transformation ! Félicitations.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Oh, so now you're snubbing me? Incredible! What a transformation! Congratulations.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: О, так теперь ты меня игнорируешь? Невероятно! Какое преображение! Поздравляю.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：哦，所以你现在开始冷落我了？难以置信！真是个蜕变！恭喜。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Ah, então agora você me esnoba? Incrível! Quem te viu, quem te vê, parabéns.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: Écoute, je n'ai pas de temps pour tes reproches. J'ai ma vie, tu as la tienne.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: Listen, I don't have time for your reproaches. I have my life, you have yours.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: Послушай, у меня нет времени на твои упреки. У меня своя жизнь, у тебя своя.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：听着，我没时间听你指责。我有我的生活，你有你的生活。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: Escuta, não tenho tempo para suas censuras. Tenho a minha vida, você tem a sua.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Ah oui ? Et quand ta vie s'écroulera, comme la mienne a failli le faire ? Je préfère que ce soit toi. Plutôt toi que moi.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Oh really? And when your life collapses, like mine almost did? I prefer it to be you. Rather you than me.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: О да? А когда твоя жизнь рухнет, как моя чуть не рухнула? Я предпочитаю, чтобы это была ты. Лучше ты, чем я.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：哦，真的吗？那当你的生活崩溃时，就像我的生活差点崩溃一样？我宁愿是你。宁愿是你而不是我。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Ah é? E quando a sua vida desmoronar, como a minha quase desmoronou? Eu prefiro que seja você. Antes você, do que eu.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: Tu es ridicule. Je suis passée à autre chose.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: You're ridiculous. I've moved on.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: Ты смешна. Я пошла дальше.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：你真可笑。我已经放下了。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: Você é ridícula. Eu segui em frente.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Pas moi ! Et tu sais quoi ? Je m'en fiche de ce que tu as à dire ou de ce que tu penses.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Not me! And you know what? I don't care what you have to say or what you think.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: Не я! И знаешь что? Мне плевать, что ты говоришь или думаешь.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：我可不！你知道吗？我不在乎你要说什么，也不在乎你怎么想。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Eu não! E sabe de uma coisa? Não estou nem aí para o que você tem a dizer ou para o que você pensa.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text">
+                                <span data-lang="fr">Aylla: Très bien. Adieu, Larissa.</span>
+                                <span data-lang="en" class="LGFran_hidden">Aylla: Very well. Goodbye, Larissa.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Айлла: Очень хорошо. Прощай, Лариса.</span>
+                                <span data-lang="zh" class="LGFran_hidden">艾拉：非常好。再见，拉里萨。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Aylla: Muito bem. Adeus, Larissa.</span>
+                        </p>
+                        <p>
+                            <span class="LGFran_original-text LGFran_Mulher">
+                                <span data-lang="fr">Larissa: Adieu, Aylla. Et n'oublie pas ce que je t'ai dit.</span>
+                                <span data-lang="en" class="LGFran_hidden">Larissa: Goodbye, Aylla. And don't forget what I told you.</span>
+                                <span data-lang="ru" class="LGFran_hidden">Лариса: Прощай, Айлла. И не забывай, что я тебе сказала.</span>
+                                <span data-lang="zh" class="LGFran_hidden">拉里萨：再见，艾拉。别忘了我告诉你的话。</span>
+                            </span><br>
+                            <span class="LGFran_translation-text">Larissa: Adeus, Aylla. E não esqueça o que eu te disse.</span>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</main>
+        </main>
 
         <footer class="LGFran_footer">
             <p>&copy; 2025 C. A. Leão Pinheiro - Seu Auxiliar de Estudo de Francês</p>
