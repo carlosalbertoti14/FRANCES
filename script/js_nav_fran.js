@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p><strong><button class="LGFran_icon-button-legend">🔁</button> MODO REPETIÇÃO:</strong> Repete continuamente sem a necessidade de varios cliques, seja na MODO PALAVRA, NO MODO PARAGRAFO ou MODO AB.</p>
                         <p><strong><button class="LGFran_icon-button-legend">4s</button> ESPERA 4s:</strong> Adiciona uma pausa de 4 segundos entre as repetições no modo de loop, para que não fique repetindo rápido de mais.</p>
                         <p><strong><button class="LGFran_icon-button-legend">🐢</button> RETARDA O AUDIO:</strong> Alterna a velocidade da fala, deixando-a um pouco mais lenta, para facilitar a compreensão.</p>
-                        <p><strong><button class="LGFran_icon-button-legend">🔄</button> MUDA O DIÁLO:</strong> Carrega o próximo diálogo disponível na lista.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">📝</button> MUDA O DIÁLO:</strong> Carrega o próximo diálogo disponível na lista.</p>
                     </div>
                     <div>
                         <p><strong><button class="LGFran_icon-button-legend">▶️</button> PLAY:</strong> Inicia a leitura do áudio do segmento atual ou retoma de onde parou.</p>
