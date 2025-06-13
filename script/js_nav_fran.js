@@ -190,6 +190,8 @@ function paradalternar() {
     }, 2000); // 2000 milissegundos = 2 segundos
 }
 
+// --- fim da Nova Função paradalternar ---
+
         function mutepalternar() {
         // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
         stopSpeaking();
@@ -699,9 +701,46 @@ function paradalternar() {
     dialogContent.addEventListener('click', (event) => {
         const clickedParagraph = event.target.closest('.LGFran_dialog-block > p');
         if (!clickedParagraph) return; // Garante que clicamos em um parágrafo de diálogo
-
         // CHAMA A NOVA FUNÇÃO AQUI NO INÍCIO DE CADA CLIQUE
-        paradalternar();
+
+
+         // --- Início da adição da mensagem temporária ---
+        const mensagemDiv = document.createElement('div');
+        mensagemDiv.textContent = "⏳ Aguarde ...";
+        mensagemDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        z-index: 9999; /* Garante que fique acima de tudo */
+        font-size: 1.2em;
+        text-align: center;
+    `;
+
+
+    document.body.appendChild(mensagemDiv);
+    // --- Fim da adição da mensagem temporária ---
+        stopSpeaking();
+        toggleMuteButton.click();
+
+        setTimeout(() => {
+            if (isMuted) {
+         toggleMuteButton.click();  /* Desmuta o áudio */
+            /* stopSpeaking(); */ // Garante que nenhuma fala residual comece inesperadamente
+        }
+
+        // --- Início da remoção da mensagem temporária ---
+        // A mensagem será removida junto com o desmute/ação após os 2 segundos.
+
+            
+
+
+
+
 
         // Armazena o estado atual dos modos ANTES de qualquer alteração adicional
         wasLoopModeActive = loopMode;
@@ -713,7 +752,7 @@ function paradalternar() {
 
         // Desativa visualmente e logicamente todos os modos relevantes.
         // Isso é importante porque paradalternar não lida com o estado dos botões.
-/*         loopMode = false;
+            /*         loopMode = false;
         toggleLoopButton.classList.remove('LGFran_active'); */
 
         // AB Mode handling
@@ -812,7 +851,18 @@ function paradalternar() {
             }
 
         }, initialDelay); // Fecha o setTimeout
-    });
+
+
+            if (document.body.contains(mensagemDiv)) {
+            document.body.removeChild(mensagemDiv);
+        }
+
+        }, 2000); // 2000 milissegundos = 2 segundos
+
+    }); /**************** fim do dialogContent.addEventListener  */
+
+
+
 
     // --- Event Listeners dos Botões ---
 
