@@ -144,24 +144,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Nova Função paradalternar ---
-    function paradalternar() {
-        // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
-        stopSpeaking();
-        // Em seguida, alterna o estado do botão de mudo.
-        // Se estava desmutado, muta. Se estava mutado, desmuta.
-        /*  toggleMuteButton.click();  */
+function paradalternar() {
+    // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
+    stopSpeaking();
+    // Em seguida, alterna o estado do botão de mudo.
+    // Se estava desmutado, muta. Se estava mutado, desmuta.
+    /* toggleMuteButton.click();  */
 
-        // Aguarda 2 segundos antes de potencialmente desmutar novamente.
-        setTimeout(() => {
-            // Se o áudio ainda estiver mutado após os 2 segundos (o que significa que
-            // o clique anterior no toggleMuteButton o deixou mutado), então desmuta.
-            // Isso cria a "janela de silêncio".
-            if (isMuted) {
-                /*  toggleMuteButton.click(); */ // Desmuta o áudio
-                stopSpeaking(); // Garante que nenhuma fala residual comece inesperadamente
-            }
-        }, 2000); // 2000 milissegundos = 2 segundos
-    }
+    // --- Início da adição da mensagem temporária ---
+    const mensagemDiv = document.createElement('div');
+    mensagemDiv.textContent = "⏳ Aguarde ...";
+    mensagemDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        z-index: 9999; /* Garante que fique acima de tudo */
+        font-size: 1.2em;
+        text-align: center;
+    `;
+    document.body.appendChild(mensagemDiv);
+    // --- Fim da adição da mensagem temporária ---
+
+    // Aguarda 2 segundos antes de potencialmente desmutar novamente.
+    setTimeout(() => {
+        // Se o áudio ainda estiver mutado após os 2 segundos (o que significa que
+        // o clique anterior no toggleMuteButton o deixou mutado), então desmuta.
+        // Isso cria a "janela de silêncio".
+        if (isMuted) {
+            /* toggleMuteButton.click(); */ // Desmuta o áudio
+            stopSpeaking(); // Garante que nenhuma fala residual comece inesperadamente
+        }
+
+        // --- Início da remoção da mensagem temporária ---
+        // A mensagem será removida junto com o desmute/ação após os 2 segundos.
+        if (document.body.contains(mensagemDiv)) {
+            document.body.removeChild(mensagemDiv);
+        }
+        // --- Fim da remoção da mensagem temporária ---
+
+    }, 2000); // 2000 milissegundos = 2 segundos
+}
 
         function mutepalternar() {
         // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção

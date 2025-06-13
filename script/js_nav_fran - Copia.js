@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'fr': 'fr-FR', // Francês
         'en': 'en-US', // Inglês (EUA)
         'ru': 'ru-RU', // Russo
-        'zh': 'zh-CN'  // Mandarim (China continental)
+        'zh': 'zh-CN', // Mandarim (China continental)
+        'pt-br': 'fr-FR' // Mapeia "Português" para voz francesa para fala
     };
 
     // NOVO: Atraso mínimo para loops e repetições para evitar travamentos
@@ -57,14 +58,130 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastClickedPhraseParagraph = null; // Armazena o elemento <p> da frase clicada
     let currentABIndex = -1; // Adicionado para controlar o índice atual no modo AB
 
+    // NOVO: Variáveis para armazenar o estado dos modos antes de um clique no conteúdo
+    let wasLoopModeActive = false;
+    let wasABModeActive = false;
+    let wasRepetitionModeActive = ''; // Armazena 'word', 'phrase', ou ''
+
     const dialogues = [
         { id: 'LGFran_dialog_Dialogo_do_Cafe', title: 'Diálogo do Café' },
         { id: 'LGFran_dialog_Caio_et_Ayheon_Vieux_Amis', title: 'Caio e Ayheon - Velhos Amigos' },
         { id: 'LGFran_dialog_Caio_et_la_Francaise', title: 'Caio e a Francesa' },
         { id: 'LGFran_dialog_Parler_de_Relations_Amoureuses', title: 'Parler de Relations Amoureuses' },
-        { id: 'LGFran_dialog_Confronto_Inesperado', title: 'Confronto Inesperado' }
+        { id: 'LGFran_dialog_Confronto_Inesperado', title: 'Confronto Inesperado' },
+        { id: 'LGFran_dialog_DIALOGO_FAMILIAR1', title: 'DIALOGO FAMILIAR - PAI E FILHO' }
     ];
     let currentDialogueIndex = 0;
+
+
+
+ // --- SEÇÃO DO BOTÃO DE AJUDA ---
+    const helpButton = document.getElementById('LGFran_AJUDA');
+    let helpModal = null; // Variável para armazenar a referência à modal de ajuda
+
+    function createHelpModal() {
+        if (helpModal) return; // Se a modal já existe, não crie novamente
+
+        helpModal = document.createElement('div');
+        helpModal.id = 'LGFran_helpModal';
+        helpModal.classList.add('LGFran_help-modal');
+
+        helpModal.innerHTML = `
+            <div class="LGFran_help-modal-content">
+                <span class="LGFran_close-button" id="LGFran_closeHelpModal">&times;</span>
+                <h2>LEGENDA DOS ICONES DO MENU</h2>
+                <div class="LGFran_help-grid">
+                    <div>
+                        <p><strong><button class="LGFran_icon-button-legend">🔠</button> MODO PALAVRA:</strong> Mantenha ativada para falar e clique em alguma palavra do diálogo, para repetir somente ela.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">💬</button> MODO FRASE:</strong> Ative ela Clique no parágrafo que deseja ouvir, sem dar continuidade ao restante dos parágrafos.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">🔁</button> MODO REPETIÇÃO:</strong> Repete continuamente sem a necessidade de varios cliques, seja na MODO PALAVRA, NO MODO PARAGRAFO ou MODO AB.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">4s</button> ESPERA 4s:</strong> Adiciona uma pausa de 4 segundos entre as repetições no modo de loop, para que não fique repetindo rápido de mais.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">🐢</button> RETARDA O AUDIO:</strong> Alterna a velocidade da fala, deixando-a um pouco mais lenta, para facilitar a compreensão.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">📝</button> MUDA O DIÁLO:</strong> Carrega o próximo diálogo disponível na lista.</p>
+                    </div>
+                    <div>
+                        <p><strong><button class="LGFran_icon-button-legend">▶️</button> PLAY:</strong> Inicia a leitura do áudio do segmento atual ou retoma de onde parou.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">⏸️</button> PAUSE:</strong> Pausa a leitura do áudio.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">⏹️</button> STOP:</strong> Para completamente a leitura do áudio e reinicia o segmento.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">⏪</button> VOLTAR PARAGRAFO:</strong> Volta para o parágrafo (segmento) anterior.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">⏩</button> PRÓXIMO PARAGRAFO:</strong> Avança para o próximo parágrafo (segmento).</p>
+                        <p><strong><button class="LGFran_icon-button-legend">🅰️🅱️</button> MODO AB:</strong> Permite selecionar um início (A) de um parágrafo e um fim (B) do parágrafo, para repetir um trecho específico do diálogo.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">🔇</button> DESATIVA AUDIO:</strong> Muta ou desmuta o áudio da síntese de fala, também server para corrigir erros, caso ocorrra.</p>
+                        <p><strong><button class="LGFran_icon-button-legend">❓</button> AJUDA:</strong> Exibe esta janela de ajuda com a explicação de todos os botões.</p>
+                        <p><strong><button class="LGFran_icon-button-legend"> - </button> Obs.:</strong> Você pode precionar a palavra ou selecionar um trecho especifico, e escolher a opção para o seu proprio navegador traduzir aquiele trecho, ele também pronuncia.</p>
+                    
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(helpModal);
+
+        // Adiciona event listener para fechar a modal
+        document.getElementById('LGFran_closeHelpModal').addEventListener('click', closeHelpModal);
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) { // Fecha se clicar fora do conteúdo da modal
+                closeHelpModal();
+            }
+        });
+    }
+
+    function openHelpModal() {
+        createHelpModal(); // Garante que a modal seja criada
+        helpModal.style.display = 'flex'; // Torna a modal visível
+    }
+
+    function closeHelpModal() {
+        if (helpModal) {
+            helpModal.style.display = 'none'; // Esconde a modal
+        }
+    }
+
+    // Adiciona o event listener ao botão de ajuda
+    helpButton.addEventListener('click', openHelpModal);
+    // --- FIM SEÇÃO DO BOTÃO DE AJUDA ---
+
+/* FIM DO BOTÃO AJUDA ... */
+
+
+    // --- Nova Função paradalternar ---
+    function paradalternar() {
+        // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
+        stopSpeaking();
+        // Em seguida, alterna o estado do botão de mudo.
+        // Se estava desmutado, muta. Se estava mutado, desmuta.
+        /*  toggleMuteButton.click();  */
+
+        // Aguarda 2 segundos antes de potencialmente desmutar novamente.
+        setTimeout(() => {
+            // Se o áudio ainda estiver mutado após os 2 segundos (o que significa que
+            // o clique anterior no toggleMuteButton o deixou mutado), então desmuta.
+            // Isso cria a "janela de silêncio".
+            if (isMuted) {
+                /*  toggleMuteButton.click(); */ // Desmuta o áudio
+                stopSpeaking(); // Garante que nenhuma fala residual comece inesperadamente
+            }
+        }, 2000); // 2000 milissegundos = 2 segundos
+    }
+
+        function mutepalternar() {
+        // Primeiro, para qualquer fala em andamento para garantir que não haja interrupção
+        stopSpeaking();
+        // Em seguida, alterna o estado do botão de mudo.
+        // Se estava desmutado, muta. Se estava mutado, desmuta.
+         toggleMuteButton.click();  
+
+        // Aguarda 2 segundos antes de potencialmente desmutar novamente.
+        setTimeout(() => {
+            // Se o áudio ainda estiver mutado após os 2 segundos (o que significa que
+            // o clique anterior no toggleMuteButton o deixou mutado), então desmuta.
+            // Isso cria a "janela de silêncio".
+            if (isMuted) {
+                 toggleMuteButton.click(); // Desmuta o áudio
+                stopSpeaking(); // Garante que nenhuma fala residual comece inesperadamente
+            }
+        }, 2000); // 2000 milissegundos = 2 segundos
+    }
+    // --- Fim da Nova Função paradalternar ---
 
     // --- Funções de Leitura (Speech Synthesis) ---
 
@@ -76,10 +193,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Tenta encontrar uma voz "Google" para cada idioma suportado
         Object.keys(langToVoiceMap).forEach(shortLang => {
             const fullLangCode = langToVoiceMap[shortLang];
-            const foundVoice = voices.find(voice => 
+            const foundVoice = voices.find(voice =>
                 voice.lang === fullLangCode && voice.name.includes('Google')
             ) || voices.find(voice => voice.lang.startsWith(shortLang)); // Fallback para qualquer voz do idioma
-            
+
             if (foundVoice) {
                 preferredVoices[shortLang] = foundVoice;
             } else {
@@ -115,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Seleciona a voz com base no idioma de fala
         const voiceForLang = preferredVoices[langToSpeak.split('-')[0]] || // Tenta buscar pela parte curta (ex: 'fr')
-                             voices.find(voice => voice.lang === synthesisLang); // Fallback para qualquer voz com o código completo
+                                voices.find(voice => voice.lang === synthesisLang); // Fallback para qualquer voz com o código completo
 
         if (voiceForLang) {
             currentUtterance.voice = voiceForLang;
@@ -146,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             abStartParagraphIndex = -1;
                             abEndParagraphIndex = -1;
                             currentParagraphIndex = -1;
+                            updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
                         }
                     } else if (repetitionMode === 'word' || repetitionMode === 'phrase') {
                         handleLoopRepetition(); // Continua a repetição de palavra/frase
@@ -161,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearHighlight();
             }
         };
+
+
+        
 
         stopButton.addEventListener('click', () => {
             stopSpeaking();
@@ -189,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             abStartParagraphIndex = -1;
                             abEndParagraphIndex = -1;
                             currentParagraphIndex = -1;
+                            updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
                         }
                     } else if (repetitionMode === 'word' || repetitionMode === 'phrase') {
                         handleLoopRepetition();
@@ -317,6 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para voltar para o parágrafo anterior
     function highlightPrevParagraph() {
+        stopSpeaking(); // Para a fala atual antes de mudar para o parágrafo anterior
         const paragraphs = getActiveParagraphs();
         if (paragraphs.length === 0) return;
 
@@ -344,6 +467,9 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleABModeButton.classList.remove('LGFran_active');
             abMode = false;
         }
+        // Chamada para atualizar o ícone do botão AB ao inicializar um novo diálogo
+        updateABButtonIcon(); // Adicionado aqui
+
         repWordButton.classList.remove('LGFran_active');
         repFrasButton.classList.remove('LGFran_active');
         repetitionMode = '';
@@ -367,6 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // NOVO: Função para atualizar a exibição do idioma no diálogo
     function updateDialogLanguage(selectedLang) {
         currentDisplayLanguage = selectedLang; // Atualiza o idioma de exibição
+        currentSpeechLanguage = selectedLang; // Atualiza o idioma de fala
 
         dialogBlocks.forEach(block => {
             const originalTextSpans = block.querySelectorAll('.LGFran_original-text');
@@ -386,30 +513,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (fallbackLangSpan) {
                         fallbackLangSpan.classList.remove('LGFran_hidden');
                         console.warn(`Idioma "${selectedLang}" não encontrado para um parágrafo. Revertendo para Francês.`);
+                        // Se reverteu para francês, a fala também deve ser francesa
+                        currentSpeechLanguage = 'fr';
                     }
                 }
             });
         });
-
-        // Se estiver em modo de fala, parar e reiniciar (ou pausar) para usar o novo idioma
-        if (speaking || paused) {
-            stopSpeaking(); // Parar completamente
-        }
-        // Ajusta o idioma de fala para a síntese
-        currentSpeechLanguage = selectedLang;
-        // Se o idioma for pt-br na seleção, defina a voz como fr-FR para a síntese
-        // Caso contrário, use o mapeamento para o idioma selecionado
-        if (selectedLang === 'pt-br') { // Opção "Francês" na combobox
-             currentSpeechLanguage = 'fr'; // Usamos 'fr' para buscar a voz francesa
-        } else {
-            currentSpeechLanguage = selectedLang;
-        }
-
-        // Se o idioma atual for o padrão 'fr' na combobox, os outros estariam ocultos por padrão
-        // mas a voz ainda precisa ser ajustada.
-        // Já populamos as vozes ao carregar, então a lógica em speakText já deve funcionar.
     }
 
+    // Se estiver em modo de fala, parar e reiniciar (ou pausar) para usar o novo idioma
+    /*     if (speaking || paused) {
+            stopSpeaking(); // Parar completamente
+         }
+         // Ajusta o idioma de fala para a síntese
+         currentSpeechLanguage = selectedLang;
+         // Se o idioma for pt-br na seleção, defina a voz como fr-FR para a síntese
+         // Caso contrário, use o mapeamento para o idioma selecionado
+         if (selectedLang === 'pt-br') { // Opção "Francês" na combobox
+            currentSpeechLanguage = 'fr'; // Usamos 'fr' para buscar a voz francesa
+         } else {
+            currentSpeechLanguage = selectedLang;
+         } */
+
+    // Se o idioma atual for o padrão 'fr' na combobox, os outros estariam ocultos por padrão
+    // mas a voz ainda precisa ser ajustada.
+    // Já populamos as vozes ao carregar, então a lógica em speakText já deve funcionar.
 
     // --- Lógica de Repetição em Loop (centralizada) ---
     // Esta função agora apenas INICIA a repetição, a continuação é no onend de speakText
@@ -445,6 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stopSpeaking();
             toggleABModeButton.classList.remove('LGFran_active');
             abMode = false;
+            updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
             return;
         }
 
@@ -460,6 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stopSpeaking();
             toggleABModeButton.classList.remove('LGFran_active');
             abMode = false;
+            updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
         }
     }
 
@@ -477,6 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 abStartParagraphIndex = -1;
                 abEndParagraphIndex = -1;
                 currentParagraphIndex = -1;
+                updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
             } else {
                 // Se está em loop, reinicia o segmento AB
                 currentABIndex = abStartParagraphIndex;
@@ -494,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
             element = element.querySelector(`span[data-lang="${currentDisplayLanguage}"]:not(.LGFran_hidden)`);
             if (!element) return null; // Se não encontrar o span visível, não há palavra para pegar
         }
-        
+
         // Verifica se o elemento clicado é um span com texto de idioma
         if (element.nodeType === Node.ELEMENT_NODE && element.hasAttribute('data-lang')) {
             const range = document.caretRangeFromPoint(clientX, clientY);
@@ -521,60 +652,139 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    // Função para atualizar o ícone do botão A-B
+    function updateABButtonIcon() {
+        if (!abMode) {
+            toggleABModeButton.innerHTML = '🅰️🅱️'; // Desativado
+            return;
+        }
+
+        if (abStartParagraphIndex === -1 && abEndParagraphIndex === -1) {
+            toggleABModeButton.innerHTML = '❌❌'; // Modo ativado, mas nenhum ponto definido
+        } else if (abStartParagraphIndex !== -1 && abEndParagraphIndex === -1) {
+            toggleABModeButton.innerHTML = '🅰️❌'; // Ponto A definido, esperando B
+        } else if (abStartParagraphIndex !== -1 && abEndParagraphIndex !== -1) {
+            toggleABModeButton.innerHTML = '🅰️🅱️'; // Segmento A-B definido
+        }
+    }
+
 
     dialogContent.addEventListener('click', (event) => {
-        // Intercepta cliques dentro de LGFran_dialogContent
         const clickedParagraph = event.target.closest('.LGFran_dialog-block > p');
         if (!clickedParagraph) return; // Garante que clicamos em um parágrafo de diálogo
 
-        stopSpeaking(); // Para qualquer fala em andamento
+        // CHAMA A NOVA FUNÇÃO AQUI NO INÍCIO DE CADA CLIQUE
+        paradalternar();
 
-        if (repetitionMode === 'word') {
-            const clickedWord = getWordAtPoint(event.target, event.clientX, event.clientY);
-            if (clickedWord) {
-                lastClickedWord = clickedWord; // Salva a palavra para repetição em loop
-                speakText(clickedWord, currentAudioRate, true, currentSpeechLanguage); // Fala a palavra
-            }
-        } else if (repetitionMode === 'phrase') {
-            lastClickedPhraseParagraph = clickedParagraph; // Salva o parágrafo para repetição em loop
-            speakParagraph(clickedParagraph, true); // Fala o parágrafo (como uma frase)
-        } else if (abMode) {
-            const paragraphs = getActiveParagraphs();
-            const clickedIndex = paragraphs.indexOf(clickedParagraph);
+        // Armazena o estado atual dos modos ANTES de qualquer alteração adicional
+        wasLoopModeActive = loopMode;
+        wasABModeActive = abMode;
+        wasRepetitionModeActive = repetitionMode;
 
-            if (clickedIndex === -1) return;
+        // Limpa qualquer timeout de clique pendente ANTES de definir um novo
+        clearTimeout(clickDelayTimeout);
 
-            if (abStartParagraphIndex === -1) {
-                abStartParagraphIndex = clickedIndex;
-                highlightParagraph(clickedParagraph);
-                alert('Ponto A definido. Agora clique no parágrafo final para o Ponto B.');
-            } else if (abEndParagraphIndex === -1) {
-                abEndParagraphIndex = clickedIndex;
-                if (abEndParagraphIndex < abStartParagraphIndex) {
-                    // Troca se B for menor que A
-                    [abStartParagraphIndex, abEndParagraphIndex] = [abEndParagraphIndex, abStartParagraphIndex];
-                }
-                alert(`Segmento A-B definido do parágrafo ${abStartParagraphIndex + 1} ao ${abEndParagraphIndex + 1}. Clique em Play para iniciar.`);
-                // Opcional: highlight all paragraphs in the AB segment
-                for (let i = abStartParagraphIndex; i <= abEndParagraphIndex; i++) {
-                    if (paragraphs[i]) {
-                        paragraphs[i].classList.add('LGFran_highlight-ab'); // Adicione uma classe CSS para AB highlight
-                    }
-                }
-                clearHighlight(); // Limpa o highlight temporário do A
-            } else {
-                // Se já estiver em modo A-B e clicar de novo, reseta
-                abStartParagraphIndex = -1;
-                abEndParagraphIndex = -1;
-                currentABIndex = -1;
-                document.querySelectorAll('.LGFran_highlight-ab').forEach(p => p.classList.remove('LGFran_highlight-ab'));
-                alert('Modo A-B resetado. Clique novamente para definir um novo segmento A-B.');
-            }
-        } else {
-            // Comportamento padrão: clique para ler o parágrafo
-            currentParagraphIndex = getActiveParagraphs().indexOf(clickedParagraph);
-            speakParagraph(clickedParagraph);
+        // Desativa visualmente e logicamente todos os modos relevantes.
+        // Isso é importante porque paradalternar não lida com o estado dos botões.
+/*         loopMode = false;
+        toggleLoopButton.classList.remove('LGFran_active'); */
+
+        // AB Mode handling
+        // ONLY reset AB points if AB mode was NOT active and is now being activated by this click
+        // OR if it's already active and we're clicking to define points.
+        // If we are just playing a paragraph in normal mode, don't touch AB points.
+        if (abMode) { // If AB mode is currently active (before any clicks logic)
+            // Do not reset abStartParagraphIndex / abEndParagraphIndex here.
+            // Let the logic below handle defining/resetting AB points.
+        } else { // If AB mode is not active, ensure all AB related states are clean
+            abStartParagraphIndex = -1;
+            abEndParagraphIndex = -1;
+            currentABIndex = -1;
+            document.querySelectorAll('.LGFran_highlight-ab').forEach(p => p.classList.remove('LGFran_highlight-ab'));
+            updateABButtonIcon(); // Atualiza o ícone do AB para o estado desativado
         }
+
+
+        repetitionMode = '';
+        repWordButton.classList.remove('LGFran_active');
+        repFrasButton.classList.remove('LGFran_active');
+
+        // Define o atraso inicial. O atraso de 2s da paradalternar é para *depois* do clique.
+        // Este delay é para a *próxima* fala, se delayMode estiver ativo.
+        const initialDelay = delayMode ? 4000 : 0;
+
+        // Agende a execução da lógica de clique principal após o possível atraso.
+        // Este setTimeout será executado *após* a lógica imediata da paradalternar.
+        clickDelayTimeout = setTimeout(() => {
+            // Lógica principal do clique, baseada nos estados salvos:
+            if (wasRepetitionModeActive === 'word') {
+                repetitionMode = 'word';
+                repWordButton.classList.add('LGFran_active');
+
+                const clickedWord = getWordAtPoint(event.target, event.clientX, event.clientY);
+                if (clickedWord) {
+                    lastClickedWord = clickedWord;
+                    speakText(clickedWord, currentAudioRate, true, currentSpeechLanguage);
+                }
+            } else if (wasRepetitionModeActive === 'phrase') {
+                repetitionMode = 'phrase';
+                repFrasButton.classList.add('LGFran_active');
+
+                lastClickedPhraseParagraph = clickedParagraph;
+                speakParagraph(clickedParagraph, true);
+            } else if (wasABModeActive) { // Lógica para definir os pontos A e B
+                abMode = true;
+                toggleABModeButton.classList.add('LGFran_active');
+
+                const paragraphs = getActiveParagraphs();
+                const clickedIndex = paragraphs.indexOf(clickedParagraph);
+
+                if (clickedIndex === -1) return;
+
+                if (abStartParagraphIndex === -1) {
+                    abStartParagraphIndex = clickedIndex;
+                    highlightParagraph(clickedParagraph);
+                    updateABButtonIcon(); // Atualiza o ícone para 🅰️❌
+                    /*                     alert('Ponto A definido. Agora clique no parágrafo final para o Ponto B.');
+                     */
+                } else if (abEndParagraphIndex === -1) {
+                    abEndParagraphIndex = clickedIndex;
+                    if (abEndParagraphIndex < abStartParagraphIndex) {
+                        [abStartParagraphIndex, abEndParagraphIndex] = [abEndParagraphIndex, abStartParagraphIndex];
+                    }
+                    playButton.click();
+                    /*                     alert(`Segmento A-B definido do parágrafo ${abStartParagraphIndex + 1} ao ${abEndParagraphIndex + 1}. Clique em Play para iniciar.`);
+                     */
+                    for (let i = abStartParagraphIndex; i <= abEndParagraphIndex; i++) {
+                        if (paragraphs[i]) {
+                            paragraphs[i].classList.add('LGFran_highlight-ab');
+                        }
+                    }
+                    clearHighlight();
+                    updateABButtonIcon(); // Atualiza o ícone para 🅰️🅱️
+                } else { // Se ambos A e B já estão definidos, um novo clique reseta
+                    abStartParagraphIndex = -1;
+                    abEndParagraphIndex = -1;
+                    currentABIndex = -1;
+                    document.querySelectorAll('.LGFran_highlight-ab').forEach(p => p.classList.remove('LGFran_highlight-ab'));
+                    updateABButtonIcon(); // Atualiza o ícone para ❌❌
+                    /*                     alert('Modo A-B resetado. Clique novamente para definir um novo segmento A-B.');
+                     */
+                }
+            } else { // Comportamento padrão: clique para ler o parágrafo
+                currentParagraphIndex = getActiveParagraphs().indexOf(clickedParagraph);
+                if (currentParagraphIndex !== -1) {
+                    speakParagraph(clickedParagraph);
+                }
+            }
+
+            // Reativa o modo de loop se ele estava ativo ANTES do clique e se a lógica de clique atual não é para definir AB
+            if (wasLoopModeActive && !abMode) {
+                loopMode = true;
+                toggleLoopButton.classList.add('LGFran_active');
+            }
+
+        }, initialDelay); // Fecha o setTimeout
     });
 
     // --- Event Listeners dos Botões ---
@@ -586,7 +796,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Se loop e repetição de palavra/frase estão ativos, mas nada foi clicado ainda
             if (loopMode && (repetitionMode === 'word' && !lastClickedWord || repetitionMode === 'phrase' && !lastClickedPhraseParagraph)) {
-                alert('Por favor, clique em uma palavra/frase no texto para iniciar a repetição em loop.');
+                /*                 alert('Por favor, clique em uma palavra/frase no texto para iniciar a repetição em loop.');
+                 */
                 return;
             }
 
@@ -615,16 +826,16 @@ document.addEventListener('DOMContentLoaded', () => {
             stopSpeaking();
             const paragraphs = getActiveParagraphs();
             if (paragraphs.length > 0 && currentParagraphIndex !== -1) {
-                    const initialDelay = delayMode ? 4000 : 0;
-                    clickDelayTimeout = setTimeout(() => {
-                        if (abMode) {
-                            playABSegment();
-                        } else if (loopMode) {
-                            handleLoopRepetition();
-                        } else {
-                            speakParagraph(paragraphs[currentParagraphIndex]);
-                        }
-                    }, initialDelay);
+                const initialDelay = delayMode ? 4000 : 0;
+                clickDelayTimeout = setTimeout(() => {
+                    if (abMode) {
+                        playABSegment();
+                    } else if (loopMode) {
+                        handleLoopRepetition();
+                    } else {
+                        speakParagraph(paragraphs[currentParagraphIndex]);
+                    }
+                }, initialDelay);
             }
         }
         playButton.classList.add('LGFran_active');
@@ -650,24 +861,27 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeDialog();
     });
 
-    toggleLoopButton.addEventListener('click', () => {
+    toggleLoopButton.addEventListener('click', () => {      
+        
         loopMode = !loopMode;
         toggleLoopButton.classList.toggle('LGFran_active', loopMode);
+        mutepalternar()
         if (!loopMode) {
             clearTimeout(loopTimeout); // Garante que o loop seja interrompido
         } else {
+            // DESATIVAR repWordButton e repFrasButton ao ativar o loopMode
+ /*            repetitionMode = '';
+            repWordButton.classList.remove('LGFran_active');
+            repFrasButton.classList.remove('LGFran_active'); */
+
             // Se ativou o loop e já está falando, ou está pausado, reiniciar o loop
             if (speaking || paused) {
                 stopSpeaking(); // Parar antes de iniciar o loop para aplicar a lógica
                 // Se já estava em um modo de repetição específico, continuar nesse modo
                 // Caso contrário, iniciar loop de parágrafo
-                if (repetitionMode === 'word' && lastClickedWord) {
-                    speakText(lastClickedWord, currentAudioRate, true, currentSpeechLanguage);
-                } else if (repetitionMode === 'phrase' && lastClickedPhraseParagraph) {
-                    speakParagraph(lastClickedPhraseParagraph, true);
-                } else if (abMode) {
+                if (abMode) {
                     playABSegment();
-                } else {
+                } else { // Comportamento padrão de loop de parágrafo
                     // Inicia do parágrafo atual se houver, senão do primeiro
                     const paragraphs = getActiveParagraphs();
                     if (paragraphs.length > 0) {
@@ -687,23 +901,30 @@ document.addEventListener('DOMContentLoaded', () => {
         abStartParagraphIndex = -1; // Reseta pontos A e B
         abEndParagraphIndex = -1;
         currentABIndex = -1;
-        
+
         if (abMode) {
             // Desativa outros modos de repetição se AB for ativado
             repetitionMode = '';
             repWordButton.classList.remove('LGFran_active');
             repFrasButton.classList.remove('LGFran_active');
-            alert('Modo A-B ativado. Clique no parágrafo inicial (Ponto A), e depois no parágrafo final (Ponto B).');
+            updateABButtonIcon(); // Atualiza o ícone para ❌❌ quando o modo AB é ativado
+            /* alert('Modo A-B ativado. Clique no parágrafo inicial (Ponto A), e depois no parágrafo final (Ponto B).'); */
+        } else {
+            updateABButtonIcon(); // Atualiza o ícone para 🅰️🅱️ quando o modo AB é desativado
         }
     });
 
     repWordButton.addEventListener('click', () => {
         repetitionMode = (repetitionMode === 'word') ? '' : 'word';
+        mutepalternar()
         repWordButton.classList.toggle('LGFran_active', repetitionMode === 'word');
         repFrasButton.classList.remove('LGFran_active'); // Desativa o outro modo
+        // Desativa o modo loop quando ativa repetição de palavra
+/*         loopMode = false;
+        toggleLoopButton.classList.remove('LGFran_active'); */
         stopSpeaking();
         if (repetitionMode === 'word') {
-            alert('Modo "Repetir Palavra" ativado. Clique em qualquer palavra no texto para ouvi-la.');
+            /*             alert('Modo "Repetir Palavra" ativado. Clique em qualquer palavra no texto para ouvi-la.'); */
         } else {
             lastClickedWord = ''; // Limpa a última palavra
         }
@@ -711,11 +932,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     repFrasButton.addEventListener('click', () => {
         repetitionMode = (repetitionMode === 'phrase') ? '' : 'phrase';
+        mutepalternar()
         repFrasButton.classList.toggle('LGFran_active', repetitionMode === 'phrase');
         repWordButton.classList.remove('LGFran_active'); // Desativa o outro modo
+        // Desativa o modo loop quando ativa repetição de frase
+/*         loopMode = false;
+        toggleLoopButton.classList.remove('LGFran_active'); */
         stopSpeaking();
         if (repetitionMode === 'phrase') {
-            alert('Modo "Repetir Frase" ativado. Clique em qualquer parágrafo para ouvi-lo como frase.');
+            /*             alert('Modo "Repetir Frase" ativado. Clique em qualquer parágrafo para ouvi-lo como frase.');
+             */
         } else {
             lastClickedPhraseParagraph = null; // Limpa a última frase
         }
@@ -725,13 +951,16 @@ document.addEventListener('DOMContentLoaded', () => {
         delayMode = !delayMode;
         time4Button.classList.toggle('LGFran_active', delayMode);
         if (delayMode) {
-            alert('Atraso de 4 segundos ativado para loops e repetições.');
+            /*             alert('Atraso de 4 segundos ativado para loops e repetições.');
+             */
         } else {
-            alert('Atraso de 4 segundos desativado.');
+            /*             alert('Atraso de 4 segundos desativado.');
+             */
         }
     });
 
     slowDownAudioButton.addEventListener('click', () => {
+        paradalternar()
         isSlowed = !isSlowed;
         currentAudioRate = isSlowed ? 0.70 : 1.0; // Define a velocidade
         slowDownAudioButton.classList.toggle('LGFran_active', isSlowed);
@@ -754,8 +983,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleMuteButton.innerHTML = '🔇';
         } else {
             toggleMuteButton.innerHTML = '🔊';
-            // Opcional: Se quiser que a fala continue de onde parou ao desmutar
-            // resumeSpeaking(); // Pode causar comportamento inesperado se não gerenciar bem o estado
         }
     });
 
@@ -763,19 +990,12 @@ document.addEventListener('DOMContentLoaded', () => {
     languageSelect.addEventListener('change', (event) => {
         const selectedLang = event.target.value;
         updateDialogLanguage(selectedLang);
-        // Opcional: Se quiser que a fala recomece no parágrafo atual após a mudança de idioma, descomente:
-        // if (currentParagraphIndex !== -1) {
-        //     const paragraphs = getActiveParagraphs();
-        //     if (paragraphs[currentParagraphIndex]) {
-        //         speakParagraph(paragraphs[currentParagraphIndex]);
-        //     }
-        // }
     });
-
 
     // Inicialização
     initializeDialog();
     // NOVO: Define o idioma inicial na caixa de seleção para "Francês" (fr)
     languageSelect.value = 'fr'; // Garante que a caixa de seleção inicie com a opção correta
     updateDialogLanguage('fr'); // Chama para exibir o francês no carregamento
+    updateABButtonIcon(); // Chama para definir o ícone inicial do AB
 });
