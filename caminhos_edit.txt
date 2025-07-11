@@ -1,0 +1,28 @@
+PROGRAMA1path:
+"C:\Users\Caio-Win10\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+
+arquivos1path:
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\index.html
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\album.html
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\PERFIL.html
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\estilos\style.css
+
+PROGRAMA2path:
+"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+arquivos2path:
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\index.html
+
+PROGRAMA3path:
+
+
+arquivos3path:
+F:\Users\Caio89-W11\Documents\Caio89\SITES\SITES_CRIADOS\LINGUAS\FRANCES\album.html
+
+PROGRAMA4path:
+
+arquivos4path:
+
+PROGRAMA5path:
+
+arquivos5path:
