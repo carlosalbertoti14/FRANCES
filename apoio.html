@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apoie o Projeto Estudo de Provas | Contribua com Doações</title>
+    
+    <meta name="description" content="Apoie o Estudo de Provas com uma doação via Pix. Sua contribuição ajuda a manter e melhorar o acesso a questões de concursos públicos e materiais de estudo.">
+    <meta name="keywords" content="apoio, doação, pix, contribuir, estudo de provas, concurso público, site de estudos, ajuda, manutenção">
+    <meta name="author" content="Carlos Alberto L. Pinheiro">
+    <link rel="canonical" href="https://estudodeprovas.netlify.app/apoio.html"> <meta property="og:url" content="https://estudodeprovas.netlify.app/apoio.html"> <meta property="og:type" content="website">
+    <meta property="og:title" content="Apoie o Estudo de Provas com uma Doação!">
+    <meta property="og:description" content="Sua doação via Pix nos ajuda a continuar oferecendo questões e materiais de estudo de qualidade para concursos públicos.">
+    <meta property="og:image" content="https://estudodeprovas.netlify.app/midia/banner_sitedeestudos.png"> <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Banner de Apoio ao Site Estudo de Provas">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@EstudoDeProvas"> <meta name="twitter:title" content="Apoie o Estudo de Provas com uma Doação!">
+    <meta name="twitter:description" content="Sua contribuição é fundamental para manter nosso site de estudos para concursos públicos sempre atualizado e acessível.">
+    <meta name="twitter:image" content="https://estudodeprovas.netlify.app/midia/banner_sitedeestudos.png"> <link rel="stylesheet" href="estilos/style.css"> <style>
+        /* Estilos específicos para a página de apoio */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f4; 
+            color: #333; 
+        }
+        .apoio-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .apoio-container h1 {
+            color: #296ae2; /* Cor azul consistente com o tema principal */
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+        .apoio-container p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .pix-option {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .pix-option h3 {
+            color: #296ae2; /* Cor azul para os títulos dos Pix */
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .pix-option img {
+            max-width: 250px; 
+            height: auto;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pix-key-wrapper {
+            display: flex;
+            flex-direction: column; /* Altera para coluna para melhor responsividade */
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .pix-key {
+            background-color: #e9e9e9;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            color: #333;
+            user-select: all;
+            margin-bottom: 10px; /* Adiciona espaço abaixo da chave */
+            word-break: break-all; /* Garante que o texto quebre em qualquer ponto */
+            width: 90%; /* Ajuste a largura para ser mais responsivo */
+        }
+        .copy-button {
+            background-color: #296ae2; /* Cor azul consistente */
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Previne que o texto do botão quebre */
+        }
+        .copy-button:hover {
+            background-color: #1a4a9c; /* Cor mais escura no hover */
+        }
+        .copy-message {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: green;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Adicionado visibility na transição */
+        }
+        .back-home {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 25px;
+            background-color: #296ae2; /* Cor azul consistente */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-home:hover {
+            background-color: #1a4a9c; /* Cor mais escura no hover */
+        }
+
+        /* Estilo para telas menores */
+        @media (max-width: 600px) {
+            .apoio-container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+            .apoio-container h1 {
+                font-size: 1.8em;
+            }
+            .apoio-container p {
+                font-size: 1em;
+            }
+            .pix-key-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .pix-key, .copy-button {
+                width: auto; /* Deixa o conteúdo definir a largura */
+                max-width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="apoio-container">
+        <h1>Apoie o Projeto Estudo de Provas! 👍</h1>
+        <p>Agradecemos a sua visita! Desenvolver e manter este site, com acesso fácil e informações atualizadas para as provas de concurso, demanda tempo e dedicação. Sua ajuda, com qualquer quantia, é muito bem-vinda para continuarmos oferecendo conteúdo de qualidade!</p>
+        <p>Atenciosamente,<br>Carlos Alberto L. Pinheiro.</p>
+
+        <div class="pix-option">
+            <h3>Pix de R$ 5,00</h3>
+            <img src="midia/pix/pix_5.jpg" alt="QR Code Pix para doação de R$5">
+            <div class="pix-key-wrapper">
+                <span id="pix-key-5" class="pix-key" aria-label="Código Pix para R$5">00020126380014BR.GOV.BCB.PIX0111121008577110201552040000530398654045.005802BR5925CARLOS ALBERTO L PINHEIRO6011SAO GONCALO622605225JkNLYDYQPLcBpN9tVvTJr63040AC8</span>
+                <button class="copy-button" onclick="copyPixKey('pix-key-5', 'message-5')">Copiar Código</button>
+            </div>
+            <p id="message-5" class="copy-message" aria-live="polite">Chave copiada!</p>
+        </div>
+
+        <div class="pix-option">
+            <h3>Pix de R$ 10,00</h3>
+            <img src="midia/pix/pix_10.jpg" alt="QR Code Pix para doação de R$10">
+            <div class="pix-key-wrapper">
+                <span id="pix-key-10" class="pix-key" aria-label="Código Pix para R$10">00020126390014BR.GOV.BCB.PIX011112100857711020210520400005303986540510.005802BR5925CARLOS ALBERTO L PINHEIRO6011SAO GONCALO622605222FKV6S3ZKYP56aLD7f3cjw6304BCF5</span>
+                <button class="copy-button" onclick="copyPixKey('pix-key-10', 'message-10')">Copiar Código</button>
+            </div>
+            <p id="message-10" class="copy-message" aria-live="polite">Chave copiada!</p>
+        </div>
+
+        <div class="pix-option">
+            <h3>Pix de R$ 25,00</h3>
+            <img src="midia/pix/pix_25.jpg" alt="QR Code Pix para doação de R$25">
+            <div class="pix-key-wrapper">
+                <span id="pix-key-25" class="pix-key" aria-label="Código Pix para R$25">00020126330014BR.GOV.BCB.PIX011112100857711520400005303986540525.005802BR5925CARLOS ALBERTO L PINHEIRO6011SAO GONCALO622605221xSZXg2Rgzt7EnF0zb8gkX63047165</span>
+                <button class="copy-button" onclick="copyPixKey('pix-key-25', 'message-25')">Copiar Código</button>
+            </div>
+            <p id="message-25" class="copy-message" aria-live="polite">Chave copiada!</p>
+        </div>
+
+        <div class="pix-option">
+            <h3>Pix de R$ 50,00</h3>
+            <img src="midia/pix/pix_50.jpg" alt="QR Code Pix para doação de R$50">
+            <div class="pix-key-wrapper">
+                <span id="pix-key-50" class="pix-key" aria-label="Código Pix para R$50">00020126330014BR.GOV.BCB.PIX011112100857711520400005303986540550.005802BR5925CARLOS ALBERTO L PINHEIRO6011SAO GONCALO62250521d3hm0BMSMhsL3JVWqlOW06304091B</span>
+                <button class="copy-button" onclick="copyPixKey('pix-key-50', 'message-50')">Copiar Código</button>
+            </div>
+            <p id="message-50" class="copy-message" aria-live="polite">Chave copiada!</p>
+        </div>
+
+        <div class="pix-option">
+            <h3>Pix de R$ 100,00</h3>
+            <img src="midia/pix/pix_100.jpg" alt="QR Code Pix para doação de R$100">
+            <div class="pix-key-wrapper">
+                <span id="pix-key-100" class="pix-key" aria-label="Código Pix para R$100">00020126330014BR.GOV.BCB.PIX0111121008577115204000053039865406100.005802BR5925CARLOS ALBERTO L PINHEIRO6011SAO GONCALO622605225eSRaW2Eu3qbJp1gFS2Psk6304A8B9</span>
+                <button class="copy-button" onclick="copyPixKey('pix-key-100', 'message-100')">Copiar Código</button>
+            </div>
+            <p id="message-100" class="copy-message" aria-live="polite">Chave copiada!</p>
+        </div>
+
+        <a href="index.html" class="back-home">Voltar para o Site</a>
+    </div>
+
+    <script>
+        function copyPixKey(keyId, messageId) {
+            const pixKeyElement = document.getElementById(keyId);
+            const pixKey = pixKeyElement.textContent;
+            const messageElement = document.getElementById(messageId);
+
+            navigator.clipboard.writeText(pixKey)
+                .then(() => {
+                    messageElement.textContent = "Chave copiada!";
+                    messageElement.style.color = "green";
+                    messageElement.style.visibility = "visible";
+                    messageElement.style.opacity = "1";
+                    setTimeout(() => {
+                        messageElement.style.opacity = "0";
+                        // Importante: esconde a mensagem *depois* da transição de opacidade
+                        setTimeout(() => {
+                            messageElement.style.visibility = "hidden";
+                        }, 300); // tempo da transição de opacidade
+                    }, 2000); 
+                })
+                .catch(err => {
+                    messageElement.textContent = "Erro ao copiar. Tente novamente.";
+                    messageElement.style.color = "red";
+                    messageElement.style.visibility = "visible";
+                    messageElement.style.opacity = "1";
+                    setTimeout(() => {
+                        messageElement.style.opacity = "0";
+                        setTimeout(() => {
+                            messageElement.style.visibility = "hidden";
+                        }, 300);
+                    }, 2000);
+                    console.error('Falha ao copiar:', err);
+                });
+        }
+    </script>
+</body>
+</html>

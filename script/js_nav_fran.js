@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     const dialogTitle         = document.getElementById('LGFran_dialogTitle');
     const dialogContent       = document.getElementById('LGFran_dialogContent');
-const dialogSelect        = document.getElementById('LGFran_dialogSelect');
+    const dialogSelect        = document.getElementById('LGFran_dialogSelect');
     const playButton          = document.getElementById('LGFran_playAudio')  || document.getElementById('LGFran_play');
     const pauseButton         = document.getElementById('LGFran_pauseAudio') || document.getElementById('LGFran_pause');
     const stopButton          = document.getElementById('LGFran_stop');
@@ -25,6 +25,31 @@ const dialogSelect        = document.getElementById('LGFran_dialogSelect');
     const slowDownAudioButton = document.getElementById('LGFran_slowDownAudio');
     const toggleMuteButton    = document.getElementById('LGFran_toggleMute');
     const languageSelect      = document.getElementById('LGFran_languageSelect');
+
+    const ajudaButton         = document.getElementById('LGFran_AJUDA');
+
+// ─── Botão de Ajuda (❓) ──────────────────────────────────
+    const helpModal = document.getElementById('LGFran_helpModal');
+    const closeHelpBtn = document.getElementById('LGFran_closeHelp');
+
+    ajudaButton?.addEventListener('click', () => {
+        // Exibe a janela personalizada
+        helpModal?.classList.remove('LGFran_hidden');
+    });
+
+    closeHelpBtn?.addEventListener('click', () => {
+        // Esconde a janela ao clicar no X
+        helpModal?.classList.add('LGFran_hidden');
+    });
+
+    // Opcional: Fechar ao clicar fora da caixa branca (no fundo escuro)
+    helpModal?.addEventListener('click', (e) => {
+        if (e.target === helpModal) {
+            helpModal.classList.add('LGFran_hidden');
+        }
+    });
+
+    /* fim botão ajuda */
 
     // ============================================================
     // 2. Blocos HTML

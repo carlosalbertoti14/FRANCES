@@ -1,0 +1,276 @@
+/* estilos/style_apoio.css */
+/* --- Seção de Contato --- */
+#contato {
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centraliza o texto dentro da seção */
+}
+
+#contato h2 {
+    color: #882baf; /* Cor para o título */
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+#contato p {
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+/* Estilo para o link "FALE CONOSCO" */
+#contato div:nth-of-type(2) { /* Seleciona o segundo div da seção */
+    margin-bottom: 30px;
+}
+
+#contato a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline-flex; /* Para alinhar imagem e texto */
+    align-items: center;
+    gap: 10px; /* Espaço entre imagem e texto */
+    transition: color 0.3s ease;
+}
+
+#apoio a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline-flex; /* Para alinhar imagem e texto */
+    align-items: center;
+    gap: 10px; /* Espaço entre imagem e texto */
+    transition: color 0.3s ease;
+}
+
+#contato a:hover {
+    color: #0056b3;
+}
+
+.fale-conosco-icon { /* Classe para sua imagem */
+    width: 50px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    vertical-align: middle; /* Alinha a imagem com o texto */
+}
+
+/* Estilos para o formulário */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinha os rótulos e campos à esquerda */
+}
+
+.form-group label {
+    display: block; /* Cada label em uma nova linha */
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+textarea {
+    width: calc(100% - 20px); /* Ocupa a largura total menos o padding */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Garante que padding não aumente a largura total */
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 120px; /* Altura mínima da caixa de texto */
+}
+
+button {
+    background-color: #03571c; /* Cor do botão */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #6a2185; /* Cor mais escura no hover */
+    transform: translateY(-2px); /* Pequeno efeito de elevação */
+}
+
+/* ... restante do código ... */
+
+/* Estilos para o formulário */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinha os rótulos e campos à esquerda */
+}
+
+.form-group label {
+    display: block; /* Cada label em uma nova linha */
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"], /* Adicionei isso para garantir que o estilo se aplique ao campo de email */
+textarea {
+    width: calc(100% - 20px); /* Ocupa a largura total menos o padding */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Garante que padding não aumente a largura total */
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 120px; /* Altura mínima da caixa de texto */
+}
+
+button {
+    background-color: #03772a; /* Cor do botão */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #3268db; /* Cor mais escura no hover */
+    transform: translateY(-2px); /* Pequeno efeito de elevação */
+}
+
+/* ... restante do código ... */
+
+
+/* info */
+
+#info{
+    padding: 10px;
+}
+#info h2{
+    font-size: 1em;
+    text-align: center;
+    margin: 0;
+    color: gray;
+}
+/* info */
+
+/****************************** fim de entre em cotato *******************************/
+
+
+/*********************** apoio ************************/
+
+#apoio {
+    /* ... (manter estilos existentes para #apoio) ... */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin: 20px 0;
+}
+
+#apoio p {
+    /* ... (manter estilos existentes para #apoio p) ... */
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.2em;
+    color: #333;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+#apoio .share-buttons {
+    /* ... (manter estilos existentes para #apoio .share-buttons) ... */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Reduzi um pouco a margem para dar espaço ao novo botão */
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+#apoio .share-buttons img {
+    /* ... (manter estilos existentes para #apoio .share-buttons img) ... */
+    max-width: 150px;
+    height: auto;
+    border-radius: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#apoio .share-buttons img:hover {
+    /* ... (manter estilos existentes para hover) ... */
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para o novo botão "COPIAR LINK" */
+#apoio .copy-link-button {
+    text-align: center;
+    margin-bottom: 20px; /* Espaço entre o botão de copiar e o botão de apoio */
+    width: 100%; /* Garante que a div ocupe a largura total para centralizar */
+}
+
+#apoio .copy-link-button button {
+    display: inline-block;
+    padding: 12px 30px; /* Um pouco menor que o botão de apoio principal */
+    background-color: #4681b6; /* Uma cor neutra para o botão de copiar */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+#apoio .copy-link-button button:hover {
+    background-color: #495057; /* Cor mais escura no hover */
+    transform: translateY(-2px); /* Leve movimento para cima */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Estilos para o botão "APOIAR COM DONATIOVO" */
+#apoio div:last-of-type a { /* Importante: este seletor pode precisar de ajuste se adicionar mais divs */
+    /* ... (manter estilos existentes para #apoio div:last-of-type a) ... */
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #068526;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+    letter-spacing: 0.05em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#apoio div:last-of-type a:hover {
+    /* ... (manter estilos existentes para hover) ... */
+    background-color: #6a2185;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/********************* fim apoio *************************/

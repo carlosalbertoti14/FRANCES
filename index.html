@@ -11,12 +11,47 @@
     type="image/x-icon"
     />
     <link rel="stylesheet" href="estilos/styleX2.css" />
+    <link rel="stylesheet" href="estilos/style_apoio.css" />
 
     <style>
         .LGFran_hidden {
             display: none;
         }
+
+            
+            /* botão voltar ao topo da página */
+            #scrollToTopBtn {
+                display: none;
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                z-index: 99;
+                border: none;
+                outline: none;
+                background-color: #296ae2;
+                color: white;
+                cursor: pointer;
+                padding: 15px 20px;
+                border-radius: 50%;
+                font-size: 24px;
+                line-height: 1;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                transition: background-color 0.3s ease, transform 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+
+            #scrollToTopBtn:hover {
+                background-color: #1a4a9c; /* Cor mais escura no hover */
+                transform: translateY(-2px); /* Efeito sutil de levantar */
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+            }
+            /* fimd do botão voltar ao topo da página */
+        
+
+
+
     </style>
+
 </head>
 
 <body>
@@ -1877,8 +1912,135 @@
         </main>
     </div>
 
+    <button id="scrollToTopBtn" title="Ir para o Topo">↑</button>
+
     <script src="script/js_nav_fran.js"></script>
     <script src="script/MENU.js"></script>
+
+
+
+
+
+     <section id="apoio">
+            <div>
+                <a
+                    href="mailto:suportecalp@gmail.com?subject=Contato%20Sobre%20ESTUDO%20DE%20IDIOMAS"
+                >
+                    <img
+                        src="midia/faleconosco.png"
+                        alt="Fale Conosco"
+                        class="fale-conosco-icon"
+                    />
+                    FALE CONOSCO (Link Direto)
+                </a>
+            </div>
+
+            <p>COMPARTILHAR CONHECIMENTO</p>
+
+            <div class="share-buttons">
+                <a href="https://idiomastxt.netlify.app/" id="shareFacebook">
+                    <img
+                        src="midia/comp_facebook.png"
+                        alt="Compartilhar no Facebook"
+                    />
+                </a>
+                <a href="https://idiomastxt.netlify.app/" id="shareWhatsapp">
+                    <img
+                        src="midia/comp_whatsapp.png"
+                        alt="Compartilhar no WhatsApp"
+                    />
+                </a>
+            </div>
+
+            <div class="copy-link-button">
+                <button id="copyLinkButton">COPIAR LINK</button>
+            </div>
+
+            <div>
+                <a href="https://payment-calp.netlify.app/" target="_blank">APOIAR COM DONATIVO</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>
+                &copy; 2025 Seu Site de Estudos. Todos os direitos reservados 
+                <BR>C. A. L. Pinheiro</BR>
+            </p>
+        </footer>
+
+        <!-- <script src="script/examManifest.js"></script> -->
+        <script src="script/Generador_PROVAS.js"></script>
+        <script src="script/compartilhe.js"></script>
+        <script src="script/contato.js"></script>
+        <script src="script/speechManager.js"></script>
+
+       <!--  <script src="script/provas/prova_INSS-1.js"></script> -->
+        <script src="script/provas/prova_INSS-1_direito.js"></script>
+        <script src="script/provas/prova_INSS-1_legis_prev.js"></script>
+        <script src="script/provas/prova_INSS-1_port_info.js"></script>
+        <script src="script/provas/prova_INSS-1_RL-Mat_Etica.js"></script>
+        <script src="script/provas/prova_CORREIO-1.js"></script>
+        <script src="script/compartilhe.js"></script>
+        <script src="script/contato.js"></script>
+        
+        
+
+        <script>
+            /* botão voltar ao topo da página */
+            document.addEventListener("DOMContentLoaded", function () {
+                const scrollToTopBtn =
+                    document.getElementById("scrollToTopBtn");
+
+                if (scrollToTopBtn) {
+                    // Mostra ou esconde o botão dependendo da posição de scroll
+                    window.addEventListener("scroll", function () {
+                        if (window.scrollY > 200) {
+                            // Mostra o botão após rolar 200px
+                            scrollToTopBtn.style.display = "block";
+                        } else {
+                            scrollToTopBtn.style.display = "none";
+                        }
+                    });
+
+                    // Rolagem suave para o topo ao clicar
+                    scrollToTopBtn.addEventListener("click", function () {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth", // Faz a rolagem ser suave
+                        });
+                    });
+                }
+            });
+        </script>
+
+
+
+<!-- Modal de Ajuda (Tela Cheia) -->
+<div id="LGFran_helpModal" class="LGFran_modal_overlay LGFran_hidden">
+    <div class="LGFran_modal_content">
+        <button id="LGFran_closeHelp" class="LGFran_close_btn" title="Fechar">&times;</button>
+        
+        <h2>📖 GUIA DE USO DO PLAYER</h2>
+        <div class="LGFran_modal_body">
+            <p>Os Diálogos são bem interativos, vocÊ pode clicar em qualquer parte do diálogo, que ele irá começar a ler a partir daquela frase.</p>
+            <ul>
+                <li><strong>▶ Play:</strong> Inicia a leitura do início ao fim do diálogo.</li>
+                <li><strong>⏸ Pause:</strong> Pausa o áudio no ponto atual.</li>
+                <li><strong>⏹ Stop:</strong> Interrompe e reseta o leitor.</li>
+                <li><strong>🅰️🅱️ Modo A-B:</strong> Marca o início e fim de um trecho para repetir em loop.</li>
+                <li><strong>🔠 MODO PALAVRA:</strong> Quando ativado, passará a ler somente a palavra clicada. <em>Obs: pode ser combinada com modo repetição e Delay.</em></li>
+                <li><strong>💬 Modo Frase:</strong> Quando ativado, o leitor só irá ler a frase clicada. <em>Obs: pode ser combinada com modo repetição e Delay.</em></li>
+                <li><strong>⏪ ⏩ Avançar/Voltar:</strong> Volta ou avança para a próxima frase.</li>
+                <li><strong>⏱ Modo Delay (time4):</strong> Adiciona um intervalo de 4s antes do início da fala. Dá tempo extra para o estudante repetir a frase.</li>
+                <li><strong>🐢 Modo Lentidão:</strong> Reduz a velocidade da pronúncia pela metade.</li>
+                <li><strong>🔁 Loop:</strong> Ativa o modo de repetição contínua.</li>
+                <li><strong>🔇 Mute:</strong> Ativa ou desativa o som do leitor.</li>
+                <li><strong>📝 Diálogos:</strong> Altera para o próximo diálogo.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

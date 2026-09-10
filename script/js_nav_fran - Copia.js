@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     const dialogTitle         = document.getElementById('LGFran_dialogTitle');
     const dialogContent       = document.getElementById('LGFran_dialogContent');
-
+const dialogSelect        = document.getElementById('LGFran_dialogSelect');
     const playButton          = document.getElementById('LGFran_playAudio')  || document.getElementById('LGFran_play');
     const pauseButton         = document.getElementById('LGFran_pauseAudio') || document.getElementById('LGFran_pause');
     const stopButton          = document.getElementById('LGFran_stop');
@@ -34,17 +34,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialActiveIndex = blocks.findIndex(b => !b.classList.contains('LGFran_hidden'));
     if (initialActiveIndex !== -1) currentBlockIndex = initialActiveIndex;
 
-    function showBlock(index) {
-        blocks.forEach((block, idx) => {
-            if (idx === index) {
-                block.classList.remove('LGFran_hidden');
-                const t = block.getAttribute('data-title');
-                if (dialogTitle && t) dialogTitle.textContent = t;
-            } else {
-                block.classList.add('LGFran_hidden');
-            }
-        });
-    }
+function showBlock(index) {
+    blocks.forEach((block, idx) => {
+        if (idx === index) {
+            block.classList.remove('LGFran_hidden');
+            const t = block.getAttribute('data-title');
+            if (dialogTitle && t) dialogTitle.textContent = t;
+        } else {
+            block.classList.add('LGFran_hidden');
+        }
+    });
+    // Mantém o <select> de diálogos sincronizado
+    if (dialogSelect) dialogSelect.value = String(index);
+}
+
+// ─── Select de Diálogos ─────────────────────────────────────
+function populateDialogSelect() {
+    if (!dialogSelect) return;
+    dialogSelect.innerHTML = '';
+    blocks.forEach((block, idx) => {
+        const title = block.getAttribute('data-title') || `Diálogo ${idx + 1}`;
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = title;
+        dialogSelect.appendChild(opt);
+    });
+    dialogSelect.value = String(currentBlockIndex);
+}
+populateDialogSelect();
+
+dialogSelect?.addEventListener('change', (e) => {
+    const idx = parseInt(e.target.value, 10);
+    if (isNaN(idx) || idx < 0 || idx >= blocks.length) return;
+    currentBlockIndex = idx;
+    showBlock(currentBlockIndex);
+    stopSpeaking();
+});
+// ─── fim Select de Diálogos ────────────────────────────────
     showBlock(currentBlockIndex);
 
     changeAudioButton?.addEventListener('click', () => {
