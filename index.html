@@ -28,6 +28,9 @@
         <main class="LGFran_main-content">
             <div class="LGFran_audio-player-section">
                 <div class="LGFran_controls">
+                    <select id="LGFran_dialogSelect" class="LGFran_language-select" title="Selecionar Diálogo">
+    <!-- As <option> serão populadas automaticamente pelo JS -->
+</select>
                     <select id="LGFran_languageSelect" class="LGFran_language-select" title="Selecionar Idioma da Tradução">
                         <option value="fr">Français</option>
                         <option value="en">English</option>
@@ -57,7 +60,7 @@
                 <div id="LGFran_dialogContent" class="LGFran_dialog-content">
                     
                     <!-- BLOCO TO BE -->
-                    <div id="LGFran_dialog_BE_Ser_Estar" class="LGFran_dialog-block" data-title="BE = Ser / Estar">
+                    <div id="LGFran_dialog_BE_Ser_Estar" class="LGFran_dialog-block" data-title="Ser / Estar">
                         <p>
                             <span class="LGFran_original-text">
                                 <span data-lang="fr">Es-tu fatigué après le travail ?</span>
@@ -392,7 +395,7 @@
                         </p>
                     </div>
 
-                    <!-- BLOCO CAN -->
+                    <!-- BLOCO TO CAN -->
                     <div id="LGFran_dialog_CAN_Poder_Conseguir" class="LGFran_dialog-block LGFran_hidden" data-title="CONSEGUIR">
                         <p>
                             <span class="LGFran_original-text">
@@ -1757,9 +1760,9 @@
 
     </div>
 
-    
+
     <!-- BLOCO EXPRESSIONS OF of Location and Position -->
-     <div id="LGFran_dialog_EXPRESSIONS_OF_LOCATION_POSITION" class="LGFran_dialog-block LGFran_hidden" data-title="EXPRESSÕES DE POSIÇÕES E LOCAIS"></div>
+     <div id="LGFran_dialog_EXPRESSIONS_OF_LOCATION_POSITION" class="LGFran_dialog-block LGFran_hidden" data-title="EXPRESSÕES DE POSIÇÕES E LOCAIS">
     <p>
         <span class="LGFran_original-text">
             <span data-lang="fr">Excusez-moi, est-ce que le supermarché est près d'ici ou est-il loin ?</span>
@@ -1859,6 +1862,7 @@
         </span><br>
         <span class="LGFran_translation-text">Ah, estou vendo agora! Elas estavam no lado direito da mesa. Obrigado!</span>
     </p>
+    
 </div>
 
 
