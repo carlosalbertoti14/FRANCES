@@ -60,18 +60,19 @@ body {
     position: absolute;
     top: 15px;
     right: 20px;
-    background: #e74c3c;
-    color: white;
+    background: transparent; /* Remove o fundo vermelho */
+    color: #333333;           /* Cor do "X" (ajuste se a caixa for escura) */
     border: none;
-    font-size: 24px;
+    outline: none;            /* Remove a borda de foco do navegador */
+    font-size: 28px;          /* Aumentado levemente para dar boa visibilidade sem o fundo */
     font-weight: bold;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    padding: 0;               /* Remove preenchimentos internos */
+    margin: 0;                /* Zera qualquer margem */
+    width: auto;              /* Remove a largura fixa da bolinha */
+    height: auto;             /* Remove a altura fixa da bolinha */
+    line-height: 1;           /* Zera o espaçamento vertical da linha */
     cursor: pointer;
-    line-height: 38px;
-    text-align: center;
-    transition: background 0.2s;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .LGFran_close_btn:hover {
