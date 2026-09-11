@@ -1,57 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CARLOS ALBERTO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título da Página -->
+    <title>IdiomasTXT | Aprenda Inglês, Francês, Chinês, Russo e Mais</title>
 
-    <link
-    rel="shortcut icon"
-    href="midia/favicon.ico"
-    type="image/x-icon"
-    />
-    <link rel="stylesheet" href="estilos/styleX2.css" />
-    <link rel="stylesheet" href="estilos/style_apoio.css" />
+    <!-- Google Analytics 4 (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1H1Z4QR4V7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-1H1Z4QR4V7');
+    </script>
+
+    <!-- Dados Estruturados (Schema.org / JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "IdiomasTXT",
+      "url": "https://idiomastxt.netlify.app/",
+      "description": "Plataforma de aprendizado prático de idiomas com foco em frases do cotidiano e uso focado nos verbos mais utilizados."
+    }
+    </script>
+
+    <!-- Verificação do Google Search Console -->
+    <meta name="google-site-verification" content="googleeb17b7248cee3c35" />
+    
+    <!-- URL Canônica -->
+    <link rel="canonical" href="https://idiomastxt.netlify.app/">
+    
+    <!-- Metadados do Autor e Descrição -->
+    <meta name="author" content="Carlos Alberto Leão Pinheiro">
+    <meta name="description" content="Aprenda inglês, francês, chinês, russo e novos idiomas com foco prático! Estude através de frases do cotidiano com ênfase nos verbos mais utilizados no dia a dia.">
+    <meta name="keywords" content="estudo de idiomas, aprender inglês, aprender francês, aprender chinês, aprender russo, verbos em inglês, frases do cotidiano, cursos de línguas online, vocabulário prático, idiomasTXT">
+
+    <!-- Favicon / Ícone da Aba -->
+    <link rel="shortcut icon" href="midia/favicon.png" type="image/x-icon"/>
+
+    <!-- Fontes e Estilos Externos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/style.css"> 
+    <link rel="stylesheet" href="estilos/style_apoio.css"> 
+
+    <!-- Open Graph / Facebook / WhatsApp (Para compartilhamento em redes sociais) -->
+    <meta property="og:site_name" content="IdiomasTXT">
+    <meta property="og:url" content="https://idiomastxt.netlify.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="IdiomasTXT: Domine Novos Idiomas Através de Verbos e Frases Práticas">
+    <meta property="og:description" content="Aprenda inglês, francês, chinês, russo e mais. Método focado nos verbos mais usados e frases reais do cotidiano.">
+    <meta property="og:image" content="https://idiomastxt.netlify.app/midia/idiomastxt_banner.jpg">
+    <meta property="og:image:width" content="1200"> 
+    <meta property="og:image:height" content="630"> 
+    <meta property="og:image:alt" content="IdiomasTXT - Estudo Prático de Idiomas">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IdiomasTXT: Domine Novos Idiomas Através de Verbos e Frases Práticas">
+    <meta name="twitter:description" content="Aprenda inglês, francês, chinês, russo e mais com foco em frases cotidianas e verbos mais usados.">
+    <meta name="twitter:image" content="https://idiomastxt.netlify.app/midia/idiomastxt_banner.jpg">
 
     <style>
-        .LGFran_hidden {
-            display: none;
-        }
-
-            
-            /* botão voltar ao topo da página */
-            #scrollToTopBtn {
-                display: none;
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                z-index: 99;
-                border: none;
-                outline: none;
-                background-color: #296ae2;
-                color: white;
-                cursor: pointer;
-                padding: 15px 20px;
-                border-radius: 50%;
-                font-size: 24px;
-                line-height: 1;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                transition: background-color 0.3s ease, transform 0.3s ease,
-                    box-shadow 0.3s ease;
-            }
-
-            #scrollToTopBtn:hover {
-                background-color: #1a4a9c; /* Cor mais escura no hover */
-                transform: translateY(-2px); /* Efeito sutil de levantar */
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
-            }
-            /* fimd do botão voltar ao topo da página */
-        
-
-
-
+        /* Mantenha seus estilos internos aqui */
     </style>
-
 </head>
 
 <body>
@@ -1926,8 +1941,7 @@
 
     <button id="scrollToTopBtn" title="Ir para o Topo">↑</button>
 
-    <script src="script/js_nav_fran.js"></script>
-    <script src="script/MENU.js"></script>
+
 
 
 
@@ -1979,7 +1993,8 @@
                 <BR>C. A. L. Pinheiro</BR>
             </p>
         </footer>
-
+        <script src="script/js_nav_fran.js"></script>
+        <script src="script/MENU.js"></script>
         <!-- <script src="script/examManifest.js"></script> -->
         <script src="script/Generador_PROVAS.js"></script>
         <script src="script/compartilhe.js"></script>
@@ -2025,6 +2040,23 @@
             });
         </script>
 
+        <script> /* ALERT */
+            document.addEventListener("DOMContentLoaded", function () {
+                // Verifica se o usuário já fechou este alerta anteriormente
+                var alertaVisto = localStorage.getItem("alertaChromeVisto");
+
+                if (!alertaVisto) {
+                document.getElementById("alerta-navegador").style.display = "flex";
+                }
+            });
+
+            function fecharAlertaNavegador() {
+                document.getElementById("alerta-navegador").style.display = "none";
+                // Grava no navegador para não exibir novamente na mesma máquina/celular
+                localStorage.setItem("alertaChromeVisto", "true");
+            }
+        </script>
+
 
 
 <!-- Modal de Ajuda (Tela Cheia) -->
@@ -2034,7 +2066,7 @@
         
         <h2>📖 GUIA DE USO DO PLAYER</h2>
         <div class="LGFran_modal_body">
-            <p>Os Diálogos são bem interativos, vocÊ pode clicar em qualquer parte do diálogo, que ele irá começar a ler a partir daquela frase.</p>
+            <p>Os Diálogos são bem interativos, você pode clicar em qualquer parte do diálogo, que ele irá começar a ler a partir daquela frase.</p>
             <ul>
                 <li><strong>▶ Play:</strong> Inicia a leitura do início ao fim do diálogo.</li>
                 <li><strong>⏸ Pause:</strong> Pausa o áudio no ponto atual.</li>
@@ -2051,6 +2083,17 @@
             </ul>
         </div>
     </div>
+</div>
+
+
+<!-- Modal de Alerta de Navegador e Vozes -->
+<div id="alerta-navegador" class="alerta-overlay">
+  <div class="alerta-box">
+    <h3><i class="fas fa-exclamation-triangle"></i> Aviso Importante</h3>
+    <p>Esse site foi desenvolvido para rodar no navegador <strong>Google Chrome</strong>. Os plugins e recursos de fala podem não funcionar, caso utilize em outros navegadores.</p>
+    <p class="alerta-subtext">A voz do leitor dependerá das configurações de síntese de voz de cada aparelho.</p>
+    <button onclick="fecharAlertaNavegador()" class="btn-alerta">Entendi e quero continuar</button>
+  </div>
 </div>
 
 
