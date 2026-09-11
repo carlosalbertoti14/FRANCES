@@ -1,8 +1,11 @@
 Criei um site de estudos em inglês.
 
-queria colocar o verbo em questão, que esta sendo estudado, destacado em verde. em todas as linguas.
+queria colocar o verbo em questão, que esta sendo estudado, destacado em verde. em todas as linguas. MARQUE APENAS SOMENTE AS PALAVRAS QUE ESTÃO SENDO O ASSUNTO DE CADA TEXTO DO (TITULO).
 
 color sugerida: #2ecc71; font-weight: bold;
 
 Atenção: Não altere nenhum ID de nenhuma frase, pois o script depende deles para funcionar perfeitamente.
 Faça somente a alteração solicitada, e caso veja algum erro de gramatica, vc tem permissão para corrigir. 
+
+
+NESSE ULTIMO VOCê MARCOU COISA ERRADA, QUE NÃO SIGNIFICA 
