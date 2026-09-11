@@ -1,0 +1,8 @@
+Criei um site de estudos em inglês.
+
+queria colocar o verbo em questão, que esta sendo estudado, destacado em verde. em todas as linguas.
+
+color sugerida: #2ecc71; font-weight: bold;
+
+Atenção: Não altere nenhum ID de nenhuma frase, pois o script depende deles para funcionar perfeitamente.
+Faça somente a alteração solicitada, e caso veja algum erro de gramatica, vc tem permissão para corrigir. 
